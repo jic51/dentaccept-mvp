@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DentAccept — Turn Treatment Plans into Scheduled Appointments</title>
+<meta name="description" content="AI-powered chairside presentations that help patients understand and accept dental treatments. Bilingual EN/ES. Works on any tablet.">
+<style>
+  :root {
+    --ink: #0f0f0f;
+    --ink-soft: #444;
+    --ink-muted: #888;
+    --page: #faf9f6;
+    --surface: #f2f0eb;
+    --surface2: #e8e5de;
+    --accent: #1a472a;
+    --accent-light: #e8f2ec;
+    --accent2: #c8392b;
+    --accent2-light: #fdf0ee;
+    --border: #ddd9d0;
+    --serif: 'Georgia', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--page);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(250,249,246,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    z-index: 100;
+    padding: 14px 0;
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 22px;
+    text-decoration: none;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .nav-logo em { color: var(--accent); font-style: italic; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    background: var(--accent) !important;
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px !important;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 140px 0 80px;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+  }
+  .hero-text { flex: 1; }
+  .hero-text h1 {
+    font-family: var(--serif);
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero-text h1 em { color: var(--accent); font-style: italic; }
+  .hero-text p {
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.9; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-outline { background: transparent; color: var(--ink-soft); border: 1.5px solid var(--border); }
+
+  .hero-mockup {
+    flex: 0 0 320px;
+    background: var(--ink);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+  }
+  .mockup-inner {
+    background: var(--page);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .mockup-header {
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mockup-header span {
+    font-family: var(--serif);
+    font-size: 16px;
+  }
+  .mockup-header span em { color: var(--accent); font-style: italic; }
+  .mockup-header .tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    background: var(--surface);
+    padding: 3px 8px;
+    border-radius: 10px;
+    color: var(--ink-muted);
+  }
+  .mockup-body {
+    padding: 20px 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .mock-card {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .mock-card .mc-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+  .mock-card .mc-title { font-size: 11px; font-weight: 600; }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--ink);
+    color: white;
+    padding: 40px 0;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+  .stat-item .stat-num {
+    font-family: var(--serif);
+    font-size: 36px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .stat-item .stat-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* SECTIONS */
+  section { padding: 80px 0; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    max-width: 600px;
+  }
+  .section-desc {
+    font-size: 16px;
+    color: var(--ink-soft);
+    max-width: 520px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  /* PROBLEM */
+  .problem-card {
+    background: var(--accent2-light);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 12px 12px 0;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .problem-card p { color: #7a2218; margin: 0; }
+  .problem-card strong { color: #5a1510; }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .pain-item {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .pain-item .pi-icon { font-size: 28px; margin-bottom: 12px; display: block; }
+  .pain-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .pain-item p { font-size: 13px; color: var(--ink-muted); margin: 0; line-height: 1.5; }
+
+  /* HOW IT WORKS */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .step-card {
+    position: relative;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 28px 24px;
+  }
+  .step-num {
+    width: 36px; height: 36px;
+    background: var(--ink);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .step-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .step-card p { font-size: 13px; color: var(--ink-muted); margin: 0; line-height: 1.5; }
+  .step-time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-top: 12px;
+    display: block;
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .feature-card {
+    background: var(--accent-light);
+    border: 1px solid #b8d9c2;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .feature-card .fc-icon { font-size: 24px; margin-bottom: 10px; display: block; }
+  .feature-card h4 { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+  .feature-card p { font-size: 13px; color: var(--ink-soft); margin: 0; line-height: 1.5; }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+  .price-card {
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    background: white;
+  }
+  .price-card.popular {
+    border-color: var(--accent);
+    border-width: 2px;
+    position: relative;
+  }
+  .price-card.popular::before {
+    content: 'Most Popular';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 14px;
+    border-radius: 12px;
+  }
+  .price-plan {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+  }
+  .price-amount {
+    font-family: var(--serif);
+    font-size: 44px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .price-amount span { font-size: 16px; color: var(--ink-muted); font-family: var(--sans); }
+  .price-for {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .price-desc {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .price-card .btn { width: 100%; }
+
+  /* CTA */
+  .cta-section {
+    background: var(--ink);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+  }
+  .cta-section h2 {
+    font-family: var(--serif);
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+  .cta-section p {
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 28px;
+    font-size: 16px;
+  }
+  .cta-form {
+    display: flex;
+    gap: 12px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .cta-form input {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-size: 15px;
+    outline: none;
+  }
+  .cta-form input::placeholder { color: rgba(255,255,255,0.4); }
+  .cta-form input:focus { border-color: #4caf6e; }
+  .cta-form button {
+    padding: 14px 24px;
+    background: #4caf6e;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .cta-success {
+    color: #4caf6e;
+    font-size: 15px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 0;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer .f-logo {
+    font-family: var(--serif);
+    font-size: 18px;
+  }
+  footer .f-logo em { color: var(--accent); font-style: italic; }
+  footer .f-copy {
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { flex-direction: column; padding: 120px 0 60px; gap: 40px; }
+    .hero-mockup { flex: none; width: 100%; max-width: 320px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .pain-grid, .steps-grid, .features-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 360px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .cta-form { flex-direction: column; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Dent<em>Accept</em></a>
+    <div class="nav-links">
+      <a href="#how">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#cta" class="nav-cta">Start Free Trial</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="container">
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Patients understand it.<br>Patients <em>accept</em> it.</h1>
+      <p>AI-powered chairside presentations that turn "let me think about it" into "let's do it." Bilingual. Visual. Works on any tablet.</p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn btn-primary">Start 14-Day Free Trial</a>
+        <a href="#how" class="btn btn-outline">See How It Works</a>
+      </div>
+    </div>
+    <div class="hero-mockup">
+      <div class="mockup-inner">
+        <div class="mockup-header">
+          <span>Dent<em>Accept</em></span>
+          <span class="tag">EN / ES</span>
+        </div>
+        <div class="mockup-body">
+          <div class="mock-card"><span class="mc-icon">&#x1F9B7;</span><span class="mc-title">Crown</span></div>
+          <div class="mock-card"><span class="mc-icon">&#x2B21;</span><span class="mc-title">Implant</span></div>
+          <div class="mock-card"><span class="mc-icon">&#x1F300;</span><span class="mc-title">Root Canal</span></div>
+          <div class="mock-card"><span class="mc-icon">&#x27E1;</span><span class="mc-title">Invisalign</span></div>
+          <div class="mock-card"><span class="mc-icon">&#x2728;</span><span class="mc-title">Whitening</span></div>
+          <div class="mock-card"><span class="mc-icon">&#x1F527;</span><span class="mc-title">Extraction</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-num">46%</span>
+        <span class="stat-label">Average acceptance rate (2025)</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">78%</span>
+        <span class="stat-label">With visual presentation</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">2 min</span>
+        <span class="stat-label">Average presentation time</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">$0</span>
+        <span class="stat-label">Setup cost</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<section>
+  <div class="container">
+    <div class="section-label">The Problem</div>
+    <h2 class="section-title">54% of treatment plans never get scheduled.</h2>
+    <p class="section-desc">Not because patients don't need treatment. Because they don't understand it. Words aren't enough to explain what they can't see.</p>
+
+    <div class="problem-card">
+      <p><strong>The math:</strong> At $941,600 average annual revenue, a practice with 46% acceptance is leaving <strong>$200,000-$300,000 on the table every year.</strong> That's not a marketing problem. It's a communication problem.</p>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-item">
+        <span class="pi-icon">&#x1F9D0;</span>
+        <h4>"I don't understand"</h4>
+        <p>Patients can't visualize what's happening inside their mouth. Verbal explanations don't stick.</p>
+      </div>
+      <div class="pain-item">
+        <span class="pi-icon">&#x1F4B0;</span>
+        <h4>"It's too expensive"</h4>
+        <p>Without seeing consequences, patients compare the cost to nothing — not to what it costs to wait.</p>
+      </div>
+      <div class="pain-item">
+        <span class="pi-icon">&#x1F4DE;</span>
+        <h4>"I'll call you back"</h4>
+        <p>43% of patients who leave without scheduling never come back. The decision window closes at the door.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="background: var(--surface);">
+  <div class="container">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Three taps. Two minutes. One decision.</h2>
+    <p class="section-desc">Open the app on any tablet. Select the procedure. Hand it to the patient. That's it.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h4>Select the procedure</h4>
+        <p>Choose from 10+ common procedures. Crown, implant, root canal, Invisalign, whitening, and more.</p>
+        <span class="step-time">5 seconds</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h4>Patient watches the animation</h4>
+        <p>Visual dental animation shows what's happening and what the procedure does. In English or Spanish with one tap.</p>
+        <span class="step-time">30 seconds</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h4>AI shows consequences + cost</h4>
+        <p>The "what happens if you wait" screen shows the timeline of progression and the cost of delaying. Then: "I'm ready to schedule."</p>
+        <span class="step-time">60 seconds</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section>
+  <div class="container">
+    <div class="section-label">Why DentAccept</div>
+    <h2 class="section-title">Built for independent dentists who don't have time for complicated software.</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="fc-icon">&#x1F30E;</span>
+        <h4>Bilingual EN/ES</h4>
+        <p>60M Spanish speakers in the US. One tap switches the entire presentation. No other tool does this natively.</p>
+      </div>
+      <div class="feature-card">
+        <span class="fc-icon">&#x26A1;</span>
+        <h4>Zero friction</h4>
+        <p>No installation. No training. No IT. Open in the iPad browser you already have. Use it with your next patient.</p>
+      </div>
+      <div class="feature-card">
+        <span class="fc-icon">&#x1F916;</span>
+        <h4>AI-powered explanations</h4>
+        <p>Claude AI generates empathetic, personalized explanations at 8th-grade reading level. Patients actually understand.</p>
+      </div>
+      <div class="feature-card">
+        <span class="fc-icon">&#x23F0;</span>
+        <h4>"What if you wait" timeline</h4>
+        <p>Shows patients the real cost of delaying — in time, pain, and money. Converts "let me think" into urgency.</p>
+      </div>
+      <div class="feature-card">
+        <span class="fc-icon">&#x1F512;</span>
+        <h4>No patient data stored</h4>
+        <p>Zero PHI. No names, no records, no HIPAA headaches. Only aggregate analytics about which procedures you present.</p>
+      </div>
+      <div class="feature-card">
+        <span class="fc-icon">&#x1F4CA;</span>
+        <h4>Track your acceptance rate</h4>
+        <p>See how many patients schedule after viewing a presentation vs. before. The ROI justifies itself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background: var(--surface);">
+  <div class="container">
+    <div class="section-label">Simple Pricing</div>
+    <h2 class="section-title">Less than what you bill in 8 minutes of work.</h2>
+    <p class="section-desc">No contracts. No setup fees. Cancel anytime. Try free for 14 days.</p>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-plan">Starter</div>
+        <div class="price-amount">$79<span>/mo</span></div>
+        <div class="price-for">1 tablet, 1 dentist</div>
+        <div class="price-desc">10 procedures. English and Spanish. Unlimited presentations.</div>
+        <a href="#cta" class="btn btn-outline">Start Free Trial</a>
+      </div>
+      <div class="price-card popular">
+        <div class="price-plan">Practice</div>
+        <div class="price-amount">$129<span>/mo</span></div>
+        <div class="price-for">Up to 3 dentists</div>
+        <div class="price-desc">All procedures. AI explanations. Acceptance rate analytics. Custom branding.</div>
+        <a href="#cta" class="btn btn-primary">Start Free Trial</a>
+      </div>
+      <div class="price-card">
+        <div class="price-plan">Group</div>
+        <div class="price-amount">$249<span>/mo</span></div>
+        <div class="price-for">Multiple locations</div>
+        <div class="price-desc">Up to 5 locations. Centralized dashboard. Priority support.</div>
+        <a href="#cta" class="btn btn-outline">Start Free Trial</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="cta">
+  <div class="container">
+    <h2>Ready to stop losing treatments?</h2>
+    <p>Join the waitlist. We'll notify you when your trial is ready.</p>
+    <form class="cta-form" onsubmit="return submitWaitlist(event)">
+      <input type="email" id="waitlist-email" placeholder="your@email.com" required>
+      <button type="submit">Join Waitlist</button>
+    </form>
+    <div class="cta-success" id="cta-success">You're on the list. We'll be in touch soon.</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="container">
+  <footer>
+    <div class="f-logo">Dent<em>Accept</em></div>
+    <div class="f-copy">Made for dentists who want to help patients say yes.</div>
+  </footer>
+</div>
+
+<script>
+async function submitWaitlist(e) {
+  e.preventDefault();
+  var email = document.getElementById('waitlist-email').value;
+  if (!email) return false;
+
+  // Try Supabase if available
+  if (window.DENTACCEPT_CONFIG && !window.DENTACCEPT_CONFIG.demoMode) {
+    try {
+      var sb = window.supabase.createClient(
+        window.DENTACCEPT_CONFIG.supabaseUrl,
+        window.DENTACCEPT_CONFIG.supabaseKey
+      );
+      await sb.from('waitlist').insert({ email: email, source: 'landing' });
+    } catch (err) {
+      console.error('Waitlist error:', err);
+    }
+  }
+
+  document.querySelector('.cta-form').style.display = 'none';
+  document.getElementById('cta-success').style.display = 'block';
+  return false;
+}
+</script>
+<!-- Optional: load config and supabase for waitlist -->
+<script src="config.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+</body>
+</html>

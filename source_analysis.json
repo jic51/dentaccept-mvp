@@ -1,0 +1,420 @@
+{
+  "htmlStats": {
+    "lines": 963,
+    "chars": 32600,
+    "cssLines": 418,
+    "jsLines": 421
+  },
+  "procedures": [
+    {
+      "id": "crown",
+      "icon": "🦷",
+      "title": {
+        "en": "Dental Crown",
+        "es": "Corona Dental"
+      },
+      "desc": {
+        "en": "Cap over damaged tooth",
+        "es": "Cubierta para diente dañado"
+      },
+      "price": 1200,
+      "priceLater": 3400,
+      "steps": [
+        {
+          "en": "Tooth is prepared and shaped",
+          "es": "El diente se prepara y da forma"
+        },
+        {
+          "en": "Custom crown is fitted",
+          "es": "Se ajusta la corona personalizada"
+        },
+        {
+          "en": "Crown is cemented in place",
+          "es": "La corona se cementa en su lugar"
+        }
+      ],
+      "timeline": [
+        {
+          "time": "Now",
+          "icon": "✓",
+          "type": "now",
+          "title": {
+            "en": "Minor decay",
+            "es": "Caries menor"
+          },
+          "desc": {
+            "en": "Single crown needed",
+            "es": "Solo se necesita una corona"
+          }
+        },
+        {
+          "time": "6 mo",
+          "icon": "⚠",
+          "type": "warn",
+          "title": {
+            "en": "Decay spreads",
+            "es": "La caries se extiende"
+          },
+          "desc": {
+            "en": "May need root canal",
+            "es": "Quizás necesite endodoncia"
+          }
+        },
+        {
+          "time": "1 yr",
+          "icon": "✕",
+          "type": "warn",
+          "title": {
+            "en": "Tooth fracture",
+            "es": "Fractura dental"
+          },
+          "desc": {
+            "en": "Extraction + implant needed",
+            "es": "Extracción + implante necesario"
+          }
+        },
+        {
+          "time": "2 yr",
+          "icon": "💀",
+          "type": "warn",
+          "title": {
+            "en": "Bone loss",
+            "es": "Pérdida ósea"
+          },
+          "desc": {
+            "en": "Complex surgery required",
+            "es": "Cirugía compleja requerida"
+          }
+        }
+      ]
+    },
+    {
+      "id": "implant",
+      "icon": "⬡",
+      "title": {
+        "en": "Dental Implant",
+        "es": "Implante Dental"
+      },
+      "desc": {
+        "en": "Permanent tooth replacement",
+        "es": "Reemplazo permanente"
+      },
+      "price": 3500,
+      "priceLater": 5800,
+      "steps": [
+        {
+          "en": "Titanium post placed in jaw",
+          "es": "Poste de titanio en el hueso"
+        },
+        {
+          "en": "Healing and osseointegration",
+          "es": "Curación y osteointegración"
+        },
+        {
+          "en": "Crown attached to post",
+          "es": "Corona sobre el poste"
+        }
+      ],
+      "timeline": [
+        {
+          "time": "Now",
+          "icon": "✓",
+          "type": "now",
+          "title": {
+            "en": "Single implant",
+            "es": "Implante único"
+          },
+          "desc": {
+            "en": "Straightforward procedure",
+            "es": "Procedimiento directo"
+          }
+        },
+        {
+          "time": "1 yr",
+          "icon": "⚠",
+          "type": "warn",
+          "title": {
+            "en": "Bone resorption",
+            "es": "Reabsorción ósea"
+          },
+          "desc": {
+            "en": "Bone graft may be needed",
+            "es": "Quizás injerto óseo"
+          }
+        },
+        {
+          "time": "2 yr",
+          "icon": "✕",
+          "type": "warn",
+          "title": {
+            "en": "Adjacent teeth shift",
+            "es": "Dientes vecinos se mueven"
+          },
+          "desc": {
+            "en": "Multiple teeth affected",
+            "es": "Varios dientes afectados"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rootcanal",
+      "icon": "🌀",
+      "title": {
+        "en": "Root Canal",
+        "es": "Endodoncia"
+      },
+      "desc": {
+        "en": "Removes infected pulp",
+        "es": "Elimina pulpa infectada"
+      },
+      "price": 900,
+      "priceLater": 2800,
+      "steps": [
+        {
+          "en": "Infected pulp removed",
+          "es": "Se extrae pulpa infectada"
+        },
+        {
+          "en": "Canal cleaned and sealed",
+          "es": "Conducto limpiado y sellado"
+        },
+        {
+          "en": "Crown placed on top",
+          "es": "Corona colocada encima"
+        }
+      ],
+      "timeline": [
+        {
+          "time": "Now",
+          "icon": "✓",
+          "type": "now",
+          "title": {
+            "en": "Infected nerve",
+            "es": "Nervio infectado"
+          },
+          "desc": {
+            "en": "Root canal + crown",
+            "es": "Endodoncia + corona"
+          }
+        },
+        {
+          "time": "3 mo",
+          "icon": "⚠",
+          "type": "warn",
+          "title": {
+            "en": "Abscess forms",
+            "es": "Absceso dental"
+          },
+          "desc": {
+            "en": "Emergency extraction",
+            "es": "Extracción de emergencia"
+          }
+        },
+        {
+          "time": "1 yr",
+          "icon": "💀",
+          "type": "warn",
+          "title": {
+            "en": "Infection spreads",
+            "es": "Infección se extiende"
+          },
+          "desc": {
+            "en": "Risk to heart/kidneys",
+            "es": "Riesgo para corazón/riñones"
+          }
+        }
+      ]
+    },
+    {
+      "id": "invisalign",
+      "icon": "⟡",
+      "title": {
+        "en": "Invisalign",
+        "es": "Invisalign"
+      },
+      "desc": {
+        "en": "Clear aligners",
+        "es": "Alineadores transparentes"
+      },
+      "price": 4500,
+      "priceLater": 5200,
+      "steps": [
+        {
+          "en": "3D scan of your teeth",
+          "es": "Escaneo 3D de sus dientes"
+        },
+        {
+          "en": "Custom aligners created",
+          "es": "Alineadores personalizados"
+        },
+        {
+          "en": "New aligners every 2 weeks",
+          "es": "Nuevos cada 2 semanas"
+        }
+      ],
+      "timeline": [
+        {
+          "time": "Now",
+          "icon": "✓",
+          "type": "now",
+          "title": {
+            "en": "Mild misalignment",
+            "es": "Desalineación leve"
+          },
+          "desc": {
+            "en": "12-18 month treatment",
+            "es": "Tratamiento de 12-18 meses"
+          }
+        },
+        {
+          "time": "2 yr",
+          "icon": "⚠",
+          "type": "warn",
+          "title": {
+            "en": "Bite issues worsen",
+            "es": "Problemas de mordida"
+          },
+          "desc": {
+            "en": "TMJ pain, wear on teeth",
+            "es": "Dolor TMJ, desgaste"
+          }
+        }
+      ]
+    },
+    {
+      "id": "whitening",
+      "icon": "✨",
+      "title": {
+        "en": "Whitening",
+        "es": "Blanqueamiento"
+      },
+      "desc": {
+        "en": "Professional bleaching",
+        "es": "Blanqueamiento profesional"
+      },
+      "price": 400,
+      "priceLater": 400,
+      "steps": [
+        {
+          "en": "Protective barrier applied",
+          "es": "Barrera protectora aplicada"
+        },
+        {
+          "en": "Whitening gel activated",
+          "es": "Gel activado con luz"
+        },
+        {
+          "en": "Shades lighter in 1 hour",
+          "es": "Tonos más claros en 1 hora"
+        }
+      ],
+      "timeline": [
+        {
+          "time": "Now",
+          "icon": "✓",
+          "type": "now",
+          "title": {
+            "en": "Surface stains",
+            "es": "Manchas superficiales"
+          },
+          "desc": {
+            "en": "Easy removal",
+            "es": "Remoción fácil"
+          }
+        },
+        {
+          "time": "2 yr",
+          "icon": "⚠",
+          "type": "warn",
+          "title": {
+            "en": "Stains set in",
+            "es": "Manchas fijadas"
+          },
+          "desc": {
+            "en": "May need veneers",
+            "es": "Quizás carillas necesarias"
+          }
+        }
+      ]
+    },
+    {
+      "id": "extraction",
+      "icon": "🔧",
+      "title": {
+        "en": "Extraction",
+        "es": "Extracción"
+      },
+      "desc": {
+        "en": "Tooth removal",
+        "es": "Remoción dental"
+      },
+      "price": 300,
+      "priceLater": 300,
+      "steps": [
+        {
+          "en": "Tooth loosened gently",
+          "es": "Diente aflojado suavemente"
+        },
+        {
+          "en": "Extracted carefully",
+          "es": "Extraído cuidadosamente"
+        },
+        {
+          "en": "Socket preserved for implant",
+          "es": "Alvéolo preservado"
+        }
+      ],
+      "timeline": [
+        {
+          "time": "Now",
+          "icon": "✓",
+          "type": "now",
+          "title": {
+            "en": "Simple extraction",
+            "es": "Extracción simple"
+          },
+          "desc": {
+            "en": "Quick healing",
+            "es": "Curación rápida"
+          }
+        },
+        {
+          "time": "6 mo",
+          "icon": "⚠",
+          "type": "warn",
+          "title": {
+            "en": "Bone loss begins",
+            "es": "Pérdida ósea inicia"
+          },
+          "desc": {
+            "en": "Implant more complex",
+            "es": "Implante más complejo"
+          }
+        }
+      ]
+    }
+  ],
+  "translations": {},
+  "scriptSnippet": "\n// ==================== DATA ====================\nconst procedures = [\n  {\n    id: 'crown',\n    icon: '🦷',\n    title: { en: 'Dental Crown', es: 'Corona Dental' },\n    desc: { en: 'Cap over damaged tooth', es: 'Cubierta para diente dañado' },\n    price: 1200,\n    priceLater: 3400,\n    steps: [\n      { en: 'Tooth is prepared and shaped', es: 'El diente se prepara y da forma' },\n      { en: 'Custom crown is fitted', es: 'Se ajusta la corona personalizada' },\n      { en: 'Crown is cemented in place', es: 'La corona se cementa en su lugar' }\n    ],\n    timeline: [\n      { time: 'Now', icon: '✓', type: 'now', \n        title: { en: 'Minor decay', es: 'Caries menor' },\n        desc: { en: 'Single crown needed', es: 'Solo se necesita una corona' }\n      },\n      { time: '6 mo', icon: '⚠', type: 'warn',\n        title: { en: 'Decay spreads', es: 'La caries se extiende' },\n        desc: { en: 'May need root canal', es: 'Quizás necesite endodoncia' }\n      },\n      { time: '1 yr', icon: '✕', type: 'warn',\n        title: { en: 'Tooth fracture', es: 'Fractura dental' },\n        desc: { en: 'Extraction + implant needed', es: 'Extracción + implante necesario' }\n      },\n      { time: '2 yr', icon: '💀', type: 'warn',\n        title: { en: 'Bone loss', es: 'Pérdida ósea' },\n        desc: { en: 'Complex surgery required', es: 'Cirugía compleja requerida' }\n      }\n    ]\n  },\n  {\n    id: 'implant',\n    icon: '⬡',\n    title: { en: 'Dental Implant', es: 'Implante Dental' },\n    desc: { en: 'Permanent tooth replacement', es: 'Reemplazo permanente' },\n    price: 3500,\n    priceLater: 5800,\n    steps: [\n      { en: 'Titanium post placed in jaw', es: 'Poste de titanio en el hueso' },\n      { en: 'Healing and osseointegration', es: 'Curación y osteointegración' },\n      { en: 'Crown attached to post', es: 'Corona sobre el poste' }\n    ],\n    timeline: [\n      { time: 'Now', icon: '✓', type: 'now',\n        title: { en: 'Single implant', es: 'Implante único' },\n        desc: { en: 'Straightforward procedure', es: 'Procedimiento directo' }\n      },\n      { time: '1 yr', icon: '⚠', type: 'warn',\n        title: { en: 'Bone resorption', es: 'Reabsorción ósea' },\n        desc: { en: 'Bone graft may be needed', es: 'Quizás injerto óseo' }\n      },\n      { time: '2 yr', icon: '✕', type: 'warn',\n        title: { en: 'Adjacent teeth shift', es: 'Dientes vecinos se mueven' },\n        desc: { en: 'Multiple teeth affected', es: 'Varios dientes afectados' }\n      }\n    ]\n  },\n  {\n    id: 'rootcanal',\n    icon: '🌀',\n    title: { en: 'Root Canal', es: 'Endodoncia' },\n    desc: { en: 'Removes infected pulp', es: 'Elimina pulpa infectada' },\n    price: 900,\n    priceLater: 2800,\n    steps: [\n      { en: 'Infected pulp removed', es: 'Se extrae pulpa infectada' },\n      { en: 'Canal cleaned and sealed', es: 'Conducto limpiado y sellado' },\n      { en: 'Crown placed on top', es: 'Corona colocada encima' }\n    ],\n    timeline: [\n      { time: 'Now', icon: '✓', type: 'now',\n        title: { en: 'Infected nerve', es: 'Nervio infectado' },\n        desc: { en: 'Root canal + crown', es: 'Endodoncia + corona' }\n      },\n      { time: '3 mo', icon: '⚠', type: 'warn',\n        title: { en: 'Abscess forms', es: 'Absceso dental' },\n        desc: { en: 'Emergency extraction', es: 'Extracción de emergencia' }\n      },\n      { time: '1 yr', icon: '💀', type: 'warn',\n        title: { en: 'Infection spreads', es: 'Infección se extiende' },\n        desc: { en: 'Risk to heart/kidneys', es: 'Riesgo para corazón/riñones' }\n      }\n    ]\n  },\n  {\n    id: 'invisalign',\n    icon: '⟡',\n    title: { en: 'Invisalign', es: 'Invisalign' },\n    desc: { en: 'Clear aligners', es: 'Alineadores transparentes' },\n    price: 4500,\n    priceLater: 5200,\n    steps: [\n      { en: '3D scan of your teeth', es: 'Escaneo 3D de sus dientes' },\n      { en: 'Custom aligners created', es: 'Alineadores personalizados' },\n      { en: 'New aligners every 2 weeks', es: 'Nuevos cada 2 semanas' }\n    ],\n    timeline: [\n      { time: 'Now', icon: '✓', type: 'now',\n        title: { en: 'Mild misalignment', es: 'Desalineación leve' },\n        desc: { en: '12-18 month treatment', es: 'Tratamiento de 12-18 meses' }\n      },\n      { time: '2 yr', icon: '⚠', type: 'warn',\n        title: { en: 'Bite issues worsen', es: 'Problemas de mordida' },\n        desc: { en: 'TMJ pain, wear on teeth', es: 'Dolor TMJ, desgaste' }\n      }\n    ]\n  },\n  {\n    id: 'whitening',\n    icon: '✨',\n    title: { en: 'Whitening', es: 'Blanqueamiento' },\n    desc: { en: 'Professional bleaching', es: 'Blanqueamiento profesional' },\n    price: 400,\n    priceLater: 400,\n    steps: [\n      { en: 'Protective barrier applied', es: 'Barrera protectora aplicada' },\n      { en: 'Whitening gel activated', es: 'Gel activado con luz' },\n      { en: 'Shades lighter in 1 hour', es: 'Tonos más claros en 1 hora' }\n    ],\n    timeline: [\n      { time: 'Now', icon: '✓', type: 'now',\n        title: { en: 'Surface stains', es: 'Manchas superficiales' },\n        desc: { en: 'Easy removal', es: 'Remoción fácil' }\n      },\n      { time: '2 yr', icon: '⚠', type: 'warn',\n        title: { en: 'Stains set in', es: 'Manchas fijadas' },\n        desc: { en: 'May need veneers', es: 'Quizás carillas necesarias' }\n      }\n    ]\n  },\n  {\n    id: 'extraction',\n    icon: '🔧',\n    title: { en: 'Extraction', es: 'Extracción' },\n    desc: { en: 'Tooth removal', es: 'Remoción dental' },\n    price: 300,\n    priceLater: 300,\n    steps: [\n      { en: 'Tooth loosened gently', es: 'Diente aflojado suavemente' },\n      { en: 'Extracted carefully', es: 'Extraído cuidadosamente' },\n      { en: 'Socket preserved for implant', es: 'Alvéolo preservado' }\n    ],\n    timeline: [\n      { time: 'Now', icon: '✓', type: 'now',\n        title: { en: 'Simple extraction', es: 'Extracción simple' },\n        desc: { en: 'Quick healing', es: 'Curación rápida' }\n      },\n      { time: '6 mo', icon: '⚠', type: 'warn',\n        title: { en: 'Bone loss begins', es: 'Pérdida ósea inicia' },\n        desc: { en: 'Implant more complex', es: 'Implante más complejo' }\n      }\n    ]\n  }\n];\n\n// ==================== STATE ====================\nlet currentLang = 'en';\nlet currentProc = null;\nlet animInterval = null;\nlet currentStep = 0;\n\n// ==================== I18N ====================\nconst i18n = {\n  en: {\n    searchPlaceholder: 'Search procedures...',\n    whatIfWait: 'What happens if I wait?',\n    seeOptions: 'See Treatment Options',\n    readyToMove: 'Ready to Move Forward?',\n    sameDay: 'Same-day scheduling available',\n    totalInvestment: 'Total Investment',\n    includes: 'Includes procedure, materials, and follow-up',\n    readySchedule: \"I'm Ready to Schedule\",\n    needTime: 'I Need More Time',\n    costToday: 'Cost today',\n    costLater: 'Estimated cost in 2 years',\n    ifYouWait: 'If You Wait...',\n    withoutTreatment: 'What happens without treatment',\n    aiLabel: 'AI Explanation',\n    aiLoading: 'Generating personalized explanation...'\n  },\n  es: {\n    searchPlaceholder: 'Buscar procedimientos...',\n    whatIfWait: '¿Qué pasa si espero?',\n    seeOptions: 'Ver Opciones de Tratamiento',\n    readyToMove: '¿Listo para Continuar?',\n    sameDay: 'Agendamiento mismo día disponible',\n    totalInvestment: 'Inversión Total',\n    includes: 'Incluye procedimiento, materiales y seguimiento',\n    readySchedule: 'Estoy Listo para Agendar',\n    needTime: 'Necesito Más Tiempo',\n    costToday: 'Costo hoy',\n    costLater: 'Costo estimado en 2 años',\n    ifYouWait: 'Si Espera...',\n    withoutTreatment: 'Qué ocurre sin tratamiento',\n    aiLabel: 'Explicación IA',\n    aiLoading: 'Generando explicación personalizada...'\n  }\n};\n\nfunction t(key) {\n  return i18n[currentLang][key] || key;\n}\n\n// ==================== NAVIGATION ====================\nfunction goTo(screen) {\n  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));\n  document.getElementById('screen-' + screen).classList.add('active');\n  \n  if (screen === 'library') {\n    clearInterval(animInterval);\n    currentProc = null;\n  }\n}\n\nfunction toggleLang() {\n  currentLang = currentLang === 'en' ? 'es' : 'en';\n  document.getElementById('lang-en').classList.toggle('active');\n  document.getElementById('lang-es').classList.toggle('active');\n  document.getElementById('search-input').placeholder = t('searchPlaceholder');\n  renderLibrary();\n  if (currentProc) {\n    updateAnimationText();\n    updateConsequenceText();\n  }\n}\n\n// ==================== LIBRARY ====================\nfunction renderLibrary() {\n  const grid = document.getElementById('proc-grid');\n  const filter = document.getElementById('search-input').value.toLowerCase();\n  grid.innerHTML = '';\n  \n  procedures.forEach(proc => {\n    if (filter && !proc.title[currentLang].toLowerCase().includes(filter) && \n        !proc.desc[currentLang].toLowerCase().includes(filter)) return;\n    \n    const card = document.createElement('div');\n    card.className = 'proc-card';\n    card.innerHTML = `\n      <span class=\"icon\">${proc.icon}</",
+  "cssSelectors": {
+    "mediaQueries": [],
+    "keyframes": [
+      "pulse"
+    ],
+    "positionAbsolute": 2,
+    "overflowHidden": 2
+  },
+  "securitySignals": {
+    "hasAuth": true,
+    "usesLocalStorage": false,
+    "hardcodedSecrets": true,
+    "corsHeaders": false,
+    "csrf": false,
+    "rls": true,
+    "stripe": true
+  },
+  "aiSource": "// supabase/functions/ai-explain/index.ts\nimport { serve } from 'https://deno.land/std@0.168.0/http/server.ts'\n\nconst ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY')\n\nserve(async (req) => {\n  const { procedure, language, concern } = await req.json()\n  \n  const systemPrompt = `You are a dental patient educator. Explain procedures in simple, empathetic language.\n  Rules:\n  - Use 8th-grade reading level\n  - Focus on \"what this means for YOU\"\n  - Include 1 specific consequence of waiting\n  - Keep under 150 words\n  - Never use medical jargon without explanation\n  - ${language === 'es' ? 'Respond in Spanish' : 'Respond in English'}`\n  \n  const userPrompt = `Explain ${procedure} to a patient who is concerned about: ${concern || 'cost and pain'}.\n  Include: what it is, why they need it, what happens during the procedure, and what happens if they wait.`\n\n  const response = await fetch('https://api.anthropic.com/v1/messages', {\n    method: 'POST',\n    headers: {\n      'Content-Type': 'application/json',\n      'x-api-key': ANTHROPIC_API_KEY,\n      'anthropic-version': '2023-06-01'\n    },\n    body: JSON.stringify({\n      model: 'claude-3-haiku-20240307',\n      max_tokens: 300,\n      system: systemPrompt,\n      messages: [{ role: 'user', content: userPrompt }]\n    })\n  })\n\n  const data = await response.json()\n  \n  return new Response(JSON.stringify({\n    explanation: data.content[0].text,\n    procedure,\n    language,\n    cached: false\n  }), {\n    headers: { 'Content-Type': 'application/json' }\n  })\n})",
+  "sqlSource": "-- supabase/schema.sql\n-- DentAccept MVP Database (No PHI stored)\n\n-- Offices table\ncreate table offices (\n  id uuid default gen_random_uuid() primary key,\n  created_at timestamp with time zone default now(),\n  name text not null,\n  plan text default 'starter' check (plan in ('starter', 'practice', 'group')),\n  stripe_customer_id text,\n  stripe_subscription_id text,\n  status text default 'trial' check (status in ('trial', 'active', 'past_due', 'cancelled')),\n  trial_ends_at timestamp with time zone default now() + interval '14 days',\n  settings jsonb default '{}'::jsonb\n);\n\n-- Presentations (analytics only, no patient data)\ncreate table presentations (\n  id uuid default gen_random_uuid() primary key,\n  created_at timestamp with time zone default now(),\n  office_id uuid references offices(id),\n  procedure_id text not null,\n  procedure_name text not null,\n  language text default 'en',\n  completed boolean default false,\n  scheduled boolean default false,\n  declined boolean default false,\n  device_type text default 'tablet'\n);\n\n-- Monthly aggregated stats (for dashboard)\ncreate table monthly_stats (\n  id uuid default gen_random_uuid() primary key,\n  office_id uuid references offices(id),\n  month date not null,\n  total_presentations integer default 0,\n  completed_presentations integer default 0,\n  scheduled_count integer default 0,\n  acceptance_rate decimal(5,2),\n  revenue_impact decimal(10,2),\n  unique(office_id, month)\n);\n\n-- RLS Policies\nalter table offices enable row level security;\nalter table presentations enable row level security;\nalter table monthly_stats enable row level security;\n\ncreate policy \"Offices can read own data\"\n  on offices for select using (auth.uid() in (\n    select auth.uid() from auth.users where email in (\n      select email from office_users where office_id = offices.id\n    )\n  ));\n\n-- Function to track presentation\ncreate or replace function track_presentation(\n  p_office_id uuid,\n  p_procedure_id text,\n  p_procedure_name text,\n  p_language text,\n  p_outcome text\n) returns void as $$\nbegin\n  insert into presentations (office_id, procedure_id, procedure_name, language, completed, scheduled, declined)\n  values (\n    p_office_id,\n    p_procedure_id,\n    p_procedure_name,\n    p_language,\n    p_outcome = 'completed',\n    p_outcome = 'scheduled',\n    p_outcome = 'declined'\n  );\nend;\n$$ language plpgsql security definer;",
+  "deploySource": "#!/bin/bash\n# deploy.sh\n\n# 1. Deploy to Vercel (free)\nnpm i -g vercel\nvercel --prod\n\n# 2. Deploy Supabase edge function\nsupabase functions deploy ai-explain\n\n# 3. Set environment variables\nsupabase secrets set ANTHROPIC_API_KEY=sk-ant-...\n\n# 4. Stripe webhook setup (for subscriptions)\n# Go to Stripe Dashboard → Developers → Webhooks\n# Add endpoint: https://your-app.vercel.app/api/stripe-webhook\n# Select events: customer.subscription.created, updated, deleted\n\necho \"DentAccept deployed!\"\necho \"App: https://dentaccept.vercel.app\"\necho \"API: https://your-project.supabase.co\""
+}

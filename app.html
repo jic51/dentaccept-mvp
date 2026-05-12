@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DentAccept</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<style>
+  :root {
+    --ink: #0f0f0f;
+    --ink-soft: #444;
+    --ink-muted: #888;
+    --page: #faf9f6;
+    --surface: #f2f0eb;
+    --surface2: #e8e5de;
+    --accent: #1a472a;
+    --accent-light: #e8f2ec;
+    --accent2: #c8392b;
+    --accent2-light: #fdf0ee;
+    --border: #ddd9d0;
+    --serif: 'Georgia', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    font-family: var(--sans);
+    background: var(--page);
+    color: var(--ink);
+    overflow: hidden;
+  }
+
+  .screen {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .screen.active { display: flex; }
+
+  /* Shared header */
+  .app-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--page);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .app-header h1 {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: -0.02em;
+  }
+  .app-header h1 em { color: var(--accent); font-style: italic; }
+
+  .header-left, .header-right {
+    width: 40px;
+    display: flex;
+    align-items: center;
+  }
+  .header-right { justify-content: flex-end; }
+
+  .lang-toggle {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    cursor: pointer;
+    color: var(--ink-soft);
+  }
+  .lang-toggle .active { color: var(--accent); font-weight: 600; }
+
+  .back-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--ink-soft);
+  }
+
+  /* Office code entry */
+  .code-entry {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .code-entry h2 {
+    font-family: var(--serif);
+    font-size: 32px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .code-entry > p {
+    color: var(--ink-muted);
+    margin-bottom: 32px;
+    text-align: center;
+    max-width: 300px;
+  }
+  .code-inputs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .code-inputs input {
+    width: 48px; height: 56px;
+    text-align: center;
+    font-size: 24px;
+    font-family: var(--mono);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+  }
+  .code-inputs input:focus { border-color: var(--accent); }
+  .office-name {
+    font-size: 14px;
+    color: var(--accent);
+    margin-top: 12px;
+    font-weight: 500;
+  }
+  .code-error {
+    font-size: 13px;
+    color: var(--accent2);
+    margin-top: 8px;
+  }
+
+  /* Library */
+  .search-bar {
+    padding: 12px 20px;
+    background: var(--surface);
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    background: var(--page);
+    outline: none;
+  }
+  .search-bar input:focus { border-color: var(--accent); }
+
+  .proc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px 20px;
+  }
+  .proc-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 1.5px solid transparent;
+  }
+  .proc-card:active { transform: scale(0.96); }
+  .proc-card:hover { border-color: var(--accent); }
+  .proc-card .icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .proc-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .proc-card p {
+    font-size: 11px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* Animation */
+  .anim-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--page);
+  }
+  .tooth-svg {
+    width: 220px;
+    height: 220px;
+    margin-bottom: 24px;
+  }
+  .proc-title {
+    font-family: var(--serif);
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .proc-desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 320px;
+    line-height: 1.5;
+    margin-bottom: 32px;
+  }
+  .progress-bar {
+    width: 200px;
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s;
+  }
+  .nav-dots {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--surface2);
+    transition: background 0.3s;
+  }
+  .nav-dot.active { background: var(--accent); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+  }
+  .btn-primary:active { opacity: 0.9; }
+
+  /* Consequences */
+  .consequence-hero {
+    background: var(--accent2-light);
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .consequence-hero .warning-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+  }
+  .consequence-hero h2 {
+    font-family: var(--serif);
+    font-size: 24px;
+    color: var(--accent2);
+    margin-bottom: 8px;
+  }
+  .consequence-hero p {
+    font-size: 14px;
+    color: #7a2218;
+    opacity: 0.8;
+  }
+
+  .timeline {
+    padding: 24px 20px;
+    flex: 1;
+  }
+  .timeline-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 30px;
+    width: 2px;
+    height: calc(100% + 4px);
+    background: var(--border);
+  }
+  .t-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .t-dot.now { background: var(--accent); border-color: var(--accent); color: white; }
+  .t-dot.warn { background: var(--accent2); border-color: var(--accent2); color: white; }
+  .t-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .t-content p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .cost-compare {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 0 20px 20px;
+  }
+  .cost-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .cost-row:last-child { border-bottom: none; }
+  .cost-row .label { font-size: 13px; color: var(--ink-soft); }
+  .cost-row .value {
+    font-family: var(--serif);
+    font-size: 20px;
+  }
+  .cost-row .value.now { color: var(--accent); }
+  .cost-row .value.later { color: var(--accent2); }
+
+  /* AI Explanation */
+  .ai-explanation {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 0 20px 20px;
+    border-left: 3px solid var(--accent);
+  }
+  .ai-explanation .ai-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ai-explanation p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .ai-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink-muted);
+    font-size: 13px;
+  }
+  .ai-loading .dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 1.4s infinite;
+  }
+  .ai-loading .dot:nth-child(2) { animation-delay: 0.2s; }
+  .ai-loading .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse {
+    0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Close */
+  .close-hero {
+    background: var(--accent-light);
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .close-hero .check {
+    width: 64px; height: 64px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 28px;
+    color: white;
+  }
+  .close-hero h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .close-hero p {
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  .pricing-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px;
+    text-align: center;
+  }
+  .pricing-card .price-header {
+    font-size: 13px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .pricing-card .price {
+    font-family: var(--serif);
+    font-size: 48px;
+    margin: 8px 0;
+  }
+  .pricing-card .price-note {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 20px;
+  }
+  .financing-options {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .fin-option {
+    flex: 1;
+    padding: 12px;
+    background: var(--surface);
+    border-radius: 8px;
+    font-size: 12px;
+  }
+  .fin-option .amount {
+    font-weight: 600;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .action-buttons {
+    padding: 0 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .btn-schedule {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-later {
+    background: transparent;
+    color: var(--ink-muted);
+    border: 1px solid var(--border);
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- SCREEN 0: OFFICE CODE -->
+<div class="screen active" id="screen-code">
+  <div class="app-header">
+    <div class="header-left"></div>
+    <h1>Dent<em>Accept</em></h1>
+    <div class="header-right">
+      <button class="lang-toggle" onclick="toggleLang()">
+        <span class="lang-en active">EN</span> / <span class="lang-es">ES</span>
+      </button>
+    </div>
+  </div>
+  <div class="code-entry">
+    <h2 id="code-title">Enter Office Code</h2>
+    <p id="code-desc">Your dentist will provide a 4-digit code to access the presentation system.</p>
+    <div class="code-inputs">
+      <input type="text" maxlength="1" inputmode="numeric" oninput="moveCode(1)" onkeydown="moveCodeBack(event, 1)" id="code-1">
+      <input type="text" maxlength="1" inputmode="numeric" oninput="moveCode(2)" onkeydown="moveCodeBack(event, 2)" id="code-2">
+      <input type="text" maxlength="1" inputmode="numeric" oninput="moveCode(3)" onkeydown="moveCodeBack(event, 3)" id="code-3">
+      <input type="text" maxlength="1" inputmode="numeric" oninput="moveCode(4)" onkeydown="moveCodeBack(event, 4)" id="code-4">
+    </div>
+    <div class="office-name hidden" id="office-name"></div>
+    <div class="code-error hidden" id="code-error"></div>
+    <button class="btn-primary hidden" id="code-btn" onclick="enterApp()" style="margin-top: 20px;">Continue</button>
+    <p style="margin-top: 40px; font-size: 12px; color: var(--ink-muted);">
+      Demo code: <strong>1234</strong>
+    </p>
+  </div>
+</div>
+
+<!-- SCREEN 1: LIBRARY -->
+<div class="screen" id="screen-library">
+  <div class="app-header">
+    <div class="header-left"></div>
+    <h1>Dent<em>Accept</em></h1>
+    <div class="header-right">
+      <button class="lang-toggle" onclick="toggleLang()">
+        <span class="lang-en active">EN</span> / <span class="lang-es">ES</span>
+      </button>
+    </div>
+  </div>
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search procedures..." oninput="filterProcedures()">
+  </div>
+  <div class="proc-grid" id="proc-grid"></div>
+</div>
+
+<!-- SCREEN 2: ANIMATION -->
+<div class="screen" id="screen-animation">
+  <div class="app-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="goTo('library')">&#8592;</button>
+    </div>
+    <h1>Dent<em>Accept</em></h1>
+    <div class="header-right"></div>
+  </div>
+  <div class="anim-container">
+    <svg class="tooth-svg" viewBox="0 0 200 260" id="tooth-svg"></svg>
+    <h2 class="proc-title" id="anim-title"></h2>
+    <p class="proc-desc" id="anim-desc"></p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div class="nav-dots" id="nav-dots"></div>
+    <button class="btn-primary" id="btn-whatif" onclick="goToConsequence()">What happens if I wait?</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: CONSEQUENCES -->
+<div class="screen" id="screen-consequence">
+  <div class="app-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="goTo('animation')">&#8592;</button>
+    </div>
+    <h1>Dent<em>Accept</em></h1>
+    <div class="header-right"></div>
+  </div>
+  <div class="consequence-hero">
+    <div class="warning-icon">&#9888;&#65039;</div>
+    <h2 id="cons-title">If You Wait...</h2>
+    <p id="cons-subtitle">What happens without treatment</p>
+  </div>
+  <div class="ai-explanation">
+    <div class="ai-label">
+      <span>&#129302;</span> <span id="ai-label-text">AI Explanation</span>
+    </div>
+    <div class="ai-loading" id="ai-loading">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span id="ai-loading-text">Generating personalized explanation...</span>
+    </div>
+    <p id="ai-text" class="hidden"></p>
+  </div>
+  <div class="timeline" id="timeline"></div>
+  <div class="cost-compare">
+    <div class="cost-row">
+      <span class="label" id="label-now">Cost today</span>
+      <span class="value now" id="cost-now"></span>
+    </div>
+    <div class="cost-row">
+      <span class="label" id="label-later">Estimated cost in 2 years</span>
+      <span class="value later" id="cost-later"></span>
+    </div>
+  </div>
+  <div style="padding: 0 20px 24px;">
+    <button class="btn-primary" id="btn-options" onclick="goToClose()">See Treatment Options</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: CLOSE -->
+<div class="screen" id="screen-close">
+  <div class="app-header">
+    <div class="header-left">
+      <button class="back-btn" onclick="goTo('consequence')">&#8592;</button>
+    </div>
+    <h1>Dent<em>Accept</em></h1>
+    <div class="header-right"></div>
+  </div>
+  <div class="close-hero">
+    <div class="check">&#10003;</div>
+    <h2 id="close-title">Ready to Move Forward?</h2>
+    <p id="close-subtitle">Same-day scheduling available</p>
+  </div>
+  <div class="pricing-card">
+    <div class="price-header" id="price-header">Total Investment</div>
+    <div class="price" id="close-price"></div>
+    <div class="price-note" id="price-note">Includes procedure, materials, and follow-up</div>
+    <div class="financing-options">
+      <div class="fin-option"><span class="amount" id="fin-1"></span><span id="fin-1-label">12 months</span></div>
+      <div class="fin-option"><span class="amount" id="fin-2"></span><span id="fin-2-label">18 months</span></div>
+      <div class="fin-option"><span class="amount" id="fin-3"></span><span id="fin-3-label">24 months</span></div>
+    </div>
+  </div>
+  <div class="action-buttons">
+    <button class="btn-schedule" id="btn-schedule" onclick="schedule()">I'm Ready to Schedule</button>
+    <button class="btn-later" id="btn-later" onclick="decline()">I Need More Time</button>
+  </div>
+</div>
+
+<script>
+// ==================== CONFIG ====================
+const cfg = window.DENTACCEPT_CONFIG || { demoMode: true };
+let supabaseClient = null;
+
+if (!cfg.demoMode && cfg.supabaseUrl && cfg.supabaseKey) {
+  supabaseClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+}
+
+// ==================== PROCEDURE DATA ====================
+const procedures = [
+  {
+    id: 'crown',
+    icon: '\u{1F9B7}',
+    title: { en: 'Dental Crown', es: 'Corona Dental' },
+    desc: { en: 'Cap over damaged tooth', es: 'Cubierta para diente dañado' },
+    price: 1200,
+    priceLater: 3400,
+    steps: [
+      { en: 'Tooth is prepared and shaped', es: 'El diente se prepara y da forma' },
+      { en: 'Custom crown is fitted', es: 'Se ajusta la corona personalizada' },
+      { en: 'Crown is cemented in place', es: 'La corona se cementa en su lugar' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Minor decay', es: 'Caries menor' }, desc: { en: 'Single crown needed', es: 'Solo se necesita una corona' } },
+      { time: '6 mo', icon: '⚠', type: 'warn', title: { en: 'Decay spreads', es: 'La caries se extiende' }, desc: { en: 'May need root canal', es: 'Quizás necesite endodoncia' } },
+      { time: '1 yr', icon: '✕', type: 'warn', title: { en: 'Tooth fracture', es: 'Fractura dental' }, desc: { en: 'Extraction + implant needed', es: 'Extracción + implante necesario' } },
+      { time: '2 yr', icon: '\u{1F480}', type: 'warn', title: { en: 'Bone loss', es: 'Pérdida ósea' }, desc: { en: 'Complex surgery required', es: 'Cirugía compleja requerida' } }
+    ],
+    explanation: {
+      en: "Without a crown, the damaged tooth continues to weaken. Bacteria enter through cracks, causing decay to spread inward. Within 6 months, the nerve may become infected, requiring a root canal ($900 extra). Within a year, the tooth may fracture below the gumline, making extraction and implant ($3,500) the only option. Acting now saves you $2,200 and preserves your natural tooth.",
+      es: "Sin una corona, el diente dañado sigue debilitándose. Las bacterias entran por las grietas, causando que la caries se extienda hacia adentro. En 6 meses, el nervio puede infectarse, requiriendo endodoncia ($900 extra). En un año, el diente puede fracturarse bajo la encía, haciendo que la extracción e implante ($3,500) sean la única opción. Actuar ahora le ahorra $2,200 y preserva su diente natural."
+    }
+  },
+  {
+    id: 'implant',
+    icon: '⬡',
+    title: { en: 'Dental Implant', es: 'Implante Dental' },
+    desc: { en: 'Permanent tooth replacement', es: 'Reemplazo permanente' },
+    price: 3500,
+    priceLater: 5800,
+    steps: [
+      { en: 'Titanium post placed in jaw', es: 'Poste de titanio en el hueso' },
+      { en: 'Healing and osseointegration', es: 'Curación y osteointegración' },
+      { en: 'Crown attached to post', es: 'Corona sobre el poste' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Single implant', es: 'Implante único' }, desc: { en: 'Straightforward procedure', es: 'Procedimiento directo' } },
+      { time: '1 yr', icon: '⚠', type: 'warn', title: { en: 'Bone resorption', es: 'Reabsorción ósea' }, desc: { en: 'Bone graft may be needed', es: 'Quizás injerto óseo' } },
+      { time: '2 yr', icon: '✕', type: 'warn', title: { en: 'Adjacent teeth shift', es: 'Dientes vecinos se mueven' }, desc: { en: 'Multiple teeth affected', es: 'Varios dientes afectados' } }
+    ],
+    explanation: {
+      en: "When a tooth is missing, the jawbone beneath it begins to dissolve — losing 25% of its width in the first year. This makes future implant placement more complex and expensive, often requiring bone grafting ($800-$1,200 additional). Adjacent teeth also shift toward the gap, causing bite problems and potential damage to other teeth.",
+      es: "Cuando falta un diente, el hueso de la mandíbula debajo comienza a disolverse — perdiendo el 25% de su anchura en el primer año. Esto hace que la colocación futura del implante sea más compleja y costosa, a menudo requiriendo injerto óseo ($800-$1,200 adicionales). Los dientes adyacentes también se mueven hacia el espacio, causando problemas de mordida."
+    }
+  },
+  {
+    id: 'rootcanal',
+    icon: '\u{1F300}',
+    title: { en: 'Root Canal', es: 'Endodoncia' },
+    desc: { en: 'Removes infected pulp', es: 'Elimina pulpa infectada' },
+    price: 900,
+    priceLater: 2800,
+    steps: [
+      { en: 'Infected pulp removed', es: 'Se extrae pulpa infectada' },
+      { en: 'Canal cleaned and sealed', es: 'Conducto limpiado y sellado' },
+      { en: 'Crown placed on top', es: 'Corona colocada encima' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Infected nerve', es: 'Nervio infectado' }, desc: { en: 'Root canal + crown', es: 'Endodoncia + corona' } },
+      { time: '3 mo', icon: '⚠', type: 'warn', title: { en: 'Abscess forms', es: 'Absceso dental' }, desc: { en: 'Emergency extraction', es: 'Extracción de emergencia' } },
+      { time: '1 yr', icon: '\u{1F480}', type: 'warn', title: { en: 'Infection spreads', es: 'Infección se extiende' }, desc: { en: 'Risk to heart/kidneys', es: 'Riesgo para corazón/riñones' } }
+    ],
+    explanation: {
+      en: "An infected tooth is not just a dental problem — it's a ticking time bomb. The infection can spread through your bloodstream to your heart (endocarditis), brain (abscess), or other organs. Emergency room visits for dental infections cost $1,400 on average. A simple root canal today prevents a medical emergency tomorrow.",
+      es: "Un diente infectado no es solo un problema dental — es una bomba de tiempo. La infección puede extenderse por su sangre al corazón (endocarditis), cerebro (absceso) u otros órganos. Las visitas de emergencia por infecciones dentales cuestan $1,400 en promedio. Una endodoncia simple hoy previene una emergencia médica mañana."
+    }
+  },
+  {
+    id: 'invisalign',
+    icon: '⟡',
+    title: { en: 'Invisalign', es: 'Invisalign' },
+    desc: { en: 'Clear aligners', es: 'Alineadores transparentes' },
+    price: 4500,
+    priceLater: 5200,
+    steps: [
+      { en: '3D scan of your teeth', es: 'Escaneo 3D de sus dientes' },
+      { en: 'Custom aligners created', es: 'Alineadores personalizados' },
+      { en: 'New aligners every 2 weeks', es: 'Nuevos cada 2 semanas' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Mild misalignment', es: 'Desalineación leve' }, desc: { en: '12-18 month treatment', es: 'Tratamiento de 12-18 meses' } },
+      { time: '2 yr', icon: '⚠', type: 'warn', title: { en: 'Bite issues worsen', es: 'Problemas de mordida' }, desc: { en: 'TMJ pain, wear on teeth', es: 'Dolor TMJ, desgaste' } }
+    ],
+    explanation: {
+      en: "Crooked teeth aren't just cosmetic — they create hard-to-clean areas where plaque builds up, increasing decay and gum disease risk by 3x. Misalignment also causes uneven wear, chipping, and TMJ pain. The longer you wait, the more complex (and expensive) the correction becomes.",
+      es: "Los dientes torcidos no son solo estéticos — crean áreas difíciles de limpiar donde se acumula la placa, aumentando el riesgo de caries y enfermedad de encías 3 veces. La desalineación también causa desgaste desigual, astillamiento y dolor de ATM. Mientras más espera, más compleja (y costosa) se vuelve la corrección."
+    }
+  },
+  {
+    id: 'whitening',
+    icon: '✨',
+    title: { en: 'Whitening', es: 'Blanqueamiento' },
+    desc: { en: 'Professional bleaching', es: 'Blanqueamiento profesional' },
+    price: 400,
+    priceLater: 400,
+    steps: [
+      { en: 'Protective barrier applied', es: 'Barrera protectora aplicada' },
+      { en: 'Whitening gel activated', es: 'Gel activado con luz' },
+      { en: 'Shades lighter in 1 hour', es: 'Tonos más claros en 1 hora' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Surface stains', es: 'Manchas superficiales' }, desc: { en: 'Easy removal', es: 'Remoción fácil' } },
+      { time: '2 yr', icon: '⚠', type: 'warn', title: { en: 'Stains set in', es: 'Manchas fijadas' }, desc: { en: 'May need veneers', es: 'Quizás carillas necesarias' } }
+    ],
+    explanation: {
+      en: "Surface stains from coffee, wine, and tobacco penetrate deeper over time. After 2 years, stains become intrinsic (inside the enamel), making them resistant to bleaching. At that point, veneers ($1,200+ per tooth) become the only option for a bright smile. Professional whitening now is 10x cheaper than veneers later.",
+      es: "Las manchas superficiales de café, vino y tabaco penetran más profundo con el tiempo. Después de 2 años, las manchas se vuelven intrínsecas (dentro del esmalte), haciéndolas resistentes al blanqueamiento. En ese punto, las carillas ($1,200+ por diente) se convierten en la única opción. El blanqueamiento profesional ahora es 10 veces más barato que las carillas después."
+    }
+  },
+  {
+    id: 'extraction',
+    icon: '\u{1F527}',
+    title: { en: 'Extraction', es: 'Extracción' },
+    desc: { en: 'Tooth removal', es: 'Remoción dental' },
+    price: 300,
+    priceLater: 300,
+    steps: [
+      { en: 'Tooth loosened gently', es: 'Diente aflojado suavemente' },
+      { en: 'Extracted carefully', es: 'Extraído cuidadosamente' },
+      { en: 'Socket preserved for implant', es: 'Alvéolo preservado' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Simple extraction', es: 'Extracción simple' }, desc: { en: 'Quick healing', es: 'Curación rápida' } },
+      { time: '6 mo', icon: '⚠', type: 'warn', title: { en: 'Bone loss begins', es: 'Pérdida ósea inicia' }, desc: { en: 'Implant more complex', es: 'Implante más complejo' } }
+    ],
+    explanation: {
+      en: "After extraction, the jawbone in that area begins to resorb (shrink) immediately. Within 6 months, 40-60% of the bone width is lost. This makes future implant placement more invasive and expensive, often requiring sinus lifts or bone grafts. Preserving the socket now with a simple bone graft ($300) saves $1,500+ in reconstructive surgery later.",
+      es: "Después de la extracción, el hueso de la mandíbula en esa área comienza a reabsorberse (encogerse) inmediatamente. En 6 meses, se pierde el 40-60% del ancho óseo. Esto hace que la colocación futura del implante sea más invasiva y costosa. Preservar el alvéolo ahora con un simple injerto óseo ($300) ahorra $1,500+ en cirugía reconstructiva después."
+    }
+  }
+];
+
+// ==================== STATE ====================
+let currentLang = 'en';
+let currentProc = null;
+let currentOffice = null;
+let animInterval = null;
+let currentStep = 0;
+let sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+let presentationId = null;
+let activeProcedures = procedures;
+
+// ==================== I18N ====================
+const i18n = {
+  en: {
+    enterCode: 'Enter Office Code',
+    codeDesc: 'Your dentist will provide a 4-digit code to access the presentation system.',
+    continue: 'Continue',
+    searchPlaceholder: 'Search procedures...',
+    whatIfWait: 'What happens if I wait?',
+    seeOptions: 'See Treatment Options',
+    readyToMove: 'Ready to Move Forward?',
+    sameDay: 'Same-day scheduling available',
+    totalInvestment: 'Total Investment',
+    includes: 'Includes procedure, materials, and follow-up',
+    readySchedule: "I'm Ready to Schedule",
+    needTime: 'I Need More Time',
+    costToday: 'Cost today',
+    costLater: 'Estimated cost in 2 years',
+    ifYouWait: 'If You Wait...',
+    withoutTreatment: 'What happens without treatment',
+    aiLabel: 'AI Explanation',
+    aiLoading: 'Generating personalized explanation...',
+    scheduled: 'Front desk notified! Please proceed to reception to confirm your appointment.',
+    declined: 'No problem. Take your time deciding.',
+    expired: 'Your subscription has expired. Please contact your office administrator.',
+    invalidCode: 'Invalid code. Please try again.',
+    months: 'months'
+  },
+  es: {
+    enterCode: 'Ingrese Código de Consultorio',
+    codeDesc: 'Su dentista le proporcionará un código de 4 dígitos para acceder al sistema.',
+    continue: 'Continuar',
+    searchPlaceholder: 'Buscar procedimientos...',
+    whatIfWait: '¿Qué pasa si espero?',
+    seeOptions: 'Ver Opciones de Tratamiento',
+    readyToMove: '¿Listo para Continuar?',
+    sameDay: 'Agendamiento mismo día disponible',
+    totalInvestment: 'Inversión Total',
+    includes: 'Incluye procedimiento, materiales y seguimiento',
+    readySchedule: 'Estoy Listo para Agendar',
+    needTime: 'Necesito Más Tiempo',
+    costToday: 'Costo hoy',
+    costLater: 'Costo estimado en 2 años',
+    ifYouWait: 'Si Espera...',
+    withoutTreatment: 'Qué ocurre sin tratamiento',
+    aiLabel: 'Explicación IA',
+    aiLoading: 'Generando explicación personalizada...',
+    scheduled: '¡Recepción notificada! Diríjase a recepción para confirmar su cita.',
+    declined: 'No hay problema. Tómese su tiempo para decidir.',
+    expired: 'Su suscripción ha expirado. Contacte al administrador de su consultorio.',
+    invalidCode: 'Código inválido. Intente de nuevo.',
+    months: 'meses'
+  }
+};
+
+function t(key) { return i18n[currentLang][key] || key; }
+
+// ==================== NAVIGATION ====================
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('screen-' + screen).classList.add('active');
+  if (screen === 'library') {
+    clearInterval(animInterval);
+  }
+}
+
+function goToConsequence() {
+  goTo('consequence');
+  updateConsequenceScreen();
+}
+
+function goToClose() {
+  goTo('close');
+  updateCloseScreen();
+}
+
+// ==================== OFFICE CODE ====================
+var codeBuffer = ['', '', '', ''];
+
+function moveCode(n) {
+  var input = document.getElementById('code-' + n);
+  codeBuffer[n - 1] = input.value;
+  if (input.value && n < 4) document.getElementById('code-' + (n + 1)).focus();
+  if (codeBuffer.every(function(c) { return c !== ''; })) validateCode();
+}
+
+function moveCodeBack(e, n) {
+  if (e.key === 'Backspace' && !e.target.value && n > 1) {
+    document.getElementById('code-' + (n - 1)).focus();
+  }
+}
+
+async function validateCode() {
+  var code = codeBuffer.join('');
+  document.getElementById('code-error').classList.add('hidden');
+
+  if (code === '1234') {
+    currentOffice = { id: 'demo-office', name: 'Smile Dental Group' };
+    document.getElementById('office-name').textContent = currentOffice.name;
+    document.getElementById('office-name').classList.remove('hidden');
+    document.getElementById('code-btn').classList.remove('hidden');
+    return;
+  }
+
+  if (supabaseClient) {
+    var result = await supabaseClient
+      .from('access_codes')
+      .select('office_id, offices(id, name, status, trial_ends_at)')
+      .eq('code', code)
+      .eq('is_active', true)
+      .single();
+
+    if (result.data) {
+      var office = result.data.offices;
+      if (office.status === 'cancelled' || (office.status === 'trial' && new Date(office.trial_ends_at) < new Date())) {
+        document.getElementById('code-error').textContent = t('expired');
+        document.getElementById('code-error').classList.remove('hidden');
+        return;
+      }
+      currentOffice = { id: office.id, name: office.name };
+      document.getElementById('office-name').textContent = office.name;
+      document.getElementById('office-name').classList.remove('hidden');
+      document.getElementById('code-btn').classList.remove('hidden');
+      return;
+    }
+  }
+
+  document.getElementById('code-error').textContent = t('invalidCode');
+  document.getElementById('code-error').classList.remove('hidden');
+}
+
+function enterApp() {
+  goTo('library');
+  loadProcedures();
+}
+
+// ==================== LOAD PROCEDURES ====================
+async function loadProcedures() {
+  if (supabaseClient && !cfg.demoMode) {
+    var result = await supabaseClient
+      .from('procedures_catalog')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order');
+
+    if (!result.error && result.data && result.data.length > 0) {
+      activeProcedures = result.data.map(function(p) {
+        var iconMap = { crown: '\u{1F9B7}', implant: '⬡', rootcanal: '\u{1F300}', invisalign: '⟡', whitening: '✨', extraction: '\u{1F527}', filling: '\u{1FA79}', bridge: '\u{1F309}', veneer: '\u{1F48E}', deepcleaning: '\u{1FAE7}' };
+        var local = procedures.find(function(lp) { return lp.id === p.id; });
+        return {
+          id: p.id,
+          icon: p.icon || iconMap[p.id] || '\u{1F9B7}',
+          title: { en: p.name_en, es: p.name_es },
+          desc: { en: p.description_en, es: p.description_es },
+          price: p.base_price,
+          priceLater: Math.round(p.base_price * 2.8),
+          steps: p.steps || (local ? local.steps : []),
+          timeline: p.timeline || (local ? local.timeline : []),
+          explanation: {
+            en: p.explanation_en || (local ? local.explanation.en : ''),
+            es: p.explanation_es || (local ? local.explanation.es : '')
+          }
+        };
+      });
+    }
+  }
+  renderLibrary();
+}
+
+// ==================== LIBRARY ====================
+function renderLibrary() {
+  var grid = document.getElementById('proc-grid');
+  var filter = document.getElementById('search-input').value.toLowerCase();
+  grid.innerHTML = '';
+
+  activeProcedures.forEach(function(proc) {
+    if (filter && proc.title[currentLang].toLowerCase().indexOf(filter) === -1 &&
+        proc.desc[currentLang].toLowerCase().indexOf(filter) === -1) return;
+
+    var card = document.createElement('div');
+    card.className = 'proc-card';
+    card.innerHTML = '<span class="icon">' + proc.icon + '</span><h3>' + proc.title[currentLang] + '</h3><p>' + proc.desc[currentLang] + '</p>';
+    card.onclick = function() { openProcedure(proc); };
+    grid.appendChild(card);
+  });
+}
+
+function filterProcedures() { renderLibrary(); }
+
+async function openProcedure(proc) {
+  currentProc = proc;
+  currentStep = 0;
+  presentationId = null;
+
+  if (supabaseClient && currentOffice && currentOffice.id !== 'demo-office') {
+    var result = await supabaseClient.rpc('track_presentation', {
+      p_office_id: currentOffice.id,
+      p_procedure_id: proc.id,
+      p_procedure_name: proc.title.en,
+      p_language: currentLang,
+      p_outcome: 'started',
+      p_session_id: sessionId
+    });
+    if (result.data) presentationId = result.data;
+  }
+
+  goTo('animation');
+  startAnimation();
+  updateAnimationScreen();
+}
+
+// ==================== ANIMATION SCREEN ====================
+function updateAnimationScreen() {
+  if (!currentProc || !currentProc.steps || currentProc.steps.length === 0) return;
+
+  var stepIdx = currentStep % currentProc.steps.length;
+  document.getElementById('anim-title').textContent = currentProc.title[currentLang];
+  document.getElementById('anim-desc').textContent = currentProc.steps[stepIdx][currentLang];
+
+  var progress = ((stepIdx + 1) / currentProc.steps.length) * 100;
+  document.getElementById('progress-fill').style.width = progress + '%';
+
+  var dotsContainer = document.getElementById('nav-dots');
+  dotsContainer.innerHTML = '';
+  currentProc.steps.forEach(function(_, i) {
+    var dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === stepIdx ? ' active' : '');
+    dotsContainer.appendChild(dot);
+  });
+
+  document.getElementById('btn-whatif').textContent = t('whatIfWait');
+  renderToothSVG(currentProc.id, stepIdx);
+}
+
+function startAnimation() {
+  clearInterval(animInterval);
+  animInterval = setInterval(function() {
+    currentStep++;
+    updateAnimationScreen();
+  }, 3000);
+}
+
+// ==================== TOOTH SVG ====================
+function renderToothSVG(procId, step) {
+  var svg = document.getElementById('tooth-svg');
+  var phase = step % 3;
+
+  // Base tooth shape - anatomically suggestive molar cross-section
+  var enamel = '#f0ece4';
+  var dentin = '#e8d9b8';
+  var pulp = '#d4545e';
+  var gum = '#e8a0a0';
+  var bone = '#d4cbb8';
+  var accent = '#1a472a';
+
+  // Gumline and bone background
+  var base = '<rect x="0" y="100" width="200" height="160" fill="' + gum + '" rx="0"/>';
+  base += '<rect x="0" y="130" width="200" height="130" fill="' + bone + '" rx="0"/>';
+
+  // Tooth outline - molar with cusps
+  var toothOuter = '<path d="M65,100 L65,55 Q65,30 80,22 Q90,18 100,15 Q110,18 120,22 Q135,30 135,55 L135,100" fill="' + enamel + '" stroke="#bbb4a4" stroke-width="1.5"/>';
+  // Cusps
+  toothOuter += '<path d="M65,55 Q80,40 90,48 Q95,30 100,15 Q105,30 110,48 Q120,40 135,55" fill="' + enamel + '" stroke="#bbb4a4" stroke-width="1.5"/>';
+
+  // Dentin layer
+  var dentinLayer = '<path d="M75,95 L75,60 Q85,45 100,40 Q115,45 125,60 L125,95" fill="' + dentin + '" stroke="none"/>';
+
+  // Pulp chamber
+  var pulpChamber = '<path d="M90,90 L90,65 Q95,55 100,52 Q105,55 110,65 L110,90" fill="' + pulp + '" opacity="0.7"/>';
+
+  // Roots
+  var roots = '<path d="M80,100 L75,165 Q78,180 82,165 L85,100" fill="' + enamel + '" stroke="#bbb4a4" stroke-width="1"/>';
+  roots += '<path d="M115,100 L120,165 Q117,180 113,165 L110,100" fill="' + enamel + '" stroke="#bbb4a4" stroke-width="1"/>';
+
+  // Root canals
+  var canals = '<line x1="79" y1="105" x2="78" y2="160" stroke="' + pulp + '" stroke-width="2" opacity="0.5"/>';
+  canals += '<line x1="116" y1="105" x2="117" y2="160" stroke="' + pulp + '" stroke-width="2" opacity="0.5"/>';
+
+  // Procedure-specific overlays
+  var overlay = '';
+
+  if (procId === 'crown') {
+    if (phase === 0) {
+      // Decay spot
+      overlay = '<ellipse cx="108" cy="50" rx="10" ry="8" fill="#8B6914" opacity="0.7"/>';
+      overlay += '<ellipse cx="108" cy="50" rx="6" ry="5" fill="#5C4A0A" opacity="0.5"/>';
+    } else if (phase === 1) {
+      // Tooth shaped/prepared (trimmed top)
+      overlay = '<path d="M70,50 L70,55 L130,55 L130,50" fill="' + dentin + '" stroke="#bbb4a4" stroke-width="1" stroke-dasharray="4,3"/>';
+    } else {
+      // Crown placed
+      overlay = '<path d="M62,55 Q62,25 80,18 Q90,14 100,11 Q110,14 120,18 Q138,25 138,55 L62,55 Z" fill="' + accent + '" opacity="0.25" stroke="' + accent + '" stroke-width="2"/>';
+      overlay += '<text x="100" y="42" text-anchor="middle" font-size="9" fill="' + accent + '" font-family="sans-serif" font-weight="600">CROWN</text>';
+    }
+  } else if (procId === 'rootcanal') {
+    if (phase === 0) {
+      // Infected pulp (red, pulsing)
+      overlay = '<path d="M88,92 L88,62 Q94,52 100,48 Q106,52 112,62 L112,92" fill="#ff3333" opacity="0.6"><animate attributeName="opacity" values="0.4;0.8;0.4" dur="1.5s" repeatCount="indefinite"/></path>';
+    } else if (phase === 1) {
+      // Instrument in canal
+      pulpChamber = '<path d="M90,90 L90,65 Q95,55 100,52 Q105,55 110,65 L110,90" fill="#f0ece4" opacity="0.5"/>';
+      overlay = '<line x1="100" y1="20" x2="100" y2="85" stroke="#666" stroke-width="2"/>';
+      overlay += '<circle cx="100" cy="20" r="3" fill="#666"/>';
+    } else {
+      // Filled canal
+      pulpChamber = '<path d="M90,90 L90,65 Q95,55 100,52 Q105,55 110,65 L110,90" fill="' + accent + '" opacity="0.3"/>';
+      overlay = '<path d="M62,55 Q62,25 80,18 Q90,14 100,11 Q110,14 120,18 Q138,25 138,55 L62,55 Z" fill="' + accent + '" opacity="0.2" stroke="' + accent + '" stroke-width="1.5"/>';
+    }
+  } else if (procId === 'implant') {
+    // No natural tooth
+    toothOuter = '';
+    dentinLayer = '';
+    pulpChamber = '';
+    canals = '';
+    if (phase === 0) {
+      // Empty gap
+      overlay = '<rect x="80" y="40" width="40" height="60" fill="' + gum + '" opacity="0.5" rx="4"/>';
+      overlay += '<text x="100" y="75" text-anchor="middle" font-size="10" fill="#999" font-family="sans-serif">?</text>';
+      roots = '';
+    } else if (phase === 1) {
+      // Screw in bone
+      roots = '';
+      overlay = '<rect x="93" y="105" width="14" height="55" fill="#9CA3AF" rx="2"/>';
+      // Thread lines
+      for (var i = 0; i < 6; i++) {
+        overlay += '<line x1="90" y1="' + (112 + i * 8) + '" x2="110" y2="' + (112 + i * 8) + '" stroke="#6B7280" stroke-width="1.5"/>';
+      }
+      overlay += '<rect x="95" y="95" width="10" height="14" fill="#D1D5DB" rx="1"/>';
+    } else {
+      // Full implant with crown
+      roots = '';
+      overlay = '<rect x="93" y="105" width="14" height="55" fill="#9CA3AF" rx="2"/>';
+      for (var j = 0; j < 6; j++) {
+        overlay += '<line x1="90" y1="' + (112 + j * 8) + '" x2="110" y2="' + (112 + j * 8) + '" stroke="#6B7280" stroke-width="1.5"/>';
+      }
+      overlay += '<rect x="95" y="95" width="10" height="14" fill="#D1D5DB" rx="1"/>';
+      overlay += '<path d="M70,95 Q70,40 85,30 Q95,24 100,22 Q105,24 115,30 Q130,40 130,95 Z" fill="' + enamel + '" stroke="#bbb4a4" stroke-width="1.5"/>';
+    }
+  } else if (procId === 'whitening') {
+    if (phase === 0) {
+      // Stained tooth
+      overlay = '<ellipse cx="85" cy="45" rx="5" ry="4" fill="#B8860B" opacity="0.5"/>';
+      overlay += '<ellipse cx="110" cy="50" rx="6" ry="3" fill="#B8860B" opacity="0.4"/>';
+      overlay += '<ellipse cx="95" cy="60" rx="4" ry="5" fill="#B8860B" opacity="0.3"/>';
+    } else if (phase === 1) {
+      // Gel application
+      overlay = '<path d="M65,55 Q65,30 80,22 Q90,18 100,15 Q110,18 120,22 Q135,30 135,55 L65,55 Z" fill="#4FC3F7" opacity="0.3"/>';
+      overlay += '<text x="100" y="42" text-anchor="middle" font-size="8" fill="#0288D1" font-family="sans-serif">GEL</text>';
+    } else {
+      // Bright tooth
+      enamel = '#FFFDF5';
+      toothOuter = '<path d="M65,100 L65,55 Q65,30 80,22 Q90,18 100,15 Q110,18 120,22 Q135,30 135,55 L135,100" fill="' + enamel + '" stroke="#e0d8c8" stroke-width="1.5"/>';
+      toothOuter += '<path d="M65,55 Q80,40 90,48 Q95,30 100,15 Q105,30 110,48 Q120,40 135,55" fill="' + enamel + '" stroke="#e0d8c8" stroke-width="1.5"/>';
+      overlay = '<ellipse cx="100" cy="50" rx="25" ry="20" fill="white" opacity="0.4"><animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite"/></ellipse>';
+    }
+  } else if (procId === 'extraction') {
+    if (phase === 0) {
+      // Damaged tooth
+      overlay = '<path d="M90,30 L95,45 L105,35 L110,50" stroke="#c8392b" stroke-width="2" fill="none"/>';
+    } else if (phase === 1) {
+      // Tooth lifting
+      var lift = -15;
+      toothOuter = '<g transform="translate(0,' + lift + ')"><path d="M65,100 L65,55 Q65,30 80,22 Q90,18 100,15 Q110,18 120,22 Q135,30 135,55 L135,100" fill="' + enamel + '" stroke="#bbb4a4" stroke-width="1.5" opacity="0.7"/>';
+      toothOuter += '<path d="M65,55 Q80,40 90,48 Q95,30 100,15 Q105,30 110,48 Q120,40 135,55" fill="' + enamel + '" stroke="#bbb4a4" stroke-width="1.5" opacity="0.7"/></g>';
+      dentinLayer = '';
+      pulpChamber = '';
+      overlay = '<line x1="100" y1="20" x2="100" y2="10" stroke="#666" stroke-width="1.5" stroke-dasharray="3,2"/>';
+    } else {
+      // Empty socket
+      toothOuter = '';
+      dentinLayer = '';
+      pulpChamber = '';
+      roots = '';
+      canals = '';
+      overlay = '<rect x="80" y="95" width="40" height="20" fill="' + gum + '" opacity="0.8" rx="5"/>';
+      overlay += '<path d="M85,100 Q100,115 115,100" fill="none" stroke="#c4868a" stroke-width="1.5" stroke-dasharray="3,2"/>';
+    }
+  } else if (procId === 'invisalign') {
+    // Show row of teeth
+    toothOuter = '';
+    dentinLayer = '';
+    pulpChamber = '';
+    roots = '';
+    canals = '';
+    base = '<rect x="0" y="140" width="200" height="120" fill="' + gum + '" rx="0"/>';
+
+    function drawTooth(x, w, h, tilt) {
+      return '<rect x="' + x + '" y="' + (140 - h) + '" width="' + w + '" height="' + h + '" fill="' + enamel + '" stroke="#bbb4a4" stroke-width="1" rx="3" transform="rotate(' + tilt + ' ' + (x + w/2) + ' ' + (140 - h/2) + ')"/>';
+    }
+
+    if (phase === 0) {
+      // Misaligned teeth
+      overlay = drawTooth(30, 22, 50, -5);
+      overlay += drawTooth(55, 20, 55, 0);
+      overlay += drawTooth(78, 22, 45, 8);
+      overlay += drawTooth(103, 20, 52, -3);
+      overlay += drawTooth(126, 22, 48, 6);
+      overlay += drawTooth(150, 20, 50, -2);
+    } else if (phase === 1) {
+      // Aligner over teeth
+      overlay = drawTooth(30, 22, 50, -5);
+      overlay += drawTooth(55, 20, 55, 0);
+      overlay += drawTooth(78, 22, 45, 8);
+      overlay += drawTooth(103, 20, 52, -3);
+      overlay += drawTooth(126, 22, 48, 6);
+      overlay += drawTooth(150, 20, 50, -2);
+      overlay += '<path d="M25,82 Q100,70 175,82 L175,142 Q100,138 25,142 Z" fill="#87CEEB" opacity="0.25" stroke="#4FC3F7" stroke-width="1.5" stroke-dasharray="4,3"/>';
+    } else {
+      // Straight teeth
+      overlay = drawTooth(30, 22, 50, 0);
+      overlay += drawTooth(55, 20, 50, 0);
+      overlay += drawTooth(78, 22, 50, 0);
+      overlay += drawTooth(103, 20, 50, 0);
+      overlay += drawTooth(126, 22, 50, 0);
+      overlay += drawTooth(150, 20, 50, 0);
+    }
+  }
+
+  svg.innerHTML = base + roots + canals + toothOuter + dentinLayer + pulpChamber + overlay;
+}
+
+// ==================== CONSEQUENCE SCREEN ====================
+function updateConsequenceScreen() {
+  if (!currentProc) return;
+
+  document.getElementById('cons-title').textContent = t('ifYouWait');
+  document.getElementById('cons-subtitle').textContent = t('withoutTreatment');
+  document.getElementById('ai-label-text').textContent = t('aiLabel');
+  document.getElementById('ai-loading-text').textContent = t('aiLoading');
+  document.getElementById('label-now').textContent = t('costToday');
+  document.getElementById('label-later').textContent = t('costLater');
+  document.getElementById('btn-options').textContent = t('seeOptions');
+
+  document.getElementById('cost-now').textContent = '$' + currentProc.price.toLocaleString();
+  document.getElementById('cost-later').textContent = '$' + currentProc.priceLater.toLocaleString();
+
+  // Timeline
+  var timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+  if (currentProc.timeline) {
+    currentProc.timeline.forEach(function(item) {
+      var div = document.createElement('div');
+      div.className = 'timeline-item';
+      div.innerHTML = '<div class="t-dot ' + item.type + '">' + item.icon + '</div><div class="t-content"><h4>' + item.time + ' — ' + item.title[currentLang] + '</h4><p>' + item.desc[currentLang] + '</p></div>';
+      timeline.appendChild(div);
+    });
+  }
+
+  // AI Explanation - show local fallback immediately
+  var fallback = currentProc.explanation ? currentProc.explanation[currentLang] : '';
+  if (fallback) {
+    document.getElementById('ai-text').textContent = fallback;
+    document.getElementById('ai-loading').classList.add('hidden');
+    document.getElementById('ai-text').classList.remove('hidden');
+  } else {
+    document.getElementById('ai-loading').classList.remove('hidden');
+    document.getElementById('ai-text').classList.add('hidden');
+  }
+
+  // Try edge function in background (non-blocking)
+  if (supabaseClient && !cfg.demoMode) {
+    fetch(cfg.supabaseUrl + '/functions/v1/ai-explain', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + cfg.supabaseKey
+      },
+      body: JSON.stringify({
+        procedure_id: currentProc.id,
+        language: currentLang,
+        concern: 'cost'
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.explanation) {
+        document.getElementById('ai-text').textContent = data.explanation;
+        document.getElementById('ai-loading').classList.add('hidden');
+        document.getElementById('ai-text').classList.remove('hidden');
+      }
+    })
+    .catch(function() {});
+  }
+}
+
+// ==================== CLOSE SCREEN ====================
+function updateCloseScreen() {
+  if (!currentProc) return;
+
+  document.getElementById('close-title').textContent = t('readyToMove');
+  document.getElementById('close-subtitle').textContent = t('sameDay');
+  document.getElementById('close-price').textContent = '$' + currentProc.price.toLocaleString();
+  document.getElementById('price-header').textContent = t('totalInvestment');
+  document.getElementById('price-note').textContent = t('includes');
+  document.getElementById('btn-schedule').textContent = t('readySchedule');
+  document.getElementById('btn-later').textContent = t('needTime');
+
+  var price = currentProc.price;
+  document.getElementById('fin-1').textContent = '$' + Math.round(price / 12) + '/mo';
+  document.getElementById('fin-2').textContent = '$' + Math.round(price / 18) + '/mo';
+  document.getElementById('fin-3').textContent = '$' + Math.round(price / 24) + '/mo';
+  document.getElementById('fin-1-label').textContent = '12 ' + t('months');
+  document.getElementById('fin-2-label').textContent = '18 ' + t('months');
+  document.getElementById('fin-3-label').textContent = '24 ' + t('months');
+}
+
+// ==================== ACTIONS ====================
+async function schedule() {
+  if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
+    await supabaseClient.from('presentations').update({ scheduled: true }).eq('id', presentationId);
+  }
+  alert(t('scheduled'));
+  currentProc = null;
+  goTo('library');
+}
+
+async function decline() {
+  if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
+    await supabaseClient.from('presentations').update({ declined: true }).eq('id', presentationId);
+  }
+  alert(t('declined'));
+  currentProc = null;
+  goTo('library');
+}
+
+// ==================== LANGUAGE TOGGLE ====================
+function toggleLang() {
+  currentLang = currentLang === 'en' ? 'es' : 'en';
+  document.querySelectorAll('.lang-en').forEach(function(el) { el.classList.toggle('active'); });
+  document.querySelectorAll('.lang-es').forEach(function(el) { el.classList.toggle('active'); });
+
+  document.getElementById('code-title').textContent = t('enterCode');
+  document.getElementById('code-desc').textContent = t('codeDesc');
+  document.getElementById('code-btn').textContent = t('continue');
+  document.getElementById('search-input').placeholder = t('searchPlaceholder');
+
+  renderLibrary();
+  if (currentProc) {
+    updateAnimationScreen();
+    updateConsequenceScreen();
+    updateCloseScreen();
+  }
+}
+
+// ==================== INIT ====================
+renderLibrary();
+</script>
+</body>
+</html>
