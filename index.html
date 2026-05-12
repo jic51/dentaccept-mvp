@@ -670,14 +670,16 @@
   </footer>
 </div>
 
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 async function submitWaitlist(e) {
   e.preventDefault();
   var email = document.getElementById('waitlist-email').value;
   if (!email) return false;
 
-  // Try Supabase if available
-  if (window.DENTACCEPT_CONFIG && !window.DENTACCEPT_CONFIG.demoMode) {
+  // Try Supabase if available (scripts load with defer, may not be ready yet)
+  if (window.DENTACCEPT_CONFIG && !window.DENTACCEPT_CONFIG.demoMode && window.supabase) {
     try {
       var sb = window.supabase.createClient(
         window.DENTACCEPT_CONFIG.supabaseUrl,
@@ -694,8 +696,5 @@ async function submitWaitlist(e) {
   return false;
 }
 </script>
-<!-- Optional: load config and supabase for waitlist -->
-<script src="config.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 </body>
 </html>

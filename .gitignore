@@ -1,0 +1,24 @@
+# Credentials — NEVER commit real keys
+config.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Node (if added later)
+node_modules/
+package-lock.json
+
+# Build artifacts
+dist/
+.vercel/
+
+# Supabase local
+.supabase/
+
+# Zip archives
+*.zip
