@@ -415,6 +415,98 @@
     display: none;
   }
 
+  /* CHECKOUT MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: white;
+    border-radius: 16px;
+    padding: 36px 32px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .modal-box h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  .modal-plan-price {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-bottom: 20px;
+  }
+  .modal-field {
+    margin-bottom: 14px;
+  }
+  .modal-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--ink-soft);
+  }
+  .modal-field input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    background: var(--page);
+  }
+  .modal-field input:focus { border-color: var(--accent); }
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .modal-actions .btn { flex: 1; text-align: center; }
+  .modal-trial-note {
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-align: center;
+    margin-top: 12px;
+  }
+  .modal-error {
+    color: var(--accent2);
+    font-size: 13px;
+    margin-top: 8px;
+    display: none;
+  }
+
+  /* CHECKOUT SUCCESS BANNER */
+  .success-banner {
+    display: none;
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    border-radius: 12px;
+    padding: 24px 32px;
+    margin: 100px auto 0;
+    max-width: 600px;
+    text-align: center;
+  }
+  .success-banner.show { display: block; }
+  .success-banner h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .success-banner p {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+
   /* FOOTER */
   footer {
     padding: 40px 0;
@@ -459,6 +551,16 @@
     </div>
   </div>
 </nav>
+
+<!-- SUCCESS BANNER (shown after Stripe redirect) -->
+<div class="container">
+  <div class="success-banner" id="success-banner">
+    <h3>Welcome to DentAccept!</h3>
+    <p>Your 14-day free trial has started.</p>
+    <p>Check your email for your office access code and instructions.</p>
+    <a href="app.html" class="btn btn-primary" style="margin-top: 16px;">Open the App</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <div class="container">
@@ -629,21 +731,21 @@
         <div class="price-amount">$79<span>/mo</span></div>
         <div class="price-for">1 tablet, 1 dentist</div>
         <div class="price-desc">10 procedures. English and Spanish. Unlimited presentations.</div>
-        <a href="#cta" class="btn btn-outline">Start Free Trial</a>
+        <button onclick="openCheckout('starter', '$79/mo')" class="btn btn-outline">Start Free Trial</button>
       </div>
       <div class="price-card popular">
         <div class="price-plan">Practice</div>
         <div class="price-amount">$129<span>/mo</span></div>
         <div class="price-for">Up to 3 dentists</div>
         <div class="price-desc">All procedures. AI explanations. Acceptance rate analytics. Custom branding.</div>
-        <a href="#cta" class="btn btn-primary">Start Free Trial</a>
+        <button onclick="openCheckout('practice', '$129/mo')" class="btn btn-primary">Start Free Trial</button>
       </div>
       <div class="price-card">
         <div class="price-plan">Group</div>
         <div class="price-amount">$249<span>/mo</span></div>
         <div class="price-for">Multiple locations</div>
         <div class="price-desc">Up to 5 locations. Centralized dashboard. Priority support.</div>
-        <a href="#cta" class="btn btn-outline">Start Free Trial</a>
+        <button onclick="openCheckout('group', '$249/mo')" class="btn btn-outline">Start Free Trial</button>
       </div>
     </div>
   </div>
@@ -662,6 +764,30 @@
   </div>
 </div>
 
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkout-modal">
+  <div class="modal-box">
+    <h3>Start Your Free Trial</h3>
+    <div class="modal-plan-price" id="modal-plan-label">Practice plan — $129/mo after trial</div>
+    <form onsubmit="return handleCheckout(event)">
+      <div class="modal-field">
+        <label for="checkout-email">Email address</label>
+        <input type="email" id="checkout-email" placeholder="you@yourpractice.com" required>
+      </div>
+      <div class="modal-field">
+        <label for="checkout-name">Practice name (optional)</label>
+        <input type="text" id="checkout-name" placeholder="Smile Dental Group">
+      </div>
+      <div class="modal-error" id="checkout-error"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeCheckout()">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="checkout-submit">Continue to Payment</button>
+      </div>
+    </form>
+    <div class="modal-trial-note">14-day free trial. No charge until trial ends. Cancel anytime.</div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <div class="container">
   <footer>
@@ -673,19 +799,117 @@
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// ==================== CONFIG ====================
+var cfg = window.DENTACCEPT_CONFIG || {};
+var supabaseClient = null;
+
+if (cfg.supabaseUrl && cfg.supabaseKey && !cfg.demoMode && window.supabase) {
+  try {
+    // Ensure URL is project root, not REST endpoint
+    var sbUrl = cfg.supabaseUrl.replace(/\/rest\/v1\/?$/, '');
+    supabaseClient = window.supabase.createClient(sbUrl, cfg.supabaseKey);
+  } catch (e) {
+    console.warn('Supabase init failed:', e);
+  }
+}
+
+// ==================== CHECKOUT MODAL ====================
+var selectedPlan = 'practice';
+
+function openCheckout(plan, priceLabel) {
+  selectedPlan = plan;
+  var planNames = { starter: 'Starter', practice: 'Practice', group: 'Group' };
+  document.getElementById('modal-plan-label').textContent =
+    planNames[plan] + ' plan — ' + priceLabel + ' after trial';
+  document.getElementById('checkout-error').style.display = 'none';
+  document.getElementById('checkout-submit').textContent = 'Continue to Payment';
+  document.getElementById('checkout-submit').disabled = false;
+  document.getElementById('checkout-modal').classList.add('show');
+}
+
+function closeCheckout() {
+  document.getElementById('checkout-modal').classList.remove('show');
+}
+
+// Close modal on overlay click
+document.getElementById('checkout-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeCheckout();
+});
+
+async function handleCheckout(e) {
+  e.preventDefault();
+
+  var email = document.getElementById('checkout-email').value.trim();
+  var officeName = document.getElementById('checkout-name').value.trim();
+  var errorEl = document.getElementById('checkout-error');
+  var submitBtn = document.getElementById('checkout-submit');
+
+  if (!email) {
+    errorEl.textContent = 'Please enter your email address.';
+    errorEl.style.display = 'block';
+    return false;
+  }
+
+  // Show loading state
+  submitBtn.textContent = 'Redirecting to Stripe...';
+  submitBtn.disabled = true;
+  errorEl.style.display = 'none';
+
+  try {
+    // Call the create-checkout edge function
+    var functionUrl = cfg.supabaseUrl
+      ? cfg.supabaseUrl.replace(/\/rest\/v1\/?$/, '') + '/functions/v1/create-checkout'
+      : '';
+
+    if (!functionUrl) {
+      throw new Error('Supabase not configured');
+    }
+
+    var response = await fetch(functionUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + cfg.supabaseKey,
+      },
+      body: JSON.stringify({
+        plan: selectedPlan,
+        email: email,
+        office_name: officeName,
+      }),
+    });
+
+    var data = await response.json();
+
+    if (data.error) {
+      throw new Error(data.error);
+    }
+
+    if (data.url) {
+      // Redirect to Stripe Checkout
+      window.location.href = data.url;
+    } else {
+      throw new Error('No checkout URL returned');
+    }
+  } catch (err) {
+    console.error('Checkout error:', err);
+    errorEl.textContent = 'Something went wrong. Please try again or email support@dentaccept.com';
+    errorEl.style.display = 'block';
+    submitBtn.textContent = 'Continue to Payment';
+    submitBtn.disabled = false;
+  }
+
+  return false;
+}
+
+// ==================== WAITLIST ====================
 async function submitWaitlist(e) {
   e.preventDefault();
   var email = document.getElementById('waitlist-email').value;
   if (!email) return false;
 
-  // Try Supabase if available (scripts load with defer, may not be ready yet)
-  if (window.DENTACCEPT_CONFIG && !window.DENTACCEPT_CONFIG.demoMode && window.supabase) {
+  if (supabaseClient) {
     try {
-      var sb = window.supabase.createClient(
-        window.DENTACCEPT_CONFIG.supabaseUrl,
-        window.DENTACCEPT_CONFIG.supabaseKey
-      );
-      await sb.from('waitlist').insert({ email: email, source: 'landing' });
+      await supabaseClient.from('waitlist').insert({ email: email, source: 'landing' });
     } catch (err) {
       console.error('Waitlist error:', err);
     }
@@ -695,6 +919,20 @@ async function submitWaitlist(e) {
   document.getElementById('cta-success').style.display = 'block';
   return false;
 }
+
+// ==================== CHECK URL PARAMS (post-checkout redirect) ====================
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('checkout') === 'success') {
+    document.getElementById('success-banner').classList.add('show');
+    // Smooth scroll to banner
+    setTimeout(function() {
+      document.getElementById('success-banner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+})();
 </script>
 </body>
 </html>

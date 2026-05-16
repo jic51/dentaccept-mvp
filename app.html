@@ -637,8 +637,9 @@
 const cfg = window.DENTACCEPT_CONFIG || { demoMode: true };
 let supabaseClient = null;
 
-if (!cfg.demoMode && cfg.supabaseUrl && cfg.supabaseKey) {
-  supabaseClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+if (!cfg.demoMode && cfg.supabaseUrl && cfg.supabaseKey && window.supabase) {
+  var sbUrl = cfg.supabaseUrl.replace(/\/rest\/v1\/?$/, '');
+  supabaseClient = window.supabase.createClient(sbUrl, cfg.supabaseKey);
 }
 
 // ==================== PROCEDURE DATA ====================
@@ -1463,7 +1464,7 @@ function updateConsequenceScreen() {
 
   // Try edge function in background (non-blocking)
   if (supabaseClient && !cfg.demoMode) {
-    fetch(cfg.supabaseUrl + '/functions/v1/ai-explain', {
+    fetch(cfg.supabaseUrl.replace(/\/rest\/v1\/?$/, '') + '/functions/v1/ai-explain', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
