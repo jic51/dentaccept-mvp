@@ -632,14 +632,29 @@
   </div>
 </div>
 
+<!-- OUTCOME OVERLAY (replaces alert) -->
+<div id="outcome-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(250,249,246,0.97); z-index:200; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:40px;">
+  <div id="outcome-icon" style="font-size:64px; margin-bottom:20px;"></div>
+  <h2 id="outcome-title" style="font-family:Georgia,serif; font-size:28px; margin-bottom:12px; color:#1a472a;"></h2>
+  <p id="outcome-text" style="font-size:16px; color:#444; max-width:360px; line-height:1.6; margin-bottom:32px;"></p>
+  <button onclick="closeOutcome()" style="background:#1a472a; color:white; border:none; padding:14px 40px; border-radius:10px; font-size:16px; font-weight:600; cursor:pointer;">OK</button>
+</div>
+
 <script>
 // ==================== CONFIG ====================
 const cfg = window.DENTACCEPT_CONFIG || { demoMode: true };
 let supabaseClient = null;
 
 if (!cfg.demoMode && cfg.supabaseUrl && cfg.supabaseKey && window.supabase) {
-  var sbUrl = cfg.supabaseUrl.replace(/\/rest\/v1\/?$/, '');
+  // Normalize URL: strip /rest/v1/ suffix if present, ensure no trailing slash
+  var sbUrl = cfg.supabaseUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
   supabaseClient = window.supabase.createClient(sbUrl, cfg.supabaseKey);
+}
+
+// Helper: get functions base URL
+function getFunctionsUrl() {
+  var base = cfg.supabaseUrl || '';
+  return base.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '') + '/functions/v1';
 }
 
 // ==================== PROCEDURE DATA ====================
@@ -893,6 +908,7 @@ async function validateCode() {
   var code = codeBuffer.join('');
   document.getElementById('code-error').classList.add('hidden');
 
+  // Demo code — works without backend
   if (code === '1234') {
     currentOffice = { id: 'demo-office', name: 'Smile Dental Group' };
     document.getElementById('office-name').textContent = currentOffice.name;
@@ -901,26 +917,22 @@ async function validateCode() {
     return;
   }
 
+  // Validate via secure RPC function (never exposes codes or office data)
   if (supabaseClient) {
     try {
       var result = await Promise.race([
-        supabaseClient
-          .from('access_codes')
-          .select('office_id, offices(id, name, status, trial_ends_at)')
-          .eq('code', code)
-          .eq('is_active', true)
-          .single(),
+        supabaseClient.rpc('validate_access_code', { p_code: code }),
         new Promise(function(_, reject) { setTimeout(function() { reject(new Error('timeout')); }, 5000); })
       ]);
 
       if (result.data) {
-        var office = result.data.offices;
+        var office = result.data;
         if (office.status === 'cancelled' || (office.status === 'trial' && new Date(office.trial_ends_at) < new Date())) {
           document.getElementById('code-error').textContent = t('expired');
           document.getElementById('code-error').classList.remove('hidden');
           return;
         }
-        currentOffice = { id: office.id, name: office.name };
+        currentOffice = { id: office.office_id, name: office.name };
         document.getElementById('office-name').textContent = office.name;
         document.getElementById('office-name').classList.remove('hidden');
         document.getElementById('code-btn').classList.remove('hidden');
@@ -1464,7 +1476,7 @@ function updateConsequenceScreen() {
 
   // Try edge function in background (non-blocking)
   if (supabaseClient && !cfg.demoMode) {
-    fetch(cfg.supabaseUrl.replace(/\/rest\/v1\/?$/, '') + '/functions/v1/ai-explain', {
+    fetch(getFunctionsUrl() + '/ai-explain', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1510,22 +1522,41 @@ function updateCloseScreen() {
 }
 
 // ==================== ACTIONS ====================
+function showOutcome(icon, title, text) {
+  document.getElementById('outcome-icon').textContent = icon;
+  document.getElementById('outcome-title').textContent = title;
+  document.getElementById('outcome-text').textContent = text;
+  document.getElementById('outcome-overlay').style.display = 'flex';
+}
+
+function closeOutcome() {
+  document.getElementById('outcome-overlay').style.display = 'none';
+  currentProc = null;
+  goTo('library');
+}
+
 async function schedule() {
   if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
     await supabaseClient.from('presentations').update({ scheduled: true }).eq('id', presentationId);
   }
-  alert(t('scheduled'));
-  currentProc = null;
-  goTo('library');
+  var titles = { en: 'Great Choice!', es: 'Excelente Decision!' };
+  var texts = {
+    en: 'Please let the front desk know you are ready to schedule. They will find the best time for you.',
+    es: 'Por favor informe a recepcion que esta listo para programar. Encontraran el mejor horario para usted.'
+  };
+  showOutcome('✅', titles[currentLang], texts[currentLang]);
 }
 
 async function decline() {
   if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
     await supabaseClient.from('presentations').update({ declined: true }).eq('id', presentationId);
   }
-  alert(t('declined'));
-  currentProc = null;
-  goTo('library');
+  var titles = { en: 'No Problem', es: 'No Hay Problema' };
+  var texts = {
+    en: 'Take your time. Remember, early treatment is usually simpler and more affordable. Feel free to ask your dentist any questions.',
+    es: 'Tomese su tiempo. Recuerde, el tratamiento temprano suele ser mas simple y economico. No dude en preguntar a su dentista.'
+  };
+  showOutcome('\u{1F4AD}', titles[currentLang], texts[currentLang]);
 }
 
 // ==================== LANGUAGE TOGGLE ====================

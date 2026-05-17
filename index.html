@@ -858,7 +858,7 @@ async function handleCheckout(e) {
   try {
     // Call the create-checkout edge function
     var functionUrl = cfg.supabaseUrl
-      ? cfg.supabaseUrl.replace(/\/rest\/v1\/?$/, '') + '/functions/v1/create-checkout'
+      ? cfg.supabaseUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '') + '/functions/v1/create-checkout'
       : '';
 
     if (!functionUrl) {

@@ -176,6 +176,30 @@ end;
 $$ language plpgsql security definer;
 
 -- ============================================
+-- SECURE CODE VALIDATION (replaces public SELECT on offices+codes)
+-- ============================================
+
+create or replace function validate_access_code(p_code text)
+returns json as $$
+declare
+  v_result json;
+begin
+  select json_build_object(
+    'office_id', o.id,
+    'name', o.name,
+    'status', o.status,
+    'trial_ends_at', o.trial_ends_at
+  ) into v_result
+  from access_codes ac
+  join offices o on ac.office_id = o.id
+  where ac.code = p_code
+  and ac.is_active = true;
+
+  return v_result;
+end;
+$$ language plpgsql security definer;
+
+-- ============================================
 -- ROW LEVEL SECURITY
 -- ============================================
 
@@ -187,25 +211,28 @@ alter table monthly_stats enable row level security;
 alter table ai_explanations_cache enable row level security;
 alter table waitlist enable row level security;
 
--- Procedures catalog: public read
+-- Procedures catalog: public read (no sensitive data)
 create policy "Procedures are public" on procedures_catalog for select using (true);
 
--- Access codes: public read (needed for code validation)
-create policy "Codes are publicly readable" on access_codes for select using (true);
+-- Access codes: NO public read — validation via security definer function only
+-- (no policy = no anon access)
 
--- Presentations: insert via security definer function; no direct read needed for patient app
-create policy "Insert presentations via function" on presentations for insert with check (true);
+-- Offices: NO public read — accessed only via validate_access_code()
+-- (no policy = no anon access)
 
--- AI cache: public read, insert via service role
+-- Presentations: insert only via security definer function track_presentation()
+-- No direct anon insert allowed
+-- (no policy = no anon access)
+
+-- Monthly stats: no anon access (admin/dashboard only)
+-- (no policy = no anon access)
+
+-- AI cache: public read only (explanations are not sensitive)
 create policy "AI cache is public read" on ai_explanations_cache for select using (true);
-create policy "AI cache insert" on ai_explanations_cache for insert with check (true);
-create policy "AI cache update" on ai_explanations_cache for update using (true);
+-- AI cache write: only via service role in edge functions (no anon policy needed)
 
--- Waitlist: anyone can insert
+-- Waitlist: anyone can insert their email, but rate-limited by unique constraint
 create policy "Anyone can join waitlist" on waitlist for insert with check (true);
-
--- Offices: read via access code join (handled in app query)
-create policy "Offices readable via access code" on offices for select using (true);
 
 -- ============================================
 -- SEED DATA
