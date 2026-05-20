@@ -131,51 +131,51 @@
   .btn-outline { background: transparent; color: var(--ink-soft); border: 1.5px solid var(--border); }
 
   .hero-mockup {
-    flex: 0 0 320px;
-    background: var(--ink);
-    border-radius: 20px;
-    padding: 16px;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+    flex: 0 0 360px;
+    position: relative;
   }
-  .mockup-inner {
-    background: var(--page);
-    border-radius: 12px;
+  .ipad-frame {
+    background: #1a1a1a;
+    border-radius: 24px;
+    padding: 14px;
+    box-shadow:
+      0 30px 60px rgba(0,0,0,0.18),
+      0 10px 20px rgba(0,0,0,0.1),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+    position: relative;
     overflow: hidden;
   }
-  .mockup-header {
-    padding: 12px 16px;
-    border-bottom: 0.5px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .ipad-frame::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: #333;
+    border-radius: 50%;
+    z-index: 2;
   }
-  .mockup-header span {
-    font-family: var(--serif);
-    font-size: 16px;
+  .ipad-frame img {
+    width: 100%;
+    display: block;
+    border-radius: 12px;
   }
-  .mockup-header span em { color: var(--accent); font-style: italic; }
-  .mockup-header .tag {
-    font-family: var(--mono);
-    font-size: 9px;
-    background: var(--surface);
-    padding: 3px 8px;
-    border-radius: 10px;
-    color: var(--ink-muted);
+  .hero-mockup-badge {
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(26,71,42,0.3);
   }
-  .mockup-body {
-    padding: 20px 16px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .mock-card {
-    background: var(--surface);
-    border-radius: 8px;
-    padding: 14px 10px;
-    text-align: center;
-  }
-  .mock-card .mc-icon { font-size: 22px; margin-bottom: 6px; display: block; }
-  .mock-card .mc-title { font-size: 11px; font-weight: 600; }
 
   /* STATS BAR */
   .stats-bar {
@@ -525,10 +525,140 @@
     color: var(--ink-muted);
   }
 
+  /* VIDEO SECTION */
+  .video-section {
+    background: var(--ink);
+    padding: 80px 0;
+  }
+  .video-section .section-label { color: #4caf6e; }
+  .video-section .section-title { color: white; }
+  .video-section .section-desc { color: rgba(255,255,255,0.55); }
+  .video-wrapper {
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #111;
+    aspect-ratio: 16/9;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+  .video-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .video-placeholder:hover { background: #1a1a1a; }
+  .play-btn {
+    width: 72px;
+    height: 72px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(26,71,42,0.4);
+    transition: transform 0.2s;
+  }
+  .video-placeholder:hover .play-btn { transform: scale(1.08); }
+  .play-btn svg { margin-left: 4px; }
+  .video-placeholder span {
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+  }
+
+  /* FAQ */
+  .faq-grid {
+    max-width: 700px;
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+  }
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    font-family: var(--sans);
+    gap: 16px;
+  }
+  .faq-q:hover { color: var(--accent); }
+  .faq-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--ink-muted);
+    transition: transform 0.3s, background 0.3s;
+  }
+  .faq-item.open .faq-icon {
+    transform: rotate(45deg);
+    background: var(--accent);
+    color: white;
+  }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+  }
+  .faq-item.open .faq-a {
+    max-height: 200px;
+    padding-bottom: 20px;
+  }
+  .faq-a p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* VISUAL POLISH */
+  .feature-card, .step-card, .price-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .feature-card:hover, .step-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  }
+  .price-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+  .step-card {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  }
+  .price-card {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+
+  /* STAT COUNTER ANIMATION */
+  .stat-num {
+    transition: opacity 0.4s;
+  }
+
   /* RESPONSIVE */
   @media (max-width: 768px) {
     .hero { flex-direction: column; padding: 120px 0 60px; gap: 40px; }
-    .hero-mockup { flex: none; width: 100%; max-width: 320px; }
+    .hero-mockup { flex: none; width: 100%; max-width: 340px; margin: 0 auto; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
     .pain-grid, .steps-grid, .features-grid { grid-template-columns: 1fr; }
     .pricing-grid { grid-template-columns: 1fr; max-width: 360px; }
@@ -574,20 +704,10 @@
       </div>
     </div>
     <div class="hero-mockup">
-      <div class="mockup-inner">
-        <div class="mockup-header">
-          <span>Dent<em>Accept</em></span>
-          <span class="tag">EN / ES</span>
-        </div>
-        <div class="mockup-body">
-          <div class="mock-card"><span class="mc-icon">&#x1F9B7;</span><span class="mc-title">Crown</span></div>
-          <div class="mock-card"><span class="mc-icon">&#x2B21;</span><span class="mc-title">Implant</span></div>
-          <div class="mock-card"><span class="mc-icon">&#x1F300;</span><span class="mc-title">Root Canal</span></div>
-          <div class="mock-card"><span class="mc-icon">&#x27E1;</span><span class="mc-title">Invisalign</span></div>
-          <div class="mock-card"><span class="mc-icon">&#x2728;</span><span class="mc-title">Whitening</span></div>
-          <div class="mock-card"><span class="mc-icon">&#x1F527;</span><span class="mc-title">Extraction</span></div>
-        </div>
+      <div class="ipad-frame">
+        <img src="ipad-screenshot.png" alt="DentAccept app showing 10 dental procedures on iPad" loading="eager">
       </div>
+      <div class="hero-mockup-badge">Works on any iPad</div>
     </div>
   </div>
 </div>
@@ -677,6 +797,23 @@
   </div>
 </section>
 
+<!-- VIDEO DEMO -->
+<div class="video-section">
+  <div class="container">
+    <div class="section-label">See It In Action</div>
+    <h2 class="section-title">60 seconds. One procedure. You'll get it immediately.</h2>
+    <p class="section-desc">Watch how a dental assistant uses DentAccept to explain a crown procedure to a patient — in real time.</p>
+    <div class="video-wrapper">
+      <div class="video-placeholder" id="video-placeholder" onclick="playVideo()">
+        <div class="play-btn">
+          <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg>
+        </div>
+        <span>Watch 60-second demo</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- FEATURES -->
 <section>
   <div class="container">
@@ -713,6 +850,74 @@
         <span class="fc-icon">&#x1F4CA;</span>
         <h4>Track your acceptance rate</h4>
         <p>See how many patients schedule after viewing a presentation vs. before. The ROI justifies itself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-label">Common Questions</div>
+    <h2 class="section-title">Everything you need to know before trying it.</h2>
+    <p class="section-desc">If your question isn't here, email us at hello@dentaccept.com</p>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Do I need to install anything?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>No. DentAccept is a web app. Open your iPad's Safari browser, go to dentaccept.vercel.app, enter your access code, and you're running. Nothing to download, nothing to configure.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Does it work on iPad?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Yes — it's designed for iPad first. It also works on any tablet, laptop, or desktop with a modern browser. Most practices use it on an iPad at chairside.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Is patient data stored? Is it HIPAA compliant?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>DentAccept stores zero patient data. No names, no records, no protected health information (PHI). We only track aggregate analytics — which procedures you present and acceptance rates. No HIPAA concerns.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Does it support Spanish?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Yes. One tap switches the entire presentation between English and Spanish — animations, AI explanations, and the "what happens if you wait" content. 60 million Spanish speakers in the US deserve to understand their treatment.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Can I cancel anytime?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Yes. No contracts, no cancellation fees. You can cancel from your account settings or email us. Your 14-day free trial doesn't charge your card until it ends.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>How is this different from Chairside or Modento?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Three things: price ($79/mo vs $300-500), zero installation friction (works in the browser you already have), and our exclusive "What If You Wait" module that shows patients the real cost of delaying treatment. Plus full bilingual support.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>What procedures are included?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>All plans include: Dental Crown, Dental Implant, Root Canal, Invisalign, Teeth Whitening, Tooth Extraction, Dental Filling, Dental Bridge, Porcelain Veneer, and Deep Cleaning. More coming soon.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Does my staff need training?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>No. If they can tap an iPad, they can use DentAccept. Select the procedure, hand the tablet to the patient. The entire workflow takes 20 seconds to learn.</p></div>
       </div>
     </div>
   </div>
@@ -919,6 +1124,79 @@ async function submitWaitlist(e) {
   document.getElementById('cta-success').style.display = 'block';
   return false;
 }
+
+// ==================== FAQ ACCORDION ====================
+function toggleFaq(btn) {
+  var item = btn.parentElement;
+  var wasOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item.open').forEach(function(el) {
+    el.classList.remove('open');
+  });
+  // Toggle clicked
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ==================== VIDEO PLACEHOLDER ====================
+function playVideo() {
+  // Replace with your Loom embed URL when ready
+  var videoUrl = ''; // e.g. 'https://www.loom.com/embed/your-video-id'
+  if (videoUrl) {
+    document.getElementById('video-placeholder').outerHTML =
+      '<iframe src="' + videoUrl + '" frameborder="0" allowfullscreen style="width:100%;height:100%;position:absolute;top:0;left:0;"></iframe>';
+  } else {
+    // No video yet — open the app as demo
+    window.open('app.html', '_blank');
+  }
+}
+
+// ==================== ANIMATED STAT COUNTERS ====================
+(function() {
+  var observed = false;
+  var statsBar = document.querySelector('.stats-bar');
+  if (!statsBar) return;
+
+  var counters = [
+    { el: null, target: '46%', end: 46, suffix: '%' },
+    { el: null, target: '78%', end: 78, suffix: '%' },
+    { el: null, target: '2 min', end: 2, suffix: ' min' },
+    { el: null, target: '$0', end: 0, suffix: '', prefix: '$' },
+  ];
+
+  var statNums = statsBar.querySelectorAll('.stat-num');
+  statNums.forEach(function(el, i) {
+    if (counters[i]) counters[i].el = el;
+  });
+
+  function animateCounters() {
+    if (observed) return;
+    observed = true;
+    counters.forEach(function(c) {
+      if (!c.el) return;
+      var start = 0;
+      var duration = 1200;
+      var startTime = null;
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        // Ease out cubic
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var current = Math.round(start + (c.end - start) * eased);
+        c.el.textContent = (c.prefix || '') + current + c.suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) animateCounters();
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(statsBar);
+})();
 
 // ==================== CHECK URL PARAMS (post-checkout redirect) ====================
 (function() {

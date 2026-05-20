@@ -199,11 +199,22 @@
     padding: 20px;
     background: var(--page);
   }
-  .tooth-svg {
+  .svg-crossfade {
+    position: relative;
     width: 240px;
     height: 280px;
     margin-bottom: 16px;
   }
+  .tooth-svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  .tooth-svg.hidden { opacity: 0; }
+  .tooth-svg.visible { opacity: 1; }
   .proc-title {
     font-family: var(--serif);
     font-size: 28px;
@@ -551,7 +562,10 @@
     <div class="header-right"></div>
   </div>
   <div class="anim-container">
-    <svg class="tooth-svg" viewBox="0 0 200 260" id="tooth-svg"></svg>
+    <div class="svg-crossfade">
+      <svg class="tooth-svg visible" viewBox="0 0 200 260" id="tooth-svg-a"></svg>
+      <svg class="tooth-svg hidden" viewBox="0 0 200 260" id="tooth-svg-b"></svg>
+    </div>
     <h2 class="proc-title" id="anim-title"></h2>
     <p class="proc-desc" id="anim-desc"></p>
     <div class="progress-bar">
@@ -799,6 +813,101 @@ const procedures = [
     explanation: {
       en: "After extraction, the jawbone in that area begins to resorb (shrink) immediately. Within 6 months, 40-60% of the bone width is lost. This makes future implant placement more invasive and expensive, often requiring sinus lifts or bone grafts. Preserving the socket now with a simple bone graft ($300) saves $1,500+ in reconstructive surgery later.",
       es: "Después de la extracción, el hueso de la mandíbula en esa área comienza a reabsorberse (encogerse) inmediatamente. En 6 meses, se pierde el 40-60% del ancho óseo. Esto hace que la colocación futura del implante sea más invasiva y costosa. Preservar el alvéolo ahora con un simple injerto óseo ($300) ahorra $1,500+ en cirugía reconstructiva después."
+    }
+  },
+  {
+    id: 'filling',
+    icon: '\u{1FA79}',
+    title: { en: 'Dental Filling', es: 'Empaste Dental' },
+    desc: { en: 'Cavity repair', es: 'Reparación de caries' },
+    price: 250,
+    priceLater: 1800,
+    steps: [
+      { en: 'Cavity detected in the tooth', es: 'Se detecta caries en el diente' },
+      { en: 'Area is numbed for comfort', es: 'Se anestesia el área para comodidad' },
+      { en: 'Decayed material is removed', es: 'Se remueve el material cariado' },
+      { en: 'Composite filling material applied', es: 'Se aplica material de empaste compuesto' },
+      { en: 'Tooth restored to full function', es: 'Diente restaurado a plena función' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Small cavity', es: 'Caries pequeña' }, desc: { en: 'Simple filling needed', es: 'Solo se necesita un empaste' } },
+      { time: '6 mo', icon: '⚠', type: 'warn', title: { en: 'Decay reaches dentin', es: 'Caries llega a dentina' }, desc: { en: 'Larger filling, more cost', es: 'Empaste más grande, más costo' } },
+      { time: '1 yr', icon: '✕', type: 'warn', title: { en: 'Nerve involvement', es: 'Nervio afectado' }, desc: { en: 'Root canal + crown needed', es: 'Endodoncia + corona necesaria' } }
+    ],
+    explanation: {
+      en: "A small cavity today costs $250 to fix with a simple filling. Left untreated for 6 months, the decay reaches the dentin layer and the filling becomes twice as large and expensive. After a year, the bacteria reach the nerve — now you need a root canal ($1,200) plus a crown ($1,200). A $250 problem becomes a $2,400 problem.",
+      es: "Una caries pequeña hoy cuesta $250 con un empaste simple. Sin tratar por 6 meses, la caries llega a la dentina y el empaste se duplica en tamaño y costo. Después de un año, las bacterias llegan al nervio — ahora necesita endodoncia ($1,200) más corona ($1,200). Un problema de $250 se convierte en uno de $2,400."
+    }
+  },
+  {
+    id: 'bridge',
+    icon: '\u{1F309}',
+    title: { en: 'Dental Bridge', es: 'Puente Dental' },
+    desc: { en: 'Replaces missing teeth', es: 'Reemplaza dientes faltantes' },
+    price: 3000,
+    priceLater: 8000,
+    steps: [
+      { en: 'Missing tooth leaves a gap between teeth', es: 'Diente faltante deja un espacio entre dientes' },
+      { en: 'Adjacent teeth are prepared as anchors', es: 'Dientes adyacentes se preparan como anclajes' },
+      { en: 'Impressions taken for custom bridge', es: 'Se toman impresiones para puente personalizado' },
+      { en: 'Bridge is cemented into place', es: 'El puente se cementa en su lugar' },
+      { en: 'Natural-looking smile restored', es: 'Sonrisa de aspecto natural restaurada' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Single gap', es: 'Un solo espacio' }, desc: { en: '3-unit bridge', es: 'Puente de 3 unidades' } },
+      { time: '1 yr', icon: '⚠', type: 'warn', title: { en: 'Teeth shift into gap', es: 'Dientes se mueven al espacio' }, desc: { en: 'Orthodontics may be needed', es: 'Quizás ortodoncia necesaria' } },
+      { time: '2 yr', icon: '✕', type: 'warn', title: { en: 'Bone loss + bite issues', es: 'Pérdida ósea + problemas de mordida' }, desc: { en: 'Complex reconstruction', es: 'Reconstrucción compleja' } }
+    ],
+    explanation: {
+      en: "When a tooth is missing, the adjacent teeth begin shifting toward the gap within months. This creates bite problems, jaw pain, and makes the gap harder to restore later. After 2 years, bone loss in the gap area often requires bone grafting before any restoration. A $3,000 bridge today prevents an $8,000+ reconstructive process later.",
+      es: "Cuando falta un diente, los dientes adyacentes comienzan a moverse hacia el espacio en meses. Esto crea problemas de mordida, dolor de mandíbula, y hace más difícil restaurar después. Después de 2 años, la pérdida ósea a menudo requiere injerto antes de cualquier restauración. Un puente de $3,000 hoy previene un proceso reconstructivo de $8,000+."
+    }
+  },
+  {
+    id: 'veneer',
+    icon: '\u{1F48E}',
+    title: { en: 'Porcelain Veneer', es: 'Carilla de Porcelana' },
+    desc: { en: 'Thin shell for front teeth', es: 'Lámina delgada para dientes frontales' },
+    price: 1200,
+    priceLater: 3500,
+    steps: [
+      { en: 'Front tooth has cosmetic issues', es: 'Diente frontal tiene problemas estéticos' },
+      { en: 'Thin layer of enamel removed', es: 'Se remueve capa delgada de esmalte' },
+      { en: 'Custom veneer crafted in the lab', es: 'Carilla personalizada hecha en laboratorio' },
+      { en: 'Veneer bonded to tooth surface', es: 'Carilla adherida a superficie del diente' },
+      { en: 'Perfect, natural-looking smile', es: 'Sonrisa perfecta y de aspecto natural' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Minor cosmetic issue', es: 'Problema estético menor' }, desc: { en: 'Single veneer fix', es: 'Una sola carilla' } },
+      { time: '2 yr', icon: '⚠', type: 'warn', title: { en: 'Enamel erosion worsens', es: 'Erosión del esmalte empeora' }, desc: { en: 'Multiple veneers needed', es: 'Varias carillas necesarias' } }
+    ],
+    explanation: {
+      en: "Cosmetic dental issues like chips, gaps, and discoloration tend to worsen over time. Enamel continues to wear, stains deepen, and small chips can lead to cracks. A single veneer at $1,200 today can prevent the need for multiple veneers ($3,500+) or even crowns later. Early treatment preserves more natural tooth structure.",
+      es: "Los problemas estéticos dentales como astillas, espacios y decoloración tienden a empeorar con el tiempo. El esmalte sigue desgastándose, las manchas se profundizan y las pequeñas astillas pueden causar grietas. Una carilla de $1,200 hoy puede prevenir la necesidad de varias carillas ($3,500+) o coronas después."
+    }
+  },
+  {
+    id: 'deepcleaning',
+    icon: '\u{1FAE7}',
+    title: { en: 'Deep Cleaning', es: 'Limpieza Profunda' },
+    desc: { en: 'Scaling and root planing', es: 'Raspado y alisado radicular' },
+    price: 800,
+    priceLater: 5000,
+    steps: [
+      { en: 'Plaque and tartar buildup below gumline', es: 'Acumulación de placa y sarro bajo la encía' },
+      { en: 'Area is numbed for comfort', es: 'Se anestesia el área para comodidad' },
+      { en: 'Tartar removed from below gumline', es: 'Se remueve sarro debajo de la encía' },
+      { en: 'Root surfaces smoothed to prevent reattachment', es: 'Superficies radiculares alisadas para prevenir reacumulación' },
+      { en: 'Gums heal and reattach to teeth', es: 'Encías sanan y se readhieren a los dientes' }
+    ],
+    timeline: [
+      { time: 'Now', icon: '✓', type: 'now', title: { en: 'Early gum disease', es: 'Enfermedad de encías temprana' }, desc: { en: 'Deep cleaning sufficient', es: 'Limpieza profunda suficiente' } },
+      { time: '1 yr', icon: '⚠', type: 'warn', title: { en: 'Periodontitis develops', es: 'Se desarrolla periodontitis' }, desc: { en: 'Surgery may be needed', es: 'Quizás cirugía necesaria' } },
+      { time: '3 yr', icon: '✕', type: 'warn', title: { en: 'Tooth loss begins', es: 'Comienza pérdida de dientes' }, desc: { en: 'Implants required', es: 'Implantes requeridos' } }
+    ],
+    explanation: {
+      en: "Gum disease is the #1 cause of tooth loss in adults. When plaque hardens into tartar below the gumline, bacteria destroy the bone that holds your teeth. An $800 deep cleaning today stops the disease. Without it, periodontitis progresses to bone loss, loose teeth, and eventual extractions + implants costing $5,000+ per tooth.",
+      es: "La enfermedad de encías es la causa #1 de pérdida dental en adultos. Cuando la placa se endurece en sarro bajo la encía, las bacterias destruyen el hueso que sostiene los dientes. Una limpieza profunda de $800 hoy detiene la enfermedad. Sin ella, la periodontitis progresa a pérdida ósea, dientes flojos y extracciones + implantes de $5,000+ por diente."
     }
   }
 ];
@@ -1059,8 +1168,13 @@ function startAnimation() {
 }
 
 // ==================== TOOTH SVG (Level 2) ====================
+var _svgActive = 'a'; // tracks which SVG is currently visible
 function renderToothSVG(procId, step) {
-  var svg = document.getElementById('tooth-svg');
+  // Crossfade: render into the hidden SVG, then swap visibility
+  var nextId = _svgActive === 'a' ? 'b' : 'a';
+  var svg = document.getElementById('tooth-svg-' + nextId);
+  var prevSvg = document.getElementById('tooth-svg-' + _svgActive);
+
   var totalSteps = currentProc ? currentProc.steps.length : 5;
   var phase = step % totalSteps;
 
@@ -1074,6 +1188,16 @@ function renderToothSVG(procId, step) {
     label: '#666', labelBg: 'rgba(255,255,255,0.85)'
   };
 
+  // SVG filter definitions for shadows and gradients
+  function defs() {
+    return '<defs>' +
+      '<filter id="toothShadow"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>' +
+      '<linearGradient id="enamelGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f8f4ed"/><stop offset="100%" stop-color="#e6dfd2"/></linearGradient>' +
+      '<linearGradient id="gumGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8a0a0"/><stop offset="100%" stop-color="#c07878"/></linearGradient>' +
+      '<linearGradient id="boneGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d4cbb8"/><stop offset="100%" stop-color="#bfb5a0"/></linearGradient>' +
+      '</defs>';
+  }
+
   // Helper: anatomy label with background
   function label(x, y, txt, anchor) {
     anchor = anchor || 'middle';
@@ -1081,14 +1205,17 @@ function renderToothSVG(procId, step) {
            '<text x="' + x + '" y="' + (y + 2) + '" text-anchor="' + anchor + '" font-size="8" fill="' + C.label + '" font-family="sans-serif">' + txt + '</text>';
   }
 
-  // Shared base elements
+  // Shared base elements — with gradients
   function baseScene() {
-    return '<rect x="0" y="100" width="200" height="160" fill="' + C.gum + '"/>' +
-           '<rect x="0" y="130" width="200" height="130" fill="' + C.bone + '"/>';
+    return '<rect x="0" y="100" width="200" height="160" fill="url(#gumGrad)"/>' +
+           '<rect x="0" y="130" width="200" height="130" fill="url(#boneGrad)"/>';
   }
+  // Improved tooth with cusps (molar shape)
   function baseTooth() {
-    return '<path d="M65,100 L65,55 Q65,30 80,22 Q90,18 100,15 Q110,18 120,22 Q135,30 135,55 L135,100" fill="' + C.enamel + '" stroke="' + C.stroke + '" stroke-width="1.5"/>' +
-           '<path d="M65,55 Q80,40 90,48 Q95,30 100,15 Q105,30 110,48 Q120,40 135,55" fill="' + C.enamel + '" stroke="' + C.stroke + '" stroke-width="1.5"/>';
+    return '<g filter="url(#toothShadow)">' +
+           '<path d="M65,100 L65,55 Q65,32 78,23 Q85,18 90,20 L90,20 Q92,14 100,12 Q108,14 110,20 Q115,18 122,23 Q135,32 135,55 L135,100 Z" fill="url(#enamelGrad)" stroke="' + C.stroke + '" stroke-width="1.2"/>' +
+           '<path d="M65,55 Q72,42 82,46 Q86,38 92,28 Q96,20 100,12 Q104,20 108,28 Q114,38 118,46 Q128,42 135,55" fill="url(#enamelGrad)" stroke="' + C.stroke + '" stroke-width="1.2"/>' +
+           '</g>';
   }
   function baseDentin() {
     return '<path d="M75,95 L75,60 Q85,45 100,40 Q115,45 125,60 L125,95" fill="' + C.dentin + '"/>';
@@ -1096,16 +1223,17 @@ function renderToothSVG(procId, step) {
   function basePulp() {
     return '<path d="M90,90 L90,65 Q95,55 100,52 Q105,55 110,65 L110,90" fill="' + C.pulp + '" opacity="0.7"/>';
   }
+  // Improved roots with curvature and bifurcation detail
   function baseRoots() {
-    return '<path d="M80,100 L75,165 Q78,180 82,165 L85,100" fill="' + C.enamel + '" stroke="' + C.stroke + '" stroke-width="1"/>' +
-           '<path d="M115,100 L120,165 Q117,180 113,165 L110,100" fill="' + C.enamel + '" stroke="' + C.stroke + '" stroke-width="1"/>';
+    return '<path d="M80,100 Q78,120 76,140 Q74,158 77,170 Q79,178 82,168 Q84,155 84,140 Q84,120 85,100 Z" fill="url(#enamelGrad)" stroke="' + C.stroke + '" stroke-width="0.8"/>' +
+           '<path d="M115,100 Q116,120 118,140 Q120,158 118,170 Q116,178 113,168 Q112,155 112,140 Q113,120 114,100 Z" fill="url(#enamelGrad)" stroke="' + C.stroke + '" stroke-width="0.8"/>';
   }
   function baseCanals() {
-    return '<line x1="79" y1="105" x2="78" y2="160" stroke="' + C.pulp + '" stroke-width="2" opacity="0.5"/>' +
-           '<line x1="116" y1="105" x2="117" y2="160" stroke="' + C.pulp + '" stroke-width="2" opacity="0.5"/>';
+    return '<path d="M82,105 Q80,125 78,145 Q77,158 78,165" stroke="' + C.pulp + '" stroke-width="1.5" fill="none" opacity="0.5"/>' +
+           '<path d="M114,105 Q116,125 118,145 Q119,158 117,165" stroke="' + C.pulp + '" stroke-width="1.5" fill="none" opacity="0.5"/>';
   }
   function fullTooth() {
-    return baseScene() + baseRoots() + baseCanals() + baseTooth() + baseDentin() + basePulp();
+    return defs() + baseScene() + baseRoots() + baseCanals() + baseTooth() + baseDentin() + basePulp();
   }
 
   // Implant screw helper
@@ -1428,12 +1556,233 @@ function renderToothSVG(procId, step) {
       content += '<text x="100" y="248" text-anchor="middle" font-size="10" fill="' + C.accent + '" font-family="sans-serif" font-weight="600">&#10003; ALIGNED</text>';
     }
 
+  // ========== FILLING (5 frames) ==========
+  } else if (procId === 'filling') {
+    if (phase === 0) {
+      // Cavity visible
+      content = fullTooth();
+      content += '<ellipse cx="108" cy="42" rx="10" ry="7" fill="' + C.decay + '" opacity="0.8"/>';
+      content += '<ellipse cx="108" cy="42" rx="5" ry="3" fill="' + C.decayDark + '" opacity="0.7"/>';
+      content += label(145, 42, 'CAVITY', 'start');
+      content += label(45, 70, 'ENAMEL', 'end');
+    } else if (phase === 1) {
+      // Numbing
+      content = fullTooth();
+      content += '<ellipse cx="108" cy="42" rx="10" ry="7" fill="' + C.decay + '" opacity="0.5"/>';
+      content += '<rect x="148" y="50" width="4" height="30" rx="2" fill="' + C.metalLight + '" stroke="' + C.metalDark + '" stroke-width="0.5"/>';
+      content += '<rect x="146" y="48" width="8" height="6" rx="1" fill="' + C.metalLight + '"/>';
+      content += '<circle cx="135" cy="90" r="8" fill="none" stroke="' + C.gel + '" stroke-width="0.5" opacity="0.5"><animate attributeName="r" values="5;15;5" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite"/></circle>';
+      content += label(155, 42, 'NUMB');
+    } else if (phase === 2) {
+      // Decay removed — drill cleaning out cavity
+      content = fullTooth();
+      // Cavity hole (empty)
+      content += '<ellipse cx="108" cy="42" rx="10" ry="7" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="0.5"/>';
+      // Drill
+      content += '<line x1="108" y1="5" x2="108" y2="35" stroke="' + C.metalDark + '" stroke-width="2"/>';
+      content += '<circle cx="108" cy="5" r="4" fill="' + C.metal + '" stroke="' + C.metalDark + '" stroke-width="1"/>';
+      content += '<circle cx="108" cy="36" r="2" fill="' + C.metalDark + '"/>';
+      content += label(145, 10, 'DRILL', 'start');
+    } else if (phase === 3) {
+      // Filling material applied
+      content = fullTooth();
+      // Composite being placed
+      content += '<ellipse cx="108" cy="42" rx="10" ry="7" fill="#E8E0D0" stroke="' + C.stroke + '" stroke-width="0.5"/>';
+      content += '<ellipse cx="108" cy="42" rx="7" ry="4" fill="#F5F0E5" opacity="0.8"/>';
+      // Curing light
+      content += '<line x1="140" y1="15" x2="115" y2="38" stroke="#4FC3F7" stroke-width="3" opacity="0.4"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="1s" repeatCount="indefinite"/></line>';
+      content += label(145, 42, 'FILLING', 'start');
+    } else {
+      // Restored tooth
+      content = fullTooth();
+      content += '<ellipse cx="108" cy="42" rx="10" ry="7" fill="' + C.enamel + '" stroke="' + C.stroke + '" stroke-width="0.5"/>';
+      content += '<ellipse cx="105" cy="40" rx="4" ry="6" fill="white" opacity="0.3"><animate attributeName="opacity" values="0.15;0.4;0.15" dur="3s" repeatCount="indefinite"/></ellipse>';
+      content += '<text x="100" y="248" text-anchor="middle" font-size="10" fill="' + C.accent + '" font-family="sans-serif" font-weight="600">&#10003; RESTORED</text>';
+    }
+
+  // ========== BRIDGE (5 frames) ==========
+  } else if (procId === 'bridge') {
+    if (phase === 0) {
+      // Gap between teeth
+      content = baseScene();
+      content += '<path d="M20,100 L20,55 Q30,35 45,55 L45,100" fill="' + C.enamel + '" stroke="' + C.stroke + '" stroke-width="1"/>';
+      content += '<path d="M155,100 L155,55 Q165,35 180,55 L180,100" fill="' + C.enamel + '" stroke="' + C.stroke + '" stroke-width="1"/>';
+      content += '<rect x="60" y="55" width="80" height="45" fill="' + C.gum + '" opacity="0.3" rx="6"/>';
+      content += '<text x="100" y="82" text-anchor="middle" font-size="14" fill="' + C.label + '" font-family="sans-serif">?</text>';
+      content += label(100, 48, 'GAP');
+      // Arrows showing teeth drifting
+      content += '<path d="M50,75 L60,75" stroke="' + C.warn + '" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>';
+      content += '<path d="M150,75 L140,75" stroke="' + C.warn + '" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>';
+      content += '<defs><marker id="arrow" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="' + C.warn + '"/></marker></defs>';
+    } else if (phase === 1) {
+      // Adjacent teeth being prepared (shaped)
+      content = baseScene();
+      // Prepared teeth (shorter, flat top)
+      content += '<path d="M22,100 L22,60 Q32,48 45,60 L45,100" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="1.5"/>';
+      content += '<path d="M155,100 L155,60 Q165,48 178,60 L178,100" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="1.5"/>';
+      // Dashed original outline
+      content += '<path d="M20,55 Q30,35 45,55" fill="none" stroke="' + C.label + '" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>';
+      content += '<path d="M155,55 Q165,35 180,55" fill="none" stroke="' + C.label + '" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>';
+      content += label(100, 50, 'PREPARED');
+    } else if (phase === 2) {
+      // Impression taken
+      content = baseScene();
+      content += '<path d="M22,100 L22,60 Q32,48 45,60 L45,100" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="1.5"/>';
+      content += '<path d="M155,100 L155,60 Q165,48 178,60 L178,100" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="1.5"/>';
+      // Scan line
+      content += '<line x1="15" y1="70" x2="15" y2="100" stroke="' + C.gel + '" stroke-width="2" opacity="0.6"><animate attributeName="x1" values="15;185;15" dur="3s" repeatCount="indefinite"/><animate attributeName="x2" values="15;185;15" dur="3s" repeatCount="indefinite"/></line>';
+      content += label(100, 248, 'SCANNING');
+    } else if (phase === 3) {
+      // Bridge hovering, about to be cemented
+      content = baseScene();
+      content += '<path d="M22,100 L22,60 Q32,48 45,60 L45,100" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="1.5"/>';
+      content += '<path d="M155,100 L155,60 Q165,48 178,60 L178,100" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="1.5"/>';
+      // Bridge floating above
+      content += '<path d="M18,48 Q18,25 45,20 L155,20 Q182,25 182,48 L18,48 Z" fill="' + C.accent + '" opacity="0.25" stroke="' + C.accent + '" stroke-width="2"/>';
+      // Down arrows
+      content += '<path d="M33,50 L33,56" stroke="' + C.accent + '" stroke-width="1.5" marker-end="url(#arr)"/>';
+      content += '<path d="M166,50 L166,56" stroke="' + C.accent + '" stroke-width="1.5" marker-end="url(#arr)"/>';
+      content += '<defs><marker id="arr" markerWidth="6" markerHeight="4" refX="3" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="' + C.accent + '"/></marker></defs>';
+      content += label(100, 30, 'BRIDGE');
+    } else {
+      // Final: bridge cemented
+      content = baseScene();
+      // Bridge in place — 3 connected teeth
+      content += '<path d="M18,100 L18,55 Q28,30 45,25 L155,25 Q172,30 182,55 L182,100 Z" fill="' + C.enamel + '" stroke="' + C.accent + '" stroke-width="2"/>';
+      // Division lines between units
+      content += '<line x1="60" y1="30" x2="60" y2="100" stroke="' + C.accent + '" stroke-width="0.5" opacity="0.3"/>';
+      content += '<line x1="140" y1="30" x2="140" y2="100" stroke="' + C.accent + '" stroke-width="0.5" opacity="0.3"/>';
+      content += '<ellipse cx="80" cy="55" rx="8" ry="14" fill="white" opacity="0.25"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="3s" repeatCount="indefinite"/></ellipse>';
+      content += '<text x="100" y="248" text-anchor="middle" font-size="10" fill="' + C.accent + '" font-family="sans-serif" font-weight="600">&#10003; RESTORED</text>';
+    }
+
+  // ========== VENEER (5 frames) ==========
+  } else if (procId === 'veneer') {
+    // Front tooth view (wider, flatter)
+    function frontTooth() {
+      return '<path d="M70,100 L70,40 Q70,15 100,10 Q130,15 130,40 L130,100 Z" fill="url(#enamelGrad)" stroke="' + C.stroke + '" stroke-width="1.2"/>';
+    }
+    if (phase === 0) {
+      // Cosmetic issues visible — chip, discoloration
+      content = baseScene() + frontTooth();
+      content += '<path d="M120,30 L128,25 L125,35" fill="' + C.gum + '" stroke="' + C.stroke + '" stroke-width="0.5"/>';
+      content += '<ellipse cx="90" cy="50" rx="8" ry="6" fill="' + C.decay + '" opacity="0.4"/>';
+      content += '<ellipse cx="110" cy="65" rx="6" ry="5" fill="' + C.decay + '" opacity="0.3"/>';
+      content += label(140, 30, 'CHIP', 'start');
+      content += label(140, 55, 'STAIN', 'start');
+    } else if (phase === 1) {
+      // Thin layer removed from front
+      content = baseScene();
+      content += '<path d="M74,100 L74,42 Q74,18 100,13 Q126,18 126,42 L126,100 Z" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="1.2"/>';
+      // Dashed original outline
+      content += '<path d="M70,40 Q70,15 100,10 Q130,15 130,40" fill="none" stroke="' + C.label + '" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>';
+      content += label(100, 248, 'SHAPED');
+    } else if (phase === 2) {
+      // Veneer crafted (lab visualization)
+      content = baseScene();
+      content += '<path d="M74,100 L74,42 Q74,18 100,13 Q126,18 126,42 L126,100 Z" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="1"/>';
+      // Veneer piece floating to the right
+      content += '<path d="M150,40 Q150,15 170,12 Q190,15 190,40 L190,85 Q190,90 170,92 Q150,90 150,85 Z" fill="' + C.bright + '" stroke="' + C.accent + '" stroke-width="1.5" opacity="0.8"/>';
+      content += '<ellipse cx="170" cy="50" rx="5" ry="10" fill="white" opacity="0.4"/>';
+      content += label(170, 248, 'VENEER');
+    } else if (phase === 3) {
+      // Veneer being bonded
+      content = baseScene();
+      content += '<path d="M74,100 L74,42 Q74,18 100,13 Q126,18 126,42 L126,100 Z" fill="' + C.dentin + '" stroke="' + C.stroke + '" stroke-width="1"/>';
+      // Veneer approaching tooth
+      content += '<path d="M68,100 L68,38 Q68,13 100,8 Q132,13 132,38 L132,100 Z" fill="' + C.bright + '" opacity="0.5" stroke="' + C.accent + '" stroke-width="2"/>';
+      // Bonding agent dots
+      content += '<circle cx="85" cy="55" r="2" fill="' + C.gel + '" opacity="0.6"/>';
+      content += '<circle cx="100" cy="50" r="2" fill="' + C.gel + '" opacity="0.6"/>';
+      content += '<circle cx="115" cy="55" r="2" fill="' + C.gel + '" opacity="0.6"/>';
+      content += label(100, 248, 'BONDING');
+    } else {
+      // Perfect veneer
+      content = baseScene();
+      content += '<path d="M70,100 L70,40 Q70,15 100,10 Q130,15 130,40 L130,100 Z" fill="' + C.bright + '" stroke="' + C.accent + '" stroke-width="2"/>';
+      content += '<ellipse cx="92" cy="45" rx="8" ry="16" fill="white" opacity="0.35" transform="rotate(-5 92 45)"><animate attributeName="opacity" values="0.15;0.45;0.15" dur="3s" repeatCount="indefinite"/></ellipse>';
+      content += '<text x="100" y="248" text-anchor="middle" font-size="10" fill="' + C.accent + '" font-family="sans-serif" font-weight="600">&#10003; PERFECT</text>';
+    }
+
+  // ========== DEEP CLEANING (5 frames) ==========
+  } else if (procId === 'deepcleaning') {
+    // Gum pocket visualization
+    function gumScene() {
+      return '<rect x="0" y="88" width="200" height="172" fill="url(#gumGrad)"/>' +
+             '<rect x="0" y="130" width="200" height="130" fill="url(#boneGrad)"/>';
+    }
+    function simpleRoots() {
+      return '<path d="M80,100 Q78,130 77,155 Q79,168 82,155 Q84,130 85,100 Z" fill="url(#enamelGrad)" stroke="' + C.stroke + '" stroke-width="0.8"/>' +
+             '<path d="M115,100 Q117,130 118,155 Q116,168 113,155 Q112,130 114,100 Z" fill="url(#enamelGrad)" stroke="' + C.stroke + '" stroke-width="0.8"/>';
+    }
+    if (phase === 0) {
+      // Plaque and tartar buildup
+      content = gumScene() + simpleRoots() + baseTooth();
+      // Tartar deposits
+      content += '<ellipse cx="68" cy="97" rx="6" ry="4" fill="#C4A04A" opacity="0.8"/>';
+      content += '<ellipse cx="132" cy="96" rx="5" ry="3" fill="#C4A04A" opacity="0.7"/>';
+      content += '<ellipse cx="75" cy="110" rx="4" ry="6" fill="#B8963A" opacity="0.6"/>';
+      content += '<ellipse cx="125" cy="112" rx="5" ry="7" fill="#B8963A" opacity="0.6"/>';
+      // Inflamed gum line
+      content += '<path d="M55,90 Q80,82 100,85 Q120,82 145,90" fill="none" stroke="#ff5555" stroke-width="2" opacity="0.6"/>';
+      content += label(145, 97, 'TARTAR', 'start');
+      content += label(45, 112, 'PLAQUE', 'end');
+    } else if (phase === 1) {
+      // Numbing
+      content = gumScene() + simpleRoots() + baseTooth();
+      content += '<ellipse cx="68" cy="97" rx="6" ry="4" fill="#C4A04A" opacity="0.5"/>';
+      content += '<ellipse cx="132" cy="96" rx="5" ry="3" fill="#C4A04A" opacity="0.5"/>';
+      content += '<rect x="148" y="60" width="4" height="28" rx="2" fill="' + C.metalLight + '" stroke="' + C.metalDark + '" stroke-width="0.5"/>';
+      content += '<rect x="146" y="58" width="8" height="6" rx="1" fill="' + C.metalLight + '"/>';
+      content += '<circle cx="138" cy="92" r="8" fill="none" stroke="' + C.gel + '" stroke-width="0.5" opacity="0.5"><animate attributeName="r" values="5;15;5" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite"/></circle>';
+      content += label(155, 52, 'NUMB');
+    } else if (phase === 2) {
+      // Scaling — ultrasonic scaler removing tartar
+      content = gumScene() + simpleRoots() + baseTooth();
+      // Scaler instrument
+      content += '<line x1="55" y1="75" x2="72" y2="98" stroke="' + C.metalDark + '" stroke-width="2.5" stroke-linecap="round"/>';
+      content += '<circle cx="55" cy="73" r="4" fill="' + C.metal + '" stroke="' + C.metalDark + '" stroke-width="1"/>';
+      // Tartar being removed (particles flying off)
+      content += '<circle cx="60" cy="90" r="2" fill="#C4A04A" opacity="0.4"><animate attributeName="cx" values="72;55;72" dur="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;0;0.6" dur="1.5s" repeatCount="indefinite"/></circle>';
+      content += '<circle cx="65" cy="95" r="1.5" fill="#C4A04A" opacity="0.3"><animate attributeName="cx" values="72;50;72" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0;0.5" dur="1.8s" repeatCount="indefinite"/></circle>';
+      // Water spray
+      content += '<circle cx="75" cy="100" r="1" fill="' + C.gel + '" opacity="0.5"><animate attributeName="cy" values="100;85;100" dur="0.8s" repeatCount="indefinite"/></circle>';
+      content += label(40, 68, 'SCALER', 'end');
+    } else if (phase === 3) {
+      // Root planing — smoothing root surfaces
+      content = gumScene() + simpleRoots() + baseTooth();
+      // Curette instrument on root
+      content += '<line x1="60" y1="108" x2="76" y2="130" stroke="' + C.metalDark + '" stroke-width="2" stroke-linecap="round"/>';
+      content += '<circle cx="58" cy="106" r="3" fill="' + C.metal + '" stroke="' + C.metalDark + '" stroke-width="1"/>';
+      // Smooth lines along root
+      content += '<path d="M78,105 Q76,125 77,145" stroke="' + C.accent + '" stroke-width="0.8" fill="none" opacity="0.5" stroke-dasharray="2,2"/>';
+      content += label(40, 130, 'SMOOTH', 'end');
+    } else {
+      // Healed gums — healthy
+      content = '<rect x="0" y="95" width="200" height="165" fill="#e8b0b0"/>' +
+                '<rect x="0" y="130" width="200" height="130" fill="url(#boneGrad)"/>';
+      content += simpleRoots() + baseTooth();
+      // Healthy gum line (no inflammation)
+      content += '<path d="M55,95 Q80,90 100,92 Q120,90 145,95" fill="none" stroke="#4CAF50" stroke-width="2" opacity="0.6"/>';
+      content += '<ellipse cx="90" cy="40" rx="8" ry="12" fill="white" opacity="0.3" transform="rotate(-10 90 40)"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="3s" repeatCount="indefinite"/></ellipse>';
+      content += '<text x="100" y="248" text-anchor="middle" font-size="10" fill="' + C.accent + '" font-family="sans-serif" font-weight="600">&#10003; HEALTHY</text>';
+    }
+
   // ========== FALLBACK ==========
   } else {
     content = fullTooth();
   }
 
+  // Add defs to content if not already included (non-fullTooth paths)
+  if (content.indexOf('<defs>') === -1) content = defs() + content;
+
+  // Render into hidden SVG, then crossfade
   svg.innerHTML = content;
+  svg.classList.remove('hidden');
+  svg.classList.add('visible');
+  prevSvg.classList.remove('visible');
+  prevSvg.classList.add('hidden');
+  _svgActive = nextId;
 }
 
 // ==================== CONSEQUENCE SCREEN ====================

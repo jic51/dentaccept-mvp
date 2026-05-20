@@ -22,3 +22,4 @@ dist/
 
 # Zip archives
 *.zip
+.vercel
