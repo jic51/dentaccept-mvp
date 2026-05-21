@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DentAccept — The Research Behind the Product</title>
+<meta name="description" content="Data-backed research showing why 54% of dental treatments go unscheduled and how visual patient education recovers $200K+ in lost revenue per practice.">
+<style>
+  :root {
+    --ink: #0f0f0f;
+    --ink-soft: #444;
+    --ink-muted: #888;
+    --page: #faf9f6;
+    --surface: #f2f0eb;
+    --surface2: #e8e5de;
+    --accent: #1a472a;
+    --accent-light: #e8f2ec;
+    --accent2: #c8392b;
+    --accent2-light: #fdf0ee;
+    --border: #ddd9d0;
+    --dark: #0f1210;
+    --dark2: #161b18;
+    --dark3: #1e2520;
+    --green-glow: #2ecc71;
+    --red-glow: #e74c3c;
+    --gold: #f0b849;
+    --serif: 'Georgia', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--page);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%;
+    background: rgba(250,249,246,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    z-index: 100; padding: 14px 0;
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-family: var(--serif); font-size: 22px; text-decoration: none; color: var(--ink); letter-spacing: -0.02em; }
+  .nav-logo em { color: var(--accent); font-style: italic; }
+  .nav-links { display: flex; gap: 20px; align-items: center; }
+  .nav-links a { font-size: 13px; color: var(--ink-soft); text-decoration: none; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta { background: var(--accent) !important; color: white !important; padding: 8px 18px; border-radius: 8px; font-weight: 600; }
+  .lang-btn {
+    font-family: var(--mono); font-size: 11px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px;
+    cursor: pointer; color: var(--ink-muted);
+  }
+  .lang-btn:hover { background: var(--surface2); }
+
+  /* CONTAINER */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+  .narrow { max-width: 760px; }
+
+  /* HERO */
+  .research-hero {
+    padding: 160px 0 80px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .research-hero h1 {
+    font-family: var(--serif); font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 20px;
+    max-width: 800px; margin-left: auto; margin-right: auto;
+  }
+  .research-hero h1 em { color: var(--accent2); font-style: italic; }
+  .research-hero p {
+    font-size: 18px; color: var(--ink-soft); max-width: 600px;
+    margin: 0 auto 40px; line-height: 1.6;
+  }
+
+  /* SECTION SHARED */
+  section { padding: 80px 0; }
+  .section-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(26px, 3.5vw, 38px);
+    line-height: 1.15; margin-bottom: 16px; max-width: 600px;
+  }
+  .section-desc {
+    font-size: 16px; color: var(--ink-soft); max-width: 560px;
+    margin-bottom: 40px; line-height: 1.65;
+  }
+
+  /* DARK SECTIONS */
+  .dark-section {
+    background: var(--dark); color: white;
+  }
+  .dark-section .section-label { color: var(--green-glow); }
+  .dark-section .section-title { color: white; }
+  .dark-section .section-desc { color: rgba(255,255,255,0.55); }
+
+  /* BIG STAT COUNTERS */
+  .stats-hero {
+    background: var(--dark); padding: 56px 0;
+  }
+  .stats-hero-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center;
+  }
+  .stat-hero-item .stat-big {
+    font-family: var(--serif); font-size: clamp(36px, 5vw, 56px);
+    color: white; display: block; line-height: 1.1;
+  }
+  .stat-hero-item .stat-big.red { color: var(--red-glow); }
+  .stat-hero-item .stat-big.green { color: var(--green-glow); }
+  .stat-hero-item .stat-big.gold { color: var(--gold); }
+  .stat-hero-item .stat-sub {
+    font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 6px; display: block; line-height: 1.4;
+  }
+
+  /* BAR CHARTS */
+  .chart-container { margin: 40px 0; }
+  .chart-title {
+    font-family: var(--serif); font-size: 18px; margin-bottom: 20px;
+  }
+  .bar-chart { display: flex; flex-direction: column; gap: 14px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+  .bar-label { font-size: 13px; min-width: 120px; color: var(--ink-soft); text-align: right; }
+  .bar-track {
+    flex: 1; height: 32px; background: var(--surface); border-radius: 6px; overflow: hidden; position: relative;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 12px;
+    font-size: 13px; font-weight: 700; color: white; min-width: 40px;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: 0;
+  }
+  .bar-fill.animated { /* width set by JS */ }
+  .bar-fill.green { background: linear-gradient(90deg, #1a472a, #2ecc71); }
+  .bar-fill.red { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+  .bar-fill.gold { background: linear-gradient(90deg, #d4a017, #f0b849); }
+  .bar-fill.dark { background: linear-gradient(90deg, #333, #666); }
+  .bar-value { font-size: 13px; min-width: 50px; font-weight: 600; }
+
+  /* DARK BAR CHARTS */
+  .dark-section .bar-track { background: var(--dark3); }
+  .dark-section .bar-label { color: rgba(255,255,255,0.5); }
+  .dark-section .bar-value { color: white; }
+  .dark-section .chart-title { color: white; }
+
+  /* COMPARISON CARDS */
+  .compare-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 40px 0;
+  }
+  .compare-card {
+    border-radius: 16px; padding: 32px 28px;
+  }
+  .compare-card.bad {
+    background: var(--accent2-light); border: 1.5px solid #e8a09a;
+  }
+  .compare-card.good {
+    background: var(--accent-light); border: 1.5px solid #a3d4b5;
+  }
+  .compare-card h3 {
+    font-family: var(--serif); font-size: 20px; margin-bottom: 8px;
+  }
+  .compare-card.bad h3 { color: var(--accent2); }
+  .compare-card.good h3 { color: var(--accent); }
+  .compare-card p { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+  .compare-card .big-num {
+    font-family: var(--serif); font-size: 42px; margin-bottom: 4px; display: block;
+  }
+  .compare-card.bad .big-num { color: var(--accent2); }
+  .compare-card.good .big-num { color: var(--accent); }
+
+  /* TIMELINE VISUAL */
+  .cost-timeline {
+    display: flex; align-items: flex-end; gap: 0; margin: 40px 0; height: 260px;
+    padding-bottom: 40px; position: relative;
+  }
+  .cost-timeline::after {
+    content: ''; position: absolute; bottom: 38px; left: 0; right: 0;
+    height: 1px; background: var(--border);
+  }
+  .timeline-bar {
+    flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1;
+  }
+  .timeline-col {
+    width: 60%; border-radius: 8px 8px 0 0;
+    transition: height 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    height: 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 10px;
+  }
+  .timeline-col span { font-size: 12px; font-weight: 700; color: white; }
+  .timeline-col.c0 { background: linear-gradient(180deg, #1a472a, #2ecc71); }
+  .timeline-col.c1 { background: linear-gradient(180deg, #d4a017, #f0b849); }
+  .timeline-col.c2 { background: linear-gradient(180deg, #e67e22, #f39c12); }
+  .timeline-col.c3 { background: linear-gradient(180deg, #c0392b, #e74c3c); }
+  .timeline-label {
+    font-size: 11px; color: var(--ink-muted); margin-top: 8px; text-align: center; line-height: 1.3;
+  }
+  .timeline-price {
+    font-family: var(--mono); font-size: 13px; font-weight: 700; margin-bottom: 6px;
+  }
+
+  /* SCIENCE CARDS */
+  .science-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px;
+  }
+  .science-card {
+    background: var(--dark2); border: 1px solid var(--dark3); border-radius: 14px;
+    padding: 28px 24px; text-align: center;
+  }
+  .science-card .sc-num {
+    font-family: var(--serif); font-size: 42px; color: var(--green-glow);
+    display: block; margin-bottom: 4px;
+  }
+  .science-card .sc-label {
+    font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5;
+  }
+  .science-card .sc-source {
+    font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.3);
+    margin-top: 10px; display: block;
+  }
+
+  /* DONUT CHART */
+  .donut-row {
+    display: flex; gap: 48px; align-items: center; margin: 40px 0; flex-wrap: wrap;
+  }
+  .donut-wrap { position: relative; width: 180px; height: 180px; flex-shrink: 0; }
+  .donut-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .donut-track { fill: none; stroke: var(--surface2); stroke-width: 14; }
+  .donut-fill {
+    fill: none; stroke-width: 14; stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .donut-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .donut-center .dc-num { font-family: var(--serif); font-size: 36px; display: block; }
+  .donut-center .dc-label { font-size: 11px; color: var(--ink-muted); }
+  .donut-text { flex: 1; min-width: 240px; }
+  .donut-text h3 { font-family: var(--serif); font-size: 22px; margin-bottom: 8px; }
+  .donut-text p { font-size: 14px; color: var(--ink-soft); line-height: 1.65; }
+
+  /* ROI CALCULATOR */
+  .roi-box {
+    background: var(--dark2); border: 1px solid var(--dark3);
+    border-radius: 16px; padding: 40px 36px; margin-top: 40px;
+  }
+  .roi-box h3 { font-family: var(--serif); font-size: 24px; color: white; margin-bottom: 24px; }
+  .roi-math {
+    display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 12px;
+    align-items: center; text-align: center; margin-bottom: 24px;
+  }
+  .roi-item {
+    background: var(--dark3); border-radius: 12px; padding: 20px 16px;
+  }
+  .roi-item .ri-num { font-family: var(--serif); font-size: 28px; color: var(--green-glow); display: block; }
+  .roi-item .ri-label { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 4px; display: block; }
+  .roi-op { font-size: 28px; color: rgba(255,255,255,0.3); }
+  .roi-result {
+    background: linear-gradient(135deg, #1a472a, #2ecc71); border-radius: 12px;
+    padding: 24px; text-align: center; margin-top: 8px;
+  }
+  .roi-result .rr-num { font-family: var(--serif); font-size: 48px; color: white; display: block; }
+  .roi-result .rr-label { font-size: 14px; color: rgba(255,255,255,0.7); }
+
+  /* SOURCE LIST */
+  .sources-list { list-style: none; }
+  .sources-list li {
+    padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+  }
+  .sources-list a { color: var(--accent); text-decoration: none; }
+  .sources-list a:hover { text-decoration: underline; }
+  .sources-list .src-tag {
+    font-family: var(--mono); font-size: 9px; background: var(--surface);
+    padding: 2px 8px; border-radius: 4px; color: var(--ink-muted); margin-right: 8px;
+  }
+
+  /* CTA BAND */
+  .cta-band {
+    background: var(--accent); padding: 60px 0; text-align: center;
+  }
+  .cta-band h2 { font-family: var(--serif); font-size: 32px; color: white; margin-bottom: 12px; }
+  .cta-band p { color: rgba(255,255,255,0.7); margin-bottom: 24px; font-size: 16px; }
+  .cta-band .btn {
+    display: inline-block; padding: 14px 32px; border-radius: 10px;
+    font-size: 15px; font-weight: 600; text-decoration: none; background: white;
+    color: var(--accent);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 0; border-top: 0.5px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer .f-logo { font-family: var(--serif); font-size: 18px; }
+  footer .f-logo em { color: var(--accent); font-style: italic; }
+  footer .f-copy { font-size: 13px; color: var(--ink-muted); }
+
+  /* BILINGUAL TOGGLE — high specificity to override component styles */
+  [data-lang="es"] { display: none !important; }
+  body.es [data-lang="en"] { display: none !important; }
+  body.es [data-lang="es"] { display: block !important; }
+  /* Inline elements */
+  body.es span[data-lang="es"], body.es a[data-lang="es"] { display: inline !important; }
+  /* Block-level spans that need display:block in their visible state */
+  body.es .stat-sub[data-lang="es"],
+  body.es .rr-num[data-lang="es"],
+  body.es .rr-label[data-lang="es"] { display: block !important; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .stats-hero-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .science-grid { grid-template-columns: 1fr; }
+    .roi-math { grid-template-columns: 1fr; }
+    .roi-op { display: none; }
+    .donut-row { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .cost-timeline { height: auto; flex-direction: column; gap: 12px; padding-bottom: 0; }
+    .cost-timeline::after { display: none; }
+    .timeline-bar { flex-direction: row; gap: 12px; align-items: center; }
+    .timeline-col { width: 100%; height: 36px !important; border-radius: 6px; padding: 0 12px; align-items: center; }
+    .timeline-label { margin-top: 0; text-align: left; }
+    .nav-links a:not(.nav-cta):not(.lang-btn) { display: none; }
+    .bar-label { min-width: 80px; font-size: 11px; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Dent<em>Accept</em></a>
+    <div class="nav-links">
+      <a href="#problem" data-lang="en">The Problem</a>
+      <a href="#problem" data-lang="es">El Problema</a>
+      <a href="#science" data-lang="en">The Science</a>
+      <a href="#science" data-lang="es">La Ciencia</a>
+      <a href="#roi" data-lang="en">ROI</a>
+      <a href="#roi" data-lang="es">ROI</a>
+      <button class="lang-btn" onclick="toggleLang()">EN / ES</button>
+      <a href="index.html#cta" class="nav-cta" data-lang="en">Try Free</a>
+      <a href="index.html#cta" class="nav-cta" data-lang="es">Probar Gratis</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="research-hero">
+  <div class="container">
+    <div class="hero-eyebrow" data-lang="en">Data-Backed Research</div>
+    <div class="hero-eyebrow" data-lang="es">Investigación Respaldada por Datos</div>
+    <h1 data-lang="en">The average dental practice loses <em>$200,000+ per year</em> to treatments patients need but don't accept.</h1>
+    <h1 data-lang="es">El consultorio dental promedio pierde <em>$200,000+ al año</em> en tratamientos que los pacientes necesitan pero no aceptan.</h1>
+    <p data-lang="en">This isn't a marketing problem. It's a communication problem. Here's the data that proves it — and the science behind the solution.</p>
+    <p data-lang="es">No es un problema de marketing. Es un problema de comunicación. Aquí están los datos que lo prueban — y la ciencia detrás de la solución.</p>
+  </div>
+</div>
+
+<!-- BIG STAT COUNTERS -->
+<div class="stats-hero" id="stats-hero">
+  <div class="container">
+    <div class="stats-hero-grid">
+      <div class="stat-hero-item">
+        <span class="stat-big red" data-counter data-end="54" data-suffix="%">0%</span>
+        <span class="stat-sub" data-lang="en">of treatment plans never get scheduled</span>
+        <span class="stat-sub" data-lang="es">de planes de tratamiento nunca se agendan</span>
+      </div>
+      <div class="stat-hero-item">
+        <span class="stat-big gold" data-counter data-end="942" data-prefix="$" data-suffix="K">$0K</span>
+        <span class="stat-sub" data-lang="en">avg. annual revenue per dentist (ADA 2024)</span>
+        <span class="stat-sub" data-lang="es">ingreso bruto promedio anual por dentista (ADA 2024)</span>
+      </div>
+      <div class="stat-hero-item">
+        <span class="stat-big red" data-counter data-end="40" data-suffix="%">0%</span>
+        <span class="stat-sub" data-lang="en">of patients who leave never come back</span>
+        <span class="stat-sub" data-lang="es">de pacientes que se van nunca regresan</span>
+      </div>
+      <div class="stat-hero-item">
+        <span class="stat-big green" data-counter data-end="78" data-suffix="%">0%</span>
+        <span class="stat-sub" data-lang="en">acceptance rate with visual tools</span>
+        <span class="stat-sub" data-lang="es">tasa de aceptación con herramientas visuales</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: THE PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="section-label" data-lang="en">Section 1 — The Problem</div>
+    <div class="section-label" data-lang="es">Sección 1 — El Problema</div>
+    <h2 class="section-title" data-lang="en">Patients don't say no because they don't need treatment. They say no because they don't understand it.</h2>
+    <h2 class="section-title" data-lang="es">Los pacientes no dicen que no porque no necesiten tratamiento. Dicen que no porque no lo entienden.</h2>
+    <p class="section-desc" data-lang="en">The ADA reports average gross billings of $942,290 per general dentist. But with acceptance rates declining to historic lows, most of that diagnosed work never reaches the schedule.</p>
+    <p class="section-desc" data-lang="es">La ADA reporta facturación bruta promedio de $942,290 por dentista general. Pero con tasas de aceptación cayendo a mínimos históricos, la mayoría del trabajo diagnosticado nunca llega a la agenda.</p>
+
+    <!-- Acceptance Rate Decline Chart -->
+    <div class="chart-container">
+      <div class="chart-title" data-lang="en">Case Acceptance Rate Decline (2019-2025)</div>
+      <div class="chart-title" data-lang="es">Declive en Tasa de Aceptación de Casos (2019-2025)</div>
+      <div class="bar-chart" data-animate>
+        <div class="bar-row">
+          <span class="bar-label">2019</span>
+          <div class="bar-track"><div class="bar-fill green" data-width="57">57%</div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">2023</span>
+          <div class="bar-track"><div class="bar-fill green" data-width="57">57%</div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">2024</span>
+          <div class="bar-track"><div class="bar-fill gold" data-width="54">54%</div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">2025</span>
+          <div class="bar-track"><div class="bar-fill red" data-width="46">46%</div></div>
+        </div>
+      </div>
+      <p style="font-size:11px; color:var(--ink-muted); margin-top:8px; font-family:var(--mono);">
+        Source: Inside Dentistry Annual Trends Survey, 2019-2025
+      </p>
+    </div>
+
+    <!-- Why Patients Say No -->
+    <h3 style="font-family:var(--serif); font-size:22px; margin:48px 0 24px;" data-lang="en">Why patients say no</h3>
+    <h3 style="font-family:var(--serif); font-size:22px; margin:48px 0 24px;" data-lang="es">Por qué los pacientes dicen que no</h3>
+
+    <div class="compare-grid">
+      <div class="compare-card bad">
+        <span class="big-num">20%</span>
+        <h3 data-lang="en">"I don't understand"</h3>
+        <h3 data-lang="es">"No entiendo"</h3>
+        <p data-lang="en">Patients only retain 20% of verbal explanations. They can't visualize what's happening inside their mouth. The information doesn't stick.</p>
+        <p data-lang="es">Los pacientes solo retienen el 20% de explicaciones verbales. No pueden visualizar lo que pasa dentro de su boca. La información no se queda.</p>
+      </div>
+      <div class="compare-card good">
+        <span class="big-num">50%</span>
+        <h3 data-lang="en">With visual aids</h3>
+        <h3 data-lang="es">Con ayudas visuales</h3>
+        <p data-lang="en">Recall improves to 50% when visual explanations are used — a 2.5x improvement. Patients see the problem and understand the solution.</p>
+        <p data-lang="es">El recuerdo mejora al 50% cuando se usan explicaciones visuales — una mejora de 2.5x. Los pacientes ven el problema y entienden la solución.</p>
+      </div>
+    </div>
+
+    <!-- Cost of Waiting Timeline -->
+    <h3 style="font-family:var(--serif); font-size:22px; margin:48px 0 8px;" data-lang="en">The real cost of "let me think about it"</h3>
+    <h3 style="font-family:var(--serif); font-size:22px; margin:48px 0 8px;" data-lang="es">El costo real de "lo voy a pensar"</h3>
+    <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;" data-lang="en">Example: Patient diagnosed with a crown today</p>
+    <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;" data-lang="es">Ejemplo: Paciente diagnosticado con corona hoy</p>
+
+    <div class="cost-timeline" data-animate-timeline>
+      <div class="timeline-bar">
+        <div class="timeline-price">$1,200</div>
+        <div class="timeline-col c0" data-height="60"></div>
+        <div class="timeline-label" data-lang="en">Today<br>Simple crown</div>
+        <div class="timeline-label" data-lang="es">Hoy<br>Corona simple</div>
+      </div>
+      <div class="timeline-bar">
+        <div class="timeline-price">$2,400</div>
+        <div class="timeline-col c1" data-height="120"></div>
+        <div class="timeline-label" data-lang="en">6 months<br>Root canal + crown</div>
+        <div class="timeline-label" data-lang="es">6 meses<br>Endodoncia + corona</div>
+      </div>
+      <div class="timeline-bar">
+        <div class="timeline-price">$4,500</div>
+        <div class="timeline-col c2" data-height="170"></div>
+        <div class="timeline-label" data-lang="en">1 year<br>Extraction + implant</div>
+        <div class="timeline-label" data-lang="es">1 año<br>Extracción + implante</div>
+      </div>
+      <div class="timeline-bar">
+        <div class="timeline-price">$8,000+</div>
+        <div class="timeline-col c3" data-height="220"></div>
+        <div class="timeline-label" data-lang="en">2 years<br>Bone graft + surgery</div>
+        <div class="timeline-label" data-lang="es">2 años<br>Injerto óseo + cirugía</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: THE SCIENCE -->
+<section class="dark-section" id="science">
+  <div class="container">
+    <div class="section-label">
+      <span data-lang="en">Section 2 — The Science</span>
+      <span data-lang="es">Sección 2 — La Ciencia</span>
+    </div>
+    <h2 class="section-title" data-lang="en">Visual education isn't a theory. It's the most proven method to increase treatment acceptance.</h2>
+    <h2 class="section-title" data-lang="es">La educación visual no es una teoría. Es el método más probado para aumentar la aceptación de tratamiento.</h2>
+    <p class="section-desc" data-lang="en">Peer-reviewed studies consistently show that patients who see their diagnosis visually are significantly more likely to accept treatment.</p>
+    <p class="section-desc" data-lang="es">Estudios revisados por pares muestran consistentemente que los pacientes que ven su diagnóstico visualmente son significativamente más propensos a aceptar tratamiento.</p>
+
+    <div class="science-grid">
+      <div class="science-card">
+        <span class="sc-num" data-counter data-end="97.6" data-suffix="%" data-decimals="1">0%</span>
+        <span class="sc-label" data-lang="en">of patients prefer video-based education over brochures</span>
+        <span class="sc-label" data-lang="es">de pacientes prefieren educación en video sobre folletos</span>
+        <span class="sc-source">Westmead Centre for Oral Health</span>
+      </div>
+      <div class="science-card">
+        <span class="sc-num" data-counter data-end="3.91" data-suffix="x" data-decimals="2">0x</span>
+        <span class="sc-label" data-lang="en">more likely to recall treatment details with 3D animations</span>
+        <span class="sc-label" data-lang="es">más probabilidad de recordar detalles con animaciones 3D</span>
+        <span class="sc-source">Sibar Institute of Dental Sciences</span>
+      </div>
+      <div class="science-card">
+        <span class="sc-num" data-counter data-end="34" data-suffix="%">0%</span>
+        <span class="sc-label" data-lang="en">higher retention of treatment plans with visual simulations</span>
+        <span class="sc-label" data-lang="es">mayor retencion de planes de tratamiento con simulaciones visuales</span>
+        <span class="sc-source">University of Pennsylvania</span>
+      </div>
+    </div>
+
+    <!-- Acceptance Rate Comparison -->
+    <div class="chart-container" style="margin-top:56px;">
+      <div class="chart-title" data-lang="en">Case Acceptance: With vs Without Visual Tools</div>
+      <div class="chart-title" data-lang="es">Aceptación de Casos: Con vs Sin Herramientas Visuales</div>
+      <div class="bar-chart" data-animate>
+        <div class="bar-row">
+          <span class="bar-label" data-lang="en">Without visuals</span>
+          <span class="bar-label" data-lang="es">Sin visuales</span>
+          <div class="bar-track"><div class="bar-fill red" data-width="46">46%</div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label" data-lang="en">With DentAccept</span>
+          <span class="bar-label" data-lang="es">Con DentAccept</span>
+          <div class="bar-track"><div class="bar-fill green" data-width="78">78%</div></div>
+        </div>
+      </div>
+      <p style="font-size:11px; color:rgba(255,255,255,0.3); margin-top:8px; font-family:var(--mono);">
+        Sources: Inside Dentistry 2025, ai.dentist AR Patient Education Study
+      </p>
+    </div>
+
+    <!-- Loss Aversion -->
+    <div style="margin-top:56px;">
+      <h3 style="font-family:var(--serif); font-size:22px; color:white; margin-bottom:16px;" data-lang="en">The psychology: Loss aversion</h3>
+      <h3 style="font-family:var(--serif); font-size:22px; color:white; margin-bottom:16px;" data-lang="es">La psicología: Aversión a la pérdida</h3>
+      <div style="background:var(--dark2); border:1px solid var(--dark3); border-radius:14px; padding:28px 32px; max-width:700px;">
+        <p style="font-size:15px; color:rgba(255,255,255,0.75); line-height:1.7; margin-bottom:16px;" data-lang="en">Nobel Prize-winning research by <strong style="color:white;">Daniel Kahneman and Amos Tversky</strong> proved that the pain of losing something is <strong style="color:var(--red-glow);">2x more powerful</strong> than the pleasure of gaining something equivalent.</p>
+        <p style="font-size:15px; color:rgba(255,255,255,0.75); line-height:1.7; margin-bottom:16px;" data-lang="es">La investigación ganadora del Premio Nobel de <strong style="color:white;">Daniel Kahneman y Amos Tversky</strong> probó que el dolor de perder algo es <strong style="color:var(--red-glow);">2 veces más poderoso</strong> que el placer de ganar algo equivalente.</p>
+        <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.6;" data-lang="en">DentAccept's "What If You Wait" module applies this directly: instead of just showing the treatment (a gain), it shows the <em>consequences of not acting</em> (a loss). This is why patients convert fear into action.</p>
+        <p style="font-size:14px; color:rgba(255,255,255,0.55); line-height:1.6;" data-lang="es">El módulo "Qué Pasa Si Esperas" de DentAccept aplica esto directamente: en lugar de solo mostrar el tratamiento (una ganancia), muestra las <em>consecuencias de no actuar</em> (una pérdida). Por esto los pacientes convierten el miedo en acción.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: THE MARKET -->
+<section id="market">
+  <div class="container">
+    <div class="section-label">
+      <span data-lang="en">Section 3 — The Underserved Market</span>
+      <span data-lang="es">Sección 3 — El Mercado Desatendido</span>
+    </div>
+    <h2 class="section-title" data-lang="en">68 million Spanish speakers in the U.S. Most dental tools ignore them.</h2>
+    <h2 class="section-title" data-lang="es">68 millones de hispanohablantes en EE.UU. La mayoría de las herramientas dentales los ignoran.</h2>
+
+    <div class="donut-row">
+      <div class="donut-wrap">
+        <svg class="donut-svg" viewBox="0 0 120 120">
+          <circle class="donut-track" cx="60" cy="60" r="48"/>
+          <circle class="donut-fill" cx="60" cy="60" r="48" stroke="var(--accent)" stroke-dasharray="301.6" stroke-dashoffset="301.6" data-target="60.3"/>
+        </svg>
+        <div class="donut-center">
+          <span class="dc-num">20%</span>
+          <span class="dc-label" data-lang="en">of U.S.</span>
+          <span class="dc-label" data-lang="es">de EE.UU.</span>
+        </div>
+      </div>
+      <div class="donut-text">
+        <h3 data-lang="en">The fastest-growing patient demographic</h3>
+        <h3 data-lang="es">La demografía de pacientes de más rápido crecimiento</h3>
+        <p data-lang="en">The Hispanic population reached 68 million in 2024 (U.S. Census), growing by nearly 2 million per year. 75% speak Spanish. 68% speak it at home. They cite "not knowing a Spanish-speaking provider" as a top barrier to dental care. DentAccept switches everything to Spanish with one tap.</p>
+        <p data-lang="es">La población hispana alcanzó 68 millones en 2024 (Censo de EE.UU.), creciendo casi 2 millones por año. El 75% habla español. El 68% lo habla en casa. Citan "no conocer un proveedor que hable español" como barrera principal. DentAccept cambia todo a español con un toque.</p>
+      </div>
+    </div>
+
+    <!-- Market Size -->
+    <div class="chart-container" style="margin-top:24px;">
+      <div class="chart-title" data-lang="en">Dental Patient Education Software Market</div>
+      <div class="chart-title" data-lang="es">Mercado de Software de Educación del Paciente Dental</div>
+      <div class="bar-chart" data-animate>
+        <div class="bar-row">
+          <span class="bar-label">2025</span>
+          <div class="bar-track"><div class="bar-fill dark" data-width="15">$150M</div></div>
+          <span class="bar-value">$150M</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">2026</span>
+          <div class="bar-track"><div class="bar-fill dark" data-width="26">$259M</div></div>
+          <span class="bar-value">$259M</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">2033</span>
+          <div class="bar-track"><div class="bar-fill green" data-width="100">$1.2B</div></div>
+          <span class="bar-value">$1.2B</span>
+        </div>
+      </div>
+      <p style="font-size:11px; color:var(--ink-muted); margin-top:8px; font-family:var(--mono);">
+        Sources: Verified Market Research, Market Reports World (CAGR 10.5-15%)
+      </p>
+    </div>
+
+    <!-- Competitor comparison -->
+    <div class="chart-container" style="margin-top:48px;">
+      <div class="chart-title" data-lang="en">Monthly Cost: DentAccept vs Competitors</div>
+      <div class="chart-title" data-lang="es">Costo Mensual: DentAccept vs Competidores</div>
+      <div class="bar-chart" data-animate>
+        <div class="bar-row">
+          <span class="bar-label">DentAccept</span>
+          <div class="bar-track"><div class="bar-fill green" data-width="26" style="min-width:80px;">$79-129</div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Modento</span>
+          <div class="bar-track"><div class="bar-fill gold" data-width="60">$200-400</div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Chairside</span>
+          <div class="bar-track"><div class="bar-fill red" data-width="80">$300-500</div></div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Curve Dental</span>
+          <div class="bar-track"><div class="bar-fill red" data-width="70">$350+</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: ROI -->
+<section class="dark-section" id="roi">
+  <div class="container">
+    <div class="section-label">
+      <span data-lang="en">Section 4 — The Return on Investment</span>
+      <span data-lang="es">Sección 4 — El Retorno de Inversión</span>
+    </div>
+    <h2 class="section-title" data-lang="en">The math is simple. The ROI is undeniable.</h2>
+    <h2 class="section-title" data-lang="es">La matematica es simple. El ROI es innegable.</h2>
+    <p class="section-desc" data-lang="en">If DentAccept helps just 3 extra patients per month accept a $1,200 crown they were going to skip:</p>
+    <p class="section-desc" data-lang="es">Si DentAccept ayuda a solo 3 pacientes extra por mes a aceptar una corona de $1,200 que iban a rechazar:</p>
+
+    <div class="roi-box">
+      <h3 data-lang="en">Conservative ROI Calculation</h3>
+      <h3 data-lang="es">Cálculo Conservador de ROI</h3>
+      <div class="roi-math">
+        <div class="roi-item">
+          <span class="ri-num">3</span>
+          <span class="ri-label" data-lang="en">extra patients/mo</span>
+          <span class="ri-label" data-lang="es">pacientes extra/mes</span>
+        </div>
+        <span class="roi-op">&times;</span>
+        <div class="roi-item">
+          <span class="ri-num">$1,200</span>
+          <span class="ri-label" data-lang="en">avg. crown value</span>
+          <span class="ri-label" data-lang="es">valor prom. corona</span>
+        </div>
+        <span class="roi-op">&times;</span>
+        <div class="roi-item">
+          <span class="ri-num">12</span>
+          <span class="ri-label" data-lang="en">months</span>
+          <span class="ri-label" data-lang="es">meses</span>
+        </div>
+      </div>
+      <div class="roi-result">
+        <span class="rr-num" data-lang="en">$43,200 recovered</span>
+        <span class="rr-num" data-lang="es">$43,200 recuperados</span>
+        <span class="rr-label" data-lang="en">on a $1,548/year investment (Practice plan) = <strong>2,691% ROI</strong></span>
+        <span class="rr-label" data-lang="es">sobre una inversión de $1,548/año (plan Practice) = <strong>2,691% ROI</strong></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: SOURCES -->
+<section id="sources">
+  <div class="container">
+    <div class="section-label">
+      <span data-lang="en">Section 5 — Sources</span>
+      <span data-lang="es">Sección 5 — Fuentes</span>
+    </div>
+    <h2 class="section-title" data-lang="en">Every claim on this page is backed by real data.</h2>
+    <h2 class="section-title" data-lang="es">Cada afirmación en esta página está respaldada por datos reales.</h2>
+
+    <ul class="sources-list">
+      <li><span class="src-tag">ADA</span><a href="https://www.ada.org/resources/research/health-policy-institute/dental-practice-research/trends-in-dentist-income" target="_blank">ADA Health Policy Institute — Trends in Dentists' Income & Revenue (2024)</a></li>
+      <li><span class="src-tag">SURVEY</span><a href="https://insidedentistry.net/2025/11/trends/" target="_blank">Inside Dentistry — Annual Trends Survey (2019-2025)</a></li>
+      <li><span class="src-tag">REVENUE</span><a href="https://www.maxillodental.com/post/beyond-production-the-hidden-financial-costs-of-low-dental-case-acceptance-rates" target="_blank">Maxillo Dental — Hidden Financial Costs of Low Case Acceptance</a></li>
+      <li><span class="src-tag">STATS</span><a href="https://clerri.com/blog/dental-practice-revenue-statistics" target="_blank">Clerri — 28 Dental Practice Revenue Stats (2026)</a></li>
+      <li><span class="src-tag">STUDY</span><a href="https://ai.dentist/blog/ar-patient-education-boosts-dental-case-acceptance/" target="_blank">ai.dentist — AR Patient Education Boosts Case Acceptance to 78%</a></li>
+      <li><span class="src-tag">AI</span><a href="https://www.videa.ai/blog-posts/beyond-words-videahealths-ai-and-the-future-dental-patient-education" target="_blank">VideaHealth — AI and the Future of Dental Patient Education</a></li>
+      <li><span class="src-tag">STUDY</span><a href="https://completesmilesbv.com.au/impact-videos-patient-understanding/" target="_blank">Complete Smiles — Impact of Videos on Patient Understanding (97.6%)</a></li>
+      <li><span class="src-tag">NIH</span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10814675/" target="_blank">PMC/NIH — Intraoral Scans as Visual Aid (Randomized Clinical Trial)</a></li>
+      <li><span class="src-tag">PSYCH</span><a href="https://www.numberanalytics.com/blog/loss-aversion-health-economics-guide" target="_blank">NumberAnalytics — Loss Aversion in Health Economics</a></li>
+      <li><span class="src-tag">PSYCH</span><a href="https://www.cambridge.org/core/journals/judgment-and-decision-making/article/referencedependent-preferences-and-loss-aversion-a-discrete-choice-experiment-in-the-healthcare-sector/E53AC61ADFEAA805EE31D3FD357A2796" target="_blank">Cambridge — Loss Aversion in Healthcare (Discrete Choice Experiment)</a></li>
+      <li><span class="src-tag">CENSUS</span><a href="https://www.pewresearch.org/short-reads/2025/10/22/key-facts-about-us-latinos/" target="_blank">Pew Research — Key Facts About U.S. Latinos (2025)</a></li>
+      <li><span class="src-tag">CENSUS</span><a href="https://www.census.gov/newsroom/press-releases/2024/population-estimates-characteristics.html" target="_blank">U.S. Census Bureau — Population Estimates (2024)</a></li>
+      <li><span class="src-tag">HEALTH</span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10882391/" target="_blank">PMC/NIH — Oral Health of Hispanic/Latino Population in the U.S.</a></li>
+      <li><span class="src-tag">MARKET</span><a href="https://www.verifiedmarketresearch.com/product/dental-patient-education-software-market/" target="_blank">Verified Market Research — Dental Patient Education Software Market</a></li>
+      <li><span class="src-tag">MARKET</span><a href="https://www.precedenceresearch.com/dental-software-market" target="_blank">Precedence Research — Dental Software Market Size to $4.25B by 2034</a></li>
+      <li><span class="src-tag">RETENTION</span><a href="https://mconsent.net/blog/cost-missed-follow-up-dental-practices/" target="_blank">mConsent — The Hidden Cost of Missed Follow-Ups in Dental Practices</a></li>
+      <li><span class="src-tag">RETENTION</span><a href="https://mvpmailhouse.com/resources/blog/why-dental-clinics-lose-patients-and-how-to-fix-it" target="_blank">MVP Mailhouse — Why Dental Clinics Lose Patients</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="container">
+    <h2 data-lang="en">Ready to stop losing $200K/year?</h2>
+    <h2 data-lang="es">¿Listo para dejar de perder $200K/año?</h2>
+    <p data-lang="en">14-day free trial. No credit card. No installation. Works on any iPad.</p>
+    <p data-lang="es">14 días gratis. Sin tarjeta de crédito. Sin instalación. Funciona en cualquier iPad.</p>
+    <a href="index.html#cta" class="btn" data-lang="en">Start Free Trial</a>
+    <a href="index.html#cta" class="btn" data-lang="es">Comenzar Prueba Gratis</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="container">
+  <footer>
+    <div class="f-logo">Dent<em>Accept</em></div>
+    <div class="f-copy" data-lang="en">Data you can trust. A tool that works.</div>
+    <div class="f-copy" data-lang="es">Datos en los que puedes confiar. Una herramienta que funciona.</div>
+  </footer>
+</div>
+
+<script>
+// ==================== LANGUAGE TOGGLE ====================
+function toggleLang() {
+  document.body.classList.toggle('es');
+  var btn = document.querySelector('.lang-btn');
+  btn.textContent = document.body.classList.contains('es') ? 'ES / EN' : 'EN / ES';
+}
+
+// ==================== ANIMATED COUNTERS ====================
+function animateCounters(entries, observer) {
+  entries.forEach(function(entry) {
+    if (!entry.isIntersecting) return;
+    var el = entry.target;
+    if (el.dataset.animated) return;
+    el.dataset.animated = '1';
+
+    var end = parseFloat(el.dataset.end);
+    var prefix = el.dataset.prefix || '';
+    var suffix = el.dataset.suffix || '';
+    var decimals = parseInt(el.dataset.decimals) || 0;
+    var duration = 1400;
+    var start = performance.now();
+
+    function step(now) {
+      var t = Math.min((now - start) / duration, 1);
+      var ease = 1 - Math.pow(1 - t, 3);
+      var val = (end * ease).toFixed(decimals);
+      el.textContent = prefix + val + suffix;
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+var counterObserver = new IntersectionObserver(animateCounters, { threshold: 0.3 });
+document.querySelectorAll('[data-counter]').forEach(function(el) {
+  counterObserver.observe(el);
+});
+
+// ==================== ANIMATED BAR CHARTS ====================
+function animateBars(entries) {
+  entries.forEach(function(entry) {
+    if (!entry.isIntersecting) return;
+    entry.target.querySelectorAll('.bar-fill').forEach(function(bar) {
+      var w = bar.dataset.width;
+      setTimeout(function() { bar.style.width = w + '%'; }, 100);
+    });
+  });
+}
+
+var barObserver = new IntersectionObserver(animateBars, { threshold: 0.2 });
+document.querySelectorAll('[data-animate]').forEach(function(el) {
+  barObserver.observe(el);
+});
+
+// ==================== ANIMATED TIMELINE ====================
+function animateTimeline(entries) {
+  entries.forEach(function(entry) {
+    if (!entry.isIntersecting) return;
+    entry.target.querySelectorAll('.timeline-col').forEach(function(col, i) {
+      var h = col.dataset.height;
+      setTimeout(function() { col.style.height = h + 'px'; }, 200 + i * 200);
+    });
+  });
+}
+
+var timelineObserver = new IntersectionObserver(animateTimeline, { threshold: 0.2 });
+document.querySelectorAll('[data-animate-timeline]').forEach(function(el) {
+  timelineObserver.observe(el);
+});
+
+// ==================== ANIMATED DONUT ====================
+function animateDonuts(entries) {
+  entries.forEach(function(entry) {
+    if (!entry.isIntersecting) return;
+    entry.target.querySelectorAll('.donut-fill').forEach(function(circle) {
+      var pct = parseFloat(circle.dataset.target) / 100;
+      var circumference = 2 * Math.PI * 48;
+      var offset = circumference * (1 - pct);
+      setTimeout(function() {
+        circle.style.strokeDashoffset = offset;
+      }, 200);
+    });
+  });
+}
+
+var donutObserver = new IntersectionObserver(animateDonuts, { threshold: 0.3 });
+document.querySelectorAll('.donut-wrap').forEach(function(el) {
+  donutObserver.observe(el);
+});
+</script>
+</body>
+</html>
