@@ -8,6 +8,8 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
 })
 
 const endpointSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET')!
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') || ''
+const APP_URL = Deno.env.get('APP_URL') || 'https://dentaccept.vercel.app'
 
 const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_URL')!,
@@ -27,6 +29,135 @@ async function generateUniqueCode(): Promise<string> {
   }
   // Fallback: 6-digit code
   return String(Math.floor(100000 + Math.random() * 900000))
+}
+
+// ========== WELCOME EMAIL ==========
+async function sendWelcomeEmail(email: string, officeName: string, code: string, plan: string) {
+  if (!RESEND_API_KEY) {
+    console.warn('RESEND_API_KEY not set — skipping welcome email')
+    return
+  }
+
+  const planLabel = plan === 'group' ? 'Group' : plan === 'practice' ? 'Practice' : 'Starter'
+  const appLink = `${APP_URL}/app.html`
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f4f3ef;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
+
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:32px;">
+      <h1 style="font-family:Georgia,serif;font-size:28px;color:#0f0f0f;margin:0;">
+        Dent<em style="color:#1a472a;font-style:italic;">Accept</em>
+      </h1>
+    </div>
+
+    <!-- Main Card -->
+    <div style="background:white;border-radius:12px;padding:40px 32px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+
+      <h2 style="font-family:Georgia,serif;font-size:24px;color:#0f0f0f;margin:0 0 8px;">
+        Welcome to DentAccept! 🎉
+      </h2>
+      <p style="color:#666;font-size:15px;line-height:1.6;margin:0 0 24px;">
+        Your ${planLabel} plan is active. Here's everything you need to get started.
+      </p>
+
+      <!-- Access Code Box -->
+      <div style="background:#f0faf3;border:1px solid #c8e6d0;border-radius:8px;padding:24px;text-align:center;margin-bottom:24px;">
+        <div style="font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#1a472a;margin-bottom:8px;font-weight:600;">
+          Your Access Code
+        </div>
+        <div style="font-family:'SF Mono',Monaco,monospace;font-size:36px;font-weight:700;color:#1a472a;letter-spacing:0.15em;">
+          ${code}
+        </div>
+        <div style="font-size:13px;color:#666;margin-top:8px;">
+          Use this code to log in from any iPad or tablet
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;align-items:flex-start;margin-bottom:16px;">
+          <div style="background:#1a472a;color:white;border-radius:50%;width:24px;height:24px;min-width:24px;text-align:center;line-height:24px;font-size:13px;font-weight:600;margin-right:12px;">1</div>
+          <div style="font-size:14px;color:#333;line-height:1.5;">Open <strong>${appLink}</strong> on your iPad or tablet browser</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;margin-bottom:16px;">
+          <div style="background:#1a472a;color:white;border-radius:50%;width:24px;height:24px;min-width:24px;text-align:center;line-height:24px;font-size:13px;font-weight:600;margin-right:12px;">2</div>
+          <div style="font-size:14px;color:#333;line-height:1.5;">Enter your access code: <strong>${code}</strong></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;margin-bottom:16px;">
+          <div style="background:#1a472a;color:white;border-radius:50%;width:24px;height:24px;min-width:24px;text-align:center;line-height:24px;font-size:13px;font-weight:600;margin-right:12px;">3</div>
+          <div style="font-size:14px;color:#333;line-height:1.5;">Select a procedure and show it to your patient — that's it!</div>
+        </div>
+      </div>
+
+      <!-- CTA Button -->
+      <div style="text-align:center;margin-bottom:24px;">
+        <a href="${appLink}" style="display:inline-block;background:#1a472a;color:white;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;">
+          Open DentAccept →
+        </a>
+      </div>
+
+      <!-- Divider -->
+      <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
+
+      <!-- Account Details -->
+      <table style="width:100%;font-size:13px;color:#666;">
+        <tr><td style="padding:4px 0;">Practice</td><td style="text-align:right;color:#333;font-weight:500;">${officeName}</td></tr>
+        <tr><td style="padding:4px 0;">Plan</td><td style="text-align:right;color:#333;font-weight:500;">${planLabel}</td></tr>
+        <tr><td style="padding:4px 0;">Email</td><td style="text-align:right;color:#333;font-weight:500;">${email}</td></tr>
+        <tr><td style="padding:4px 0;">Trial ends</td><td style="text-align:right;color:#333;font-weight:500;">14 days from today</td></tr>
+      </table>
+    </div>
+
+    <!-- Tips -->
+    <div style="margin-top:24px;padding:20px 24px;background:white;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+      <h3 style="font-size:14px;color:#0f0f0f;margin:0 0 12px;">💡 Pro tips to maximize acceptance rates</h3>
+      <ul style="font-size:13px;color:#555;line-height:1.7;margin:0;padding-left:18px;">
+        <li>Show the animation <strong>before</strong> discussing price — patients accept what they understand</li>
+        <li>Use the "What happens if you wait" section — it's the #1 conversion driver</li>
+        <li>Tap 🌐 to switch to Spanish instantly for Hispanic patients</li>
+        <li>Bookmark the app on your iPad home screen for one-tap access</li>
+      </ul>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align:center;margin-top:32px;font-size:12px;color:#999;">
+      <p style="margin:0 0 4px;">DentAccept — Patients understand it. Patients accept it.</p>
+      <p style="margin:0;">Questions? Reply to this email or contact <a href="mailto:hello@dentaccept.com" style="color:#1a472a;">hello@dentaccept.com</a></p>
+    </div>
+  </div>
+</body>
+</html>`
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'DentAccept <welcome@dentaccept.com>',
+        to: [email],
+        subject: `Your DentAccept access code: ${code}`,
+        html,
+      }),
+    })
+
+    if (!res.ok) {
+      const err = await res.text()
+      console.error('Resend API error:', err)
+    } else {
+      console.log(`Welcome email sent to ${email}`)
+    }
+  } catch (err) {
+    console.error('Failed to send welcome email:', err)
+    // Don't throw — email failure shouldn't block the webhook
+  }
 }
 
 // Plan -> max tablets mapping
@@ -117,6 +248,9 @@ serve(async (req) => {
             .insert({ office_id: officeId, code })
 
           console.log(`New office created: ${officeName} (${email}) — code: ${code}`)
+
+          // Send welcome email with access code
+          await sendWelcomeEmail(email, officeName, code, plan)
         }
         break
       }
