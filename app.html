@@ -608,7 +608,7 @@
       <span class="value now" id="cost-now"></span>
     </div>
     <div class="cost-row">
-      <span class="label" id="label-later">Estimated cost in 2 years</span>
+      <span class="label" id="label-later">If you wait, expect to pay</span>
       <span class="value later" id="cost-later"></span>
     </div>
   </div>
@@ -700,8 +700,8 @@ const procedures = [
       { time: '2 yr', icon: '\u{1F480}', type: 'warn', title: { en: 'Bone loss', es: 'Pérdida ósea' }, desc: { en: 'Complex surgery required', es: 'Cirugía compleja requerida' } }
     ],
     explanation: {
-      en: "Without a crown, the damaged tooth continues to weaken. Bacteria enter through cracks, causing decay to spread inward. Within 6 months, the nerve may become infected, requiring a root canal ($900 extra). Within a year, the tooth may fracture below the gumline, making extraction and implant ($3,500) the only option. Acting now saves you $2,200 and preserves your natural tooth.",
-      es: "Sin una corona, el diente dañado sigue debilitándose. Las bacterias entran por las grietas, causando que la caries se extienda hacia adentro. En 6 meses, el nervio puede infectarse, requiriendo endodoncia ($900 extra). En un año, el diente puede fracturarse bajo la encía, haciendo que la extracción e implante ($3,500) sean la única opción. Actuar ahora le ahorra $2,200 y preserva su diente natural."
+      en: "Without a crown, the damaged tooth continues to weaken. Bacteria enter through cracks, causing decay to spread inward. Within 6 months, the nerve may become infected, requiring a root canal on top of the crown. Within a year, the tooth may fracture below the gumline, making extraction and an implant the only option — a much more involved and expensive process. Acting now preserves your natural tooth and avoids a significantly larger treatment later.",
+      es: "Sin una corona, el diente dañado sigue debilitándose. Las bacterias entran por las grietas causando que la caries avance hacia adentro. En 6 meses el nervio puede infectarse, requiriendo también una endodoncia. En un año el diente puede fracturarse bajo la encía, haciendo que la extracción más un implante sean la única opción — un proceso mucho más largo y costoso. Actuar ahora preserva tu diente natural y evita un tratamiento significativamente mayor después."
     }
   },
   {
@@ -729,8 +729,8 @@ const procedures = [
       { time: '2 yr', icon: '✕', type: 'warn', title: { en: 'Adjacent teeth shift', es: 'Dientes vecinos se mueven' }, desc: { en: 'Multiple teeth affected', es: 'Varios dientes afectados' } }
     ],
     explanation: {
-      en: "When a tooth is missing, the jawbone beneath it begins to dissolve — losing 25% of its width in the first year. This makes future implant placement more complex and expensive, often requiring bone grafting ($800-$1,200 additional). Adjacent teeth also shift toward the gap, causing bite problems and potential damage to other teeth.",
-      es: "Cuando falta un diente, el hueso de la mandíbula debajo comienza a disolverse — perdiendo el 25% de su anchura en el primer año. Esto hace que la colocación futura del implante sea más compleja y costosa, a menudo requiriendo injerto óseo ($800-$1,200 adicionales). Los dientes adyacentes también se mueven hacia el espacio, causando problemas de mordida."
+      en: "When a tooth is missing, the jawbone beneath it begins to dissolve — losing 25% of its width in the first year alone. This makes future implant placement more complex, often requiring additional bone grafting before the implant can even be placed. Adjacent teeth also shift toward the gap, causing bite problems and potential damage to neighboring teeth. The sooner you act, the simpler and more affordable the solution.",
+      es: "Cuando falta un diente, el hueso de la mandíbula debajo comienza a disolverse — perdiendo el 25% de su anchura solo en el primer año. Esto hace que la colocación futura del implante sea más compleja, a menudo requiriendo un injerto óseo adicional antes de poder colocar el implante. Los dientes adyacentes también se mueven hacia el espacio, causando problemas de mordida. Cuanto antes actúes, más sencilla y accesible será la solución."
     }
   },
   {
@@ -758,8 +758,8 @@ const procedures = [
       { time: '1 yr', icon: '\u{1F480}', type: 'warn', title: { en: 'Infection spreads', es: 'Infección se extiende' }, desc: { en: 'Risk to heart/kidneys', es: 'Riesgo para corazón/riñones' } }
     ],
     explanation: {
-      en: "An infected tooth is not just a dental problem — it's a ticking time bomb. The infection can spread through your bloodstream to your heart (endocarditis), brain (abscess), or other organs. Emergency room visits for dental infections cost $1,400 on average. A simple root canal today prevents a medical emergency tomorrow.",
-      es: "Un diente infectado no es solo un problema dental — es una bomba de tiempo. La infección puede extenderse por su sangre al corazón (endocarditis), cerebro (absceso) u otros órganos. Las visitas de emergencia por infecciones dentales cuestan $1,400 en promedio. Una endodoncia simple hoy previene una emergencia médica mañana."
+      en: "An infected tooth is not just a dental problem — it's a ticking time bomb. The infection can spread through your bloodstream to your heart (endocarditis), brain (abscess), or other organs. Emergency room visits for dental infections are far more expensive than the root canal itself. A simple root canal today prevents a medical emergency tomorrow.",
+      es: "Un diente infectado no es solo un problema dental — es una bomba de tiempo. La infección puede extenderse por la sangre al corazón (endocarditis), cerebro (absceso) u otros órganos. Las visitas de emergencia por infecciones dentales son mucho más costosas que la endodoncia misma. Una endodoncia simple hoy previene una emergencia médica mañana."
     }
   },
   {
@@ -814,8 +814,8 @@ const procedures = [
       { time: '2 yr', icon: '⚠', type: 'warn', title: { en: 'Stains set in', es: 'Manchas fijadas' }, desc: { en: 'May need veneers', es: 'Quizás carillas necesarias' } }
     ],
     explanation: {
-      en: "Surface stains from coffee, wine, and tobacco penetrate deeper over time. After 2 years, stains become intrinsic (inside the enamel), making them resistant to bleaching. At that point, veneers ($1,200+ per tooth) become the only option for a bright smile. Professional whitening now is 10x cheaper than veneers later.",
-      es: "Las manchas superficiales de café, vino y tabaco penetran más profundo con el tiempo. Después de 2 años, las manchas se vuelven intrínsecas (dentro del esmalte), haciéndolas resistentes al blanqueamiento. En ese punto, las carillas ($1,200+ por diente) se convierten en la única opción. El blanqueamiento profesional ahora es 10 veces más barato que las carillas después."
+      en: "Surface stains from coffee, wine, and tobacco penetrate deeper over time. After 2 years, stains become intrinsic (inside the enamel), making them resistant to bleaching. At that point, veneers become the only option for a bright smile — a far more involved and costly treatment. Professional whitening now is a fraction of the cost of veneers later.",
+      es: "Las manchas superficiales de café, vino y tabaco penetran más profundo con el tiempo. Después de 2 años, las manchas se vuelven intrínsecas (dentro del esmalte), haciéndolas resistentes al blanqueamiento. En ese punto, las carillas se convierten en la única opción — un tratamiento mucho más complejo y costoso. El blanqueamiento profesional ahora cuesta una fracción de lo que costarían las carillas después."
     }
   },
   {
@@ -842,8 +842,8 @@ const procedures = [
       { time: '6 mo', icon: '⚠', type: 'warn', title: { en: 'Bone loss begins', es: 'Pérdida ósea inicia' }, desc: { en: 'Implant more complex', es: 'Implante más complejo' } }
     ],
     explanation: {
-      en: "After extraction, the jawbone in that area begins to resorb (shrink) immediately. Within 6 months, 40-60% of the bone width is lost. This makes future implant placement more invasive and expensive, often requiring sinus lifts or bone grafts. Preserving the socket now with a simple bone graft ($300) saves $1,500+ in reconstructive surgery later.",
-      es: "Después de la extracción, el hueso de la mandíbula en esa área comienza a reabsorberse (encogerse) inmediatamente. En 6 meses, se pierde el 40-60% del ancho óseo. Esto hace que la colocación futura del implante sea más invasiva y costosa. Preservar el alvéolo ahora con un simple injerto óseo ($300) ahorra $1,500+ en cirugía reconstructiva después."
+      en: "After extraction, the jawbone in that area begins to resorb (shrink) immediately. Within 6 months, 40-60% of the bone width is lost. This makes future implant placement more invasive, often requiring sinus lifts or bone grafts before an implant can even be considered. Preserving the socket now with a simple bone graft is far less involved than the reconstructive surgery needed later.",
+      es: "Después de la extracción, el hueso de la mandíbula en esa área comienza a reabsorberse (encogerse) inmediatamente. En 6 meses se pierde el 40-60% del ancho óseo. Esto hace que la colocación futura del implante sea más invasiva, requiriendo elevaciones de seno o injertos óseos antes de poder considerar un implante. Preservar el alvéolo ahora es mucho menos complejo que la cirugía reconstructiva necesaria después."
     }
   },
   {
@@ -871,8 +871,8 @@ const procedures = [
       { time: '1 yr', icon: '✕', type: 'warn', title: { en: 'Nerve involvement', es: 'Nervio afectado' }, desc: { en: 'Root canal + crown needed', es: 'Endodoncia + corona necesaria' } }
     ],
     explanation: {
-      en: "A small cavity today costs $250 to fix with a simple filling. Left untreated for 6 months, the decay reaches the dentin layer and the filling becomes twice as large and expensive. After a year, the bacteria reach the nerve — now you need a root canal ($1,200) plus a crown ($1,200). A $250 problem becomes a $2,400 problem.",
-      es: "Una caries pequeña hoy cuesta $250 con un empaste simple. Sin tratar por 6 meses, la caries llega a la dentina y el empaste se duplica en tamaño y costo. Después de un año, las bacterias llegan al nervio — ahora necesita endodoncia ($1,200) más corona ($1,200). Un problema de $250 se convierte en uno de $2,400."
+      en: "A small cavity fixed today requires just a simple filling. Left untreated for 6 months, the decay reaches the dentin and the filling needed becomes much larger. After a year, bacteria reach the nerve — now you need a root canal plus a crown. What starts as a minor procedure becomes a significantly more complex and costly treatment chain.",
+      es: "Una caries pequeña tratada hoy requiere solo un empaste simple. Sin tratar por 6 meses, la caries llega a la dentina y el empaste necesario se vuelve mucho más grande. Después de un año, las bacterias alcanzan el nervio — ahora se necesita endodoncia más corona. Lo que empieza como un procedimiento menor se convierte en una cadena de tratamientos significativamente más compleja y costosa."
     }
   },
   {
@@ -900,8 +900,8 @@ const procedures = [
       { time: '2 yr', icon: '✕', type: 'warn', title: { en: 'Bone loss + bite issues', es: 'Pérdida ósea + problemas de mordida' }, desc: { en: 'Complex reconstruction', es: 'Reconstrucción compleja' } }
     ],
     explanation: {
-      en: "When a tooth is missing, the adjacent teeth begin shifting toward the gap within months. This creates bite problems, jaw pain, and makes the gap harder to restore later. After 2 years, bone loss in the gap area often requires bone grafting before any restoration. A $3,000 bridge today prevents an $8,000+ reconstructive process later.",
-      es: "Cuando falta un diente, los dientes adyacentes comienzan a moverse hacia el espacio en meses. Esto crea problemas de mordida, dolor de mandíbula, y hace más difícil restaurar después. Después de 2 años, la pérdida ósea a menudo requiere injerto antes de cualquier restauración. Un puente de $3,000 hoy previene un proceso reconstructivo de $8,000+."
+      en: "When a tooth is missing, the adjacent teeth begin shifting toward the gap within months. This creates bite problems, jaw pain, and makes the gap harder to restore later. After 2 years, bone loss in the gap area often requires bone grafting before any restoration can even begin. Treating the gap now is far simpler than the reconstructive process needed after prolonged tooth loss.",
+      es: "Cuando falta un diente, los dientes adyacentes comienzan a moverse hacia el espacio en meses. Esto crea problemas de mordida, dolor de mandíbula y hace más difícil restaurar después. Después de 2 años, la pérdida ósea a menudo requiere un injerto antes de poder iniciar cualquier restauración. Tratar el espacio ahora es mucho más sencillo que el proceso reconstructivo necesario tras una pérdida dental prolongada."
     }
   },
   {
@@ -928,8 +928,8 @@ const procedures = [
       { time: '2 yr', icon: '⚠', type: 'warn', title: { en: 'Enamel erosion worsens', es: 'Erosión del esmalte empeora' }, desc: { en: 'Multiple veneers needed', es: 'Varias carillas necesarias' } }
     ],
     explanation: {
-      en: "Cosmetic dental issues like chips, gaps, and discoloration tend to worsen over time. Enamel continues to wear, stains deepen, and small chips can lead to cracks. A single veneer at $1,200 today can prevent the need for multiple veneers ($3,500+) or even crowns later. Early treatment preserves more natural tooth structure.",
-      es: "Los problemas estéticos dentales como astillas, espacios y decoloración tienden a empeorar con el tiempo. El esmalte sigue desgastándose, las manchas se profundizan y las pequeñas astillas pueden causar grietas. Una carilla de $1,200 hoy puede prevenir la necesidad de varias carillas ($3,500+) o coronas después."
+      en: "Cosmetic dental issues like chips, gaps, and discoloration tend to worsen over time. Enamel continues to wear, stains deepen, and small chips can progress to cracks that reach the nerve. Treating one tooth now is far simpler than addressing multiple damaged teeth later. Early treatment always preserves more natural tooth structure.",
+      es: "Los problemas estéticos dentales como astillas, espacios y decoloración tienden a empeorar con el tiempo. El esmalte sigue desgastándose, las manchas se profundizan y las pequeñas astillas pueden avanzar a grietas que alcanzan el nervio. Tratar un diente ahora es mucho más sencillo que atender múltiples dientes dañados después. El tratamiento temprano siempre preserva más estructura dental natural."
     }
   },
   {
@@ -957,8 +957,8 @@ const procedures = [
       { time: '3 yr', icon: '✕', type: 'warn', title: { en: 'Tooth loss begins', es: 'Comienza pérdida de dientes' }, desc: { en: 'Implants required', es: 'Implantes requeridos' } }
     ],
     explanation: {
-      en: "Gum disease is the #1 cause of tooth loss in adults. When plaque hardens into tartar below the gumline, bacteria destroy the bone that holds your teeth. An $800 deep cleaning today stops the disease. Without it, periodontitis progresses to bone loss, loose teeth, and eventual extractions + implants costing $5,000+ per tooth.",
-      es: "La enfermedad de encías es la causa #1 de pérdida dental en adultos. Cuando la placa se endurece en sarro bajo la encía, las bacterias destruyen el hueso que sostiene los dientes. Una limpieza profunda de $800 hoy detiene la enfermedad. Sin ella, la periodontitis progresa a pérdida ósea, dientes flojos y extracciones + implantes de $5,000+ por diente."
+      en: "Gum disease is the #1 cause of tooth loss in adults. When plaque hardens into tartar below the gumline, bacteria destroy the bone that holds your teeth. A deep cleaning today stops the disease at its source. Without it, periodontitis progresses to bone loss, loose teeth, and eventual extractions — each of which requires a far more complex and costly restoration.",
+      es: "La enfermedad de encías es la causa #1 de pérdida dental en adultos. Cuando la placa se endurece en sarro bajo la encía, las bacterias destruyen el hueso que sostiene los dientes. Una limpieza profunda hoy detiene la enfermedad en su origen. Sin ella, la periodontitis progresa a pérdida ósea, dientes flojos y extracciones — cada una de las cuales requiere una restauración mucho más compleja y costosa."
     }
   },
   {
@@ -986,8 +986,8 @@ const procedures = [
       { time: '3 yr', icon: '✕', type: 'warn', title: { en: 'Deep decay', es: 'Caries profunda' }, desc: { en: 'Crown or root canal', es: 'Corona o endodoncia' } }
     ],
     explanation: {
-      en: "Molar grooves are so deep that even a single toothbrush bristle cannot reach the bottom. This makes them the most common site for cavities — over 90% of cavities in school-age children occur in pits and fissures. A $60 sealant per tooth today prevents an $800+ filling or crown later. Sealants last 5-10 years.",
-      es: "Los surcos del molar son tan profundos que ni una sola cerda del cepillo llega al fondo. Esto los convierte en el sitio más común de caries — más del 90% de caries en niños ocurren en surcos y fosas. Un sellador de $60 por diente hoy previene un empaste o corona de $800+ después. Los selladores duran 5-10 años."
+      en: "Molar grooves are so deep that even a single toothbrush bristle cannot reach the bottom. This makes them the most common site for cavities — over 90% of cavities in school-age children occur in pits and fissures. A sealant today prevents fillings, root canals, or crowns later. Sealants last 5-10 years and are one of the most cost-effective preventive treatments available.",
+      es: "Los surcos del molar son tan profundos que ni una sola cerda del cepillo llega al fondo. Esto los convierte en el sitio más común de caries — más del 90% de caries en niños ocurren en surcos y fosas. Un sellador hoy previene empastes, endodoncias o coronas después. Los selladores duran 5-10 años y son uno de los tratamientos preventivos más efectivos disponibles."
     }
   },
   {
@@ -1015,8 +1015,8 @@ const procedures = [
       { time: '1 yr', icon: '✕', type: 'warn', title: { en: 'Cavities develop', es: 'Caries se desarrollan' }, desc: { en: 'Multiple fillings needed', es: 'Múltiples empastes necesarios' } }
     ],
     explanation: {
-      en: "Fluoride is the most cost-effective dental treatment available. Professional fluoride varnish strengthens enamel by up to 40% and can actually reverse early cavities (white spots) before they become holes. At $40, it reduces cavity risk by 25% for up to 6 months. Compare that to the $250+ cost of each filling it prevents.",
-      es: "El flúor es el tratamiento dental más costo-efectivo disponible. El barniz de flúor profesional fortalece el esmalte hasta un 40% y puede revertir caries tempranas (manchas blancas) antes de que se conviertan en cavidades. A $40, reduce el riesgo de caries un 25% por hasta 6 meses. Compare eso con el costo de $250+ de cada empaste que previene."
+      en: "Fluoride is one of the most cost-effective dental treatments available. Professional fluoride varnish strengthens enamel by up to 40% and can actually reverse early cavities (white spots) before they become holes. A single application reduces cavity risk by 25% for up to 6 months — preventing fillings that cost many times more. Prevention is always the smarter investment.",
+      es: "El flúor es uno de los tratamientos dentales más costo-efectivos disponibles. El barniz de flúor profesional fortalece el esmalte hasta un 40% y puede revertir caries tempranas (manchas blancas) antes de que se conviertan en cavidades. Una sola aplicación reduce el riesgo de caries un 25% por hasta 6 meses — previniendo empastes que cuestan muchas veces más. La prevención siempre es la inversión más inteligente."
     }
   },
   {
@@ -1044,8 +1044,8 @@ const procedures = [
       { time: '3 yr', icon: '✕', type: 'warn', title: { en: 'Cracks and fractures', es: 'Grietas y fracturas' }, desc: { en: 'Multiple crowns needed', es: 'Múltiples coronas necesarias' } }
     ],
     explanation: {
-      en: "Bruxism generates up to 250 lbs of force per square inch — enough to fracture teeth that survived decades. Most grinders are unaware they do it. Without a guard, enamel wears flat, teeth crack, and the jaw joint (TMJ) becomes inflamed. One fractured molar = $1,200 crown. Six fractured teeth = $7,200. A $500 guard protects all of them.",
-      es: "El bruxismo genera hasta 113 kg de fuerza por cm² — suficiente para fracturar dientes que sobrevivieron décadas. La mayoría de quienes rechinan no saben que lo hacen. Sin un protector, el esmalte se aplana, los dientes se agrietan y la articulación (ATM) se inflama. Un molar fracturado = $1,200 en corona. Seis dientes fracturados = $7,200. Un protector de $500 los protege a todos."
+      en: "Bruxism generates up to 250 lbs of force per square inch — enough to fracture teeth that survived decades. Most grinders are completely unaware they do it. Without a guard, enamel wears flat, teeth crack, and the jaw joint (TMJ) becomes inflamed. Each fractured tooth requires a crown or more. A single night guard protects every tooth at once — at a fraction of the cost of repairing them one by one.",
+      es: "El bruxismo genera hasta 113 kg de fuerza por cm² — suficiente para fracturar dientes que sobrevivieron décadas. La mayoría de quienes rechinan no saben que lo hacen. Sin un protector, el esmalte se aplana, los dientes se agrietan y la articulación (ATM) se inflama. Cada diente fracturado requiere una corona o más. Una sola férula protege todos los dientes a la vez — a una fracción del costo de repararlos uno por uno."
     }
   },
   {
@@ -1073,8 +1073,8 @@ const procedures = [
       { time: '3 yr', icon: '✕', type: 'warn', title: { en: 'Crack reaches nerve', es: 'Grieta llega al nervio' }, desc: { en: 'Root canal + crown', es: 'Endodoncia + corona' } }
     ],
     explanation: {
-      en: "Dental bonding is the fastest and most affordable cosmetic fix — done in one visit, no lab required. A small chip or gap repaired today for $300 can prevent a $1,500 veneer or $2,400 crown + root canal later. Bonding lasts 5-10 years with proper care and can be touched up easily if needed.",
-      es: "El bonding dental es la corrección cosmética más rápida y asequible — se hace en una visita, sin laboratorio. Una pequeña astilla o espacio reparado hoy por $300 puede prevenir una carilla de $1,500 o corona + endodoncia de $2,400 después. El bonding dura 5-10 años con el cuidado adecuado y puede retocarse fácilmente si es necesario."
+      en: "Dental bonding is the fastest and most affordable cosmetic fix — done in one visit, no lab required. A small chip or gap repaired today can prevent the need for a veneer or even a crown with root canal later. Bonding lasts 5-10 years with proper care and can be touched up easily. Catching it early keeps the solution simple.",
+      es: "El bonding dental es la corrección cosmética más rápida y asequible — se hace en una visita, sin laboratorio. Una pequeña astilla o espacio reparado hoy puede prevenir la necesidad de una carilla o incluso una corona con endodoncia después. El bonding dura 5-10 años con el cuidado adecuado y puede retocarse fácilmente. Atenderlo a tiempo mantiene la solución simple."
     }
   },
   {
@@ -1102,8 +1102,8 @@ const procedures = [
       { time: '3 yr', icon: '✕', type: 'warn', title: { en: 'More teeth lost', es: 'Más dientes perdidos' }, desc: { en: 'Full denture required', es: 'Dentadura completa necesaria' } }
     ],
     explanation: {
-      en: "Each missing tooth creates a chain reaction: bone beneath the gap shrinks, neighboring teeth tilt into the space, and opposing teeth over-erupt. This makes chewing difficult, strains the jaw joint, and accelerates loss of the remaining teeth. A $1,500 partial denture today stabilizes your mouth and prevents the $5,000+ reconstructive work that follows untreated tooth loss.",
-      es: "Cada diente faltante crea una reacción en cadena: el hueso bajo el espacio se encoge, los dientes vecinos se inclinan y los opuestos se sobre-erupcionan. Esto dificulta la masticación, estresa la articulación mandibular y acelera la pérdida de los dientes restantes. Una prótesis parcial de $1,500 hoy estabiliza su boca y previene el trabajo reconstructivo de $5,000+ que sigue a la pérdida dental no tratada."
+      en: "Each missing tooth creates a chain reaction: bone beneath the gap shrinks, neighboring teeth tilt into the space, and opposing teeth over-erupt. This makes chewing difficult, strains the jaw joint, and accelerates loss of the remaining teeth. A partial denture today stabilizes your mouth and prevents the complex reconstructive work that follows prolonged untreated tooth loss.",
+      es: "Cada diente faltante crea una reacción en cadena: el hueso bajo el espacio se encoge, los dientes vecinos se inclinan y los opuestos se sobre-erupcionan. Esto dificulta la masticación, estresa la articulación mandibular y acelera la pérdida de los dientes restantes. Una prótesis parcial hoy estabiliza la boca y previene el complejo trabajo reconstructivo que sigue a la pérdida dental prolongada sin tratar."
     }
   },
   {
@@ -1160,8 +1160,8 @@ const procedures = [
       { time: '2 yr', icon: '✕', type: 'warn', title: { en: 'Severe bone loss', es: 'Pérdida ósea severa' }, desc: { en: 'Sinus lift required', es: 'Elevación de seno requerida' } }
     ],
     explanation: {
-      en: "Bone loss is progressive and accelerates over time. A small graft done now ($800) may be all that's needed. Wait 2 years and a sinus lift or major augmentation ($3,000-$5,000) becomes necessary before any implant can be placed. The graft itself is a straightforward procedure with high success rates — it simply creates the foundation for a permanent implant.",
-      es: "La pérdida ósea es progresiva y se acelera con el tiempo. Un injerto pequeño hecho ahora ($800) puede ser todo lo que se necesita. Espere 2 años y se requiere una elevación de seno o aumento mayor ($3,000-$5,000) antes de colocar cualquier implante. El injerto en sí es un procedimiento sencillo con altas tasas de éxito — simplemente crea la base para un implante permanente."
+      en: "Bone loss is progressive and accelerates over time. A small graft done now may be all that's needed. Wait 2 years and a sinus lift or major augmentation becomes necessary before any implant can even be placed — a far more involved procedure. Acting early keeps the graft simple and maximizes the chance of a successful implant later.",
+      es: "La pérdida ósea es progresiva y se acelera con el tiempo. Un injerto pequeño hecho ahora puede ser todo lo que se necesita. Espera 2 años y se requerirá una elevación de seno o aumento mayor antes de poder colocar cualquier implante — un procedimiento mucho más complejo. Actuar temprano mantiene el injerto sencillo y maximiza las probabilidades de un implante exitoso después."
     }
   },
   {
@@ -1189,8 +1189,8 @@ const procedures = [
       { time: '3 yr', icon: '✕', type: 'warn', title: { en: 'Root destroyed', es: 'Raíz destruida' }, desc: { en: 'Extraction + implant', es: 'Extracción + implante' } }
     ],
     explanation: {
-      en: "Gum recession exposes root surfaces that have no enamel protection — making them 6x more susceptible to decay than crown enamel. Root cavities are harder to treat, often requiring root canals. Without grafting, recession continues and can eventually lead to tooth loss. A gum graft at $900 now prevents extraction and implant costs of $3,500+ later.",
-      es: "La recesión gingival expone superficies radiculares sin protección de esmalte — haciéndolas 6 veces más susceptibles a caries que el esmalte de la corona. Las caries radiculares son más difíciles de tratar y a menudo requieren endodoncia. Sin injerto, la recesión continúa y puede llevar a pérdida dental. Un injerto gingival de $900 ahora previene extracción e implante de $3,500+ después."
+      en: "Gum recession exposes root surfaces that have no enamel protection — making them 6x more susceptible to decay than crown enamel. Root cavities are harder to treat and often require root canals. Without grafting, recession continues and can eventually lead to tooth loss. A gum graft now stops the damage before it becomes a much more complex and costly problem.",
+      es: "La recesión gingival expone superficies radiculares sin protección de esmalte — haciéndolas 6 veces más susceptibles a caries que el esmalte de la corona. Las caries radiculares son más difíciles de tratar y a menudo requieren endodoncia. Sin injerto, la recesión continúa y puede llevar a pérdida dental. Un injerto gingival ahora detiene el daño antes de que se convierta en un problema mucho más complejo y costoso."
     }
   },
   {
@@ -1218,8 +1218,8 @@ const procedures = [
       { time: '6 mo', icon: '✕', type: 'warn', title: { en: 'Infection spreads', es: 'Infección se extiende' }, desc: { en: 'Serious medical risk', es: 'Riesgo médico serio' } }
     ],
     explanation: {
-      en: "When a root canal fails to fully clear infection, bacteria continue to eat away at the bone around the root tip. An apicoectomy is the last line of defense before extraction. It has a 90%+ success rate and saves a tooth that already has a crown invested in it. Losing that tooth means paying for extraction ($300) plus a new implant ($3,500) plus a new crown ($1,200) — totaling $5,000.",
-      es: "Cuando una endodoncia no logra eliminar completamente la infección, las bacterias continúan destruyendo el hueso alrededor del ápice. Una apicectomía es la última línea de defensa antes de la extracción. Tiene una tasa de éxito superior al 90% y salva un diente que ya tiene una corona invertida. Perder ese diente significa pagar extracción ($300) + nuevo implante ($3,500) + nueva corona ($1,200) = $5,000."
+      en: "When a root canal fails to fully clear infection, bacteria continue to eat away at the bone around the root tip. An apicoectomy is the last line of defense before extraction. It has a 90%+ success rate and saves a tooth that already has a crown on it. Losing that tooth means starting over from scratch — extraction, implant, and a new crown — a far more expensive and lengthy process.",
+      es: "Cuando una endodoncia no logra eliminar completamente la infección, las bacterias continúan destruyendo el hueso alrededor del ápice. Una apicectomía es la última línea de defensa antes de la extracción. Tiene una tasa de éxito superior al 90% y salva un diente que ya tiene una corona. Perder ese diente significa empezar de cero — extracción, implante y nueva corona — un proceso mucho más costoso y prolongado."
     }
   },
   {
@@ -1247,8 +1247,8 @@ const procedures = [
       { time: '2 yr', icon: '✕', type: 'warn', title: { en: 'Root cavity forms', es: 'Caries radicular forma' }, desc: { en: 'Filling + root canal', es: 'Empaste + endodoncia' } }
     ],
     explanation: {
-      en: "Tooth sensitivity is your tooth sending a warning signal — enamel has worn away or gums have receded, leaving microscopic tubules open to temperature and pressure. Without treatment, acid continues to erode the enamel and root surface, leading to root cavities (hard to treat), root canals, and possible tooth loss. A $150 treatment today seals the tubules and stops the damage.",
-      es: "La sensibilidad dental es su diente enviando una señal de advertencia — el esmalte se ha desgastado o las encías han retrocedido, dejando túbulos microscópicos abiertos a temperatura y presión. Sin tratamiento, el ácido continúa erosionando el esmalte y la superficie radicular, llevando a caries radiculares (difíciles de tratar), endodoncias y posible pérdida dental. Un tratamiento de $150 hoy sella los túbulos y detiene el daño."
+      en: "Tooth sensitivity is your tooth sending a warning signal — enamel has worn away or gums have receded, leaving microscopic tubules open to temperature and pressure. Without treatment, acid continues to erode the enamel and root surface, leading to root cavities, root canals, and possible tooth loss. A simple desensitizing treatment today seals the tubules and stops the damage before it escalates.",
+      es: "La sensibilidad dental es tu diente enviando una señal de advertencia — el esmalte se ha desgastado o las encías han retrocedido, dejando túbulos microscópicos abiertos a temperatura y presión. Sin tratamiento, el ácido continúa erosionando el esmalte y la superficie radicular, llevando a caries radiculares, endodoncias y posible pérdida dental. Un sencillo tratamiento desensibilizante hoy sella los túbulos y detiene el daño antes de que escale."
     }
   }
 ];
@@ -3357,8 +3357,10 @@ function updateConsequenceScreen() {
   document.getElementById('label-later').textContent = t('costLater');
   document.getElementById('btn-options').textContent = t('seeOptions');
 
-  document.getElementById('cost-now').textContent = '$' + currentProc.price.toLocaleString();
-  document.getElementById('cost-later').textContent = '$' + currentProc.priceLater.toLocaleString();
+  document.getElementById('label-now').textContent = currentLang === 'es' ? 'Costo del tratamiento' : 'Treatment cost';
+  document.getElementById('label-later').textContent = currentLang === 'es' ? 'Si esperas, pagarás' : 'If you wait, expect to pay';
+  document.getElementById('cost-now').textContent = currentLang === 'es' ? 'Consulta con tu dentista' : 'Ask your dentist';
+  document.getElementById('cost-later').textContent = currentLang === 'es' ? 'Significativamente más' : 'Significantly more';
 
   // Timeline
   var timeline = document.getElementById('timeline');
@@ -3415,19 +3417,18 @@ function updateCloseScreen() {
 
   document.getElementById('close-title').textContent = t('readyToMove');
   document.getElementById('close-subtitle').textContent = t('sameDay');
-  document.getElementById('close-price').textContent = '$' + currentProc.price.toLocaleString();
+  document.getElementById('close-price').textContent = currentLang === 'es' ? 'Tu dentista te dará el precio exacto' : 'Your dentist will quote the exact price';
   document.getElementById('price-header').textContent = t('totalInvestment');
-  document.getElementById('price-note').textContent = t('includes');
+  document.getElementById('price-note').textContent = currentLang === 'es' ? 'Muchas oficinas ofrecen planes de pago flexibles' : 'Many offices offer flexible payment plans';
   document.getElementById('btn-schedule').textContent = t('readySchedule');
   document.getElementById('btn-later').textContent = t('needTime');
 
-  var price = currentProc.price;
-  document.getElementById('fin-1').textContent = '$' + Math.round(price / 12) + '/mo';
-  document.getElementById('fin-2').textContent = '$' + Math.round(price / 18) + '/mo';
-  document.getElementById('fin-3').textContent = '$' + Math.round(price / 24) + '/mo';
-  document.getElementById('fin-1-label').textContent = '12 ' + t('months');
-  document.getElementById('fin-2-label').textContent = '18 ' + t('months');
-  document.getElementById('fin-3-label').textContent = '24 ' + t('months');
+  document.getElementById('fin-1').textContent = currentLang === 'es' ? 'Sin interés' : 'No interest';
+  document.getElementById('fin-2').textContent = currentLang === 'es' ? 'Cuotas' : 'Installments';
+  document.getElementById('fin-3').textContent = currentLang === 'es' ? 'Seguro' : 'Insurance';
+  document.getElementById('fin-1-label').textContent = currentLang === 'es' ? 'Financiamiento' : 'Financing';
+  document.getElementById('fin-2-label').textContent = currentLang === 'es' ? 'Mensuales' : 'Monthly';
+  document.getElementById('fin-3-label').textContent = currentLang === 'es' ? 'Aplicable' : 'May apply';
 }
 
 // ==================== ACTIONS ====================
