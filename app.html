@@ -1336,8 +1336,12 @@ function goToConsequence() {
 function goToClose() {
   goTo('close');
   updateCloseScreen();
-  if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
-    supabaseClient.rpc('mark_completed', { p_presentation_id: presentationId });
+  if (supabaseClient && currentOffice && currentOffice.id !== 'demo-office') {
+    if (presentationId) {
+      supabaseClient.rpc('mark_completed', { p_presentation_id: presentationId });
+    } else {
+      supabaseClient.rpc('mark_session_completed', { p_office_id: currentOffice.id, p_session_id: sessionId });
+    }
   }
 }
 
@@ -3474,8 +3478,12 @@ function closeOutcome() {
 }
 
 async function schedule() {
-  if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
-    await supabaseClient.rpc('mark_scheduled', { p_presentation_id: presentationId });
+  if (supabaseClient && currentOffice && currentOffice.id !== 'demo-office') {
+    if (presentationId) {
+      await supabaseClient.rpc('mark_scheduled', { p_presentation_id: presentationId });
+    } else {
+      await supabaseClient.rpc('mark_session_scheduled', { p_office_id: currentOffice.id, p_session_id: sessionId });
+    }
   }
   var titles = { en: 'Great Choice!', es: 'Excelente Decision!' };
   var texts = {
@@ -3486,8 +3494,12 @@ async function schedule() {
 }
 
 async function decline() {
-  if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
-    await supabaseClient.rpc('mark_declined', { p_presentation_id: presentationId });
+  if (supabaseClient && currentOffice && currentOffice.id !== 'demo-office') {
+    if (presentationId) {
+      await supabaseClient.rpc('mark_declined', { p_presentation_id: presentationId });
+    } else {
+      await supabaseClient.rpc('mark_session_declined', { p_office_id: currentOffice.id, p_session_id: sessionId });
+    }
   }
   var titles = { en: 'No Problem', es: 'No Hay Problema' };
   var texts = {
