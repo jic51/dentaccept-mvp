@@ -530,7 +530,7 @@
     <div class="office-name hidden" id="office-name"></div>
     <div class="code-error hidden" id="code-error"></div>
     <button class="btn-primary hidden" id="code-btn" onclick="enterApp()" style="margin-top: 20px;">Continue</button>
-    <p style="margin-top: 40px; font-size: 12px; color: var(--ink-muted);">
+    <p id="demo-hint" style="margin-top: 40px; font-size: 12px; color: var(--ink-muted); display: none;">
       Demo code: <strong>1234</strong>
     </p>
   </div>
@@ -3489,6 +3489,11 @@ function toggleLang() {
 }
 
 // ==================== INIT ====================
+// Show demo hint only when URL has ?demo=true
+if (new URLSearchParams(window.location.search).get('demo') === 'true') {
+  document.getElementById('demo-hint').style.display = 'block';
+}
+
 // Focus first code input on load
 document.getElementById('code-1').focus();
 </script>
