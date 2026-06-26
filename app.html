@@ -1336,6 +1336,9 @@ function goToConsequence() {
 function goToClose() {
   goTo('close');
   updateCloseScreen();
+  if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
+    supabaseClient.rpc('mark_completed', { p_presentation_id: presentationId });
+  }
 }
 
 // ==================== OFFICE CODE ====================
