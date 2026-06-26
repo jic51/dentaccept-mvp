@@ -1475,13 +1475,16 @@ async function openProcedure(proc) {
   presentationId = null;
 
   if (supabaseClient && currentOffice && currentOffice.id !== 'demo-office') {
+    var ua = navigator.userAgent;
+    var deviceType = /iPad|tablet|Tablet/i.test(ua) ? 'tablet' : /iPhone|Android.*Mobile|Mobile/i.test(ua) ? 'mobile' : 'desktop';
     var result = await supabaseClient.rpc('track_presentation', {
       p_office_id: currentOffice.id,
       p_procedure_id: proc.id,
       p_procedure_name: proc.title.en,
       p_language: currentLang,
       p_outcome: 'started',
-      p_session_id: sessionId
+      p_session_id: sessionId,
+      p_device_type: deviceType
     });
     if (result.data) presentationId = result.data;
   }
@@ -3377,13 +3380,21 @@ function updateConsequenceScreen() {
   document.getElementById('cost-later').textContent = currentLang === 'es' ? 'Significativamente más' : 'Significantly more';
 
   // Timeline
+  var timeLabels = {
+    'Now':  { en: 'Now',    es: 'Ahora' },
+    '6 mo': { en: '6 mo',  es: '6 meses' },
+    '1 yr': { en: '1 yr',  es: '1 año' },
+    '2 yr': { en: '2 yrs', es: '2 años' },
+    '3 yr': { en: '3 yrs', es: '3 años' },
+  };
   var timeline = document.getElementById('timeline');
   timeline.innerHTML = '';
   if (currentProc.timeline) {
     currentProc.timeline.forEach(function(item) {
+      var timeLabel = (timeLabels[item.time] && timeLabels[item.time][currentLang]) || item.time;
       var div = document.createElement('div');
       div.className = 'timeline-item';
-      div.innerHTML = '<div class="t-dot ' + item.type + '">' + item.icon + '</div><div class="t-content"><h4>' + item.time + ' — ' + item.title[currentLang] + '</h4><p>' + item.desc[currentLang] + '</p></div>';
+      div.innerHTML = '<div class="t-dot ' + item.type + '">' + item.icon + '</div><div class="t-content"><h4>' + timeLabel + ' — ' + item.title[currentLang] + '</h4><p>' + item.desc[currentLang] + '</p></div>';
       timeline.appendChild(div);
     });
   }
@@ -3461,7 +3472,7 @@ function closeOutcome() {
 
 async function schedule() {
   if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
-    await supabaseClient.from('presentations').update({ scheduled: true }).eq('id', presentationId);
+    await supabaseClient.rpc('mark_scheduled', { p_presentation_id: presentationId });
   }
   var titles = { en: 'Great Choice!', es: 'Excelente Decision!' };
   var texts = {
@@ -3473,7 +3484,7 @@ async function schedule() {
 
 async function decline() {
   if (supabaseClient && presentationId && currentOffice && currentOffice.id !== 'demo-office') {
-    await supabaseClient.from('presentations').update({ declined: true }).eq('id', presentationId);
+    await supabaseClient.rpc('mark_declined', { p_presentation_id: presentationId });
   }
   var titles = { en: 'No Problem', es: 'No Hay Problema' };
   var texts = {
