@@ -534,10 +534,8 @@
       Demo code: <strong>1234</strong>
     </p>
     <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
-      <p class="lang-en active" style="font-size: 13px; color: var(--ink-muted); margin: 0 0 8px;">Don't have a code?</p>
-      <p class="lang-es" style="font-size: 13px; color: var(--ink-muted); margin: 0 0 8px;">¿No tienes código?</p>
-      <a href="https://dentaccept.com" class="lang-en active" style="font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none;">Start your free trial →</a>
-      <a href="https://dentaccept.com" class="lang-es" style="font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none;">Inicia tu prueba gratis →</a>
+      <p id="no-code-text" style="font-size: 13px; color: var(--ink-muted); margin: 0 0 8px;">Don't have a code?</p>
+      <a href="https://dentaccept.com" id="no-code-link" style="font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none;">Start your free trial →</a>
     </div>
   </div>
 </div>
@@ -3550,6 +3548,8 @@ function toggleLang() {
   document.getElementById('code-title').textContent = t('enterCode');
   document.getElementById('code-desc').textContent = t('codeDesc');
   document.getElementById('code-btn').textContent = t('continue');
+  document.getElementById('no-code-text').textContent = currentLang === 'en' ? "Don't have a code?" : '¿No tienes código?';
+  document.getElementById('no-code-link').textContent = currentLang === 'en' ? 'Start your free trial →' : 'Inicia tu prueba gratis →';
   document.getElementById('search-input').placeholder = t('searchPlaceholder');
 
   renderLibrary();
