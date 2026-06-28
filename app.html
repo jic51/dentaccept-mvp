@@ -551,6 +551,9 @@
     <input type="text" id="search-input" placeholder="Search procedures..." oninput="filterProcedures()">
   </div>
   <div class="proc-grid" id="proc-grid"></div>
+  <div style="text-align:center; padding:20px 0 32px; margin-top:8px;">
+    <button onclick="openBillingPortal()" style="background:none; border:none; font-size:12px; color:var(--ink-muted); cursor:pointer; text-decoration:underline; padding:8px 16px;">Manage Subscription</button>
+  </div>
 </div>
 
 <!-- SCREEN 2: ANIMATION -->
@@ -3464,6 +3467,25 @@ function updateCloseScreen() {
 }
 
 // ==================== ACTIONS ====================
+async function openBillingPortal() {
+  if (!supabaseClient || !currentOffice || currentOffice.id === 'demo-office') {
+    alert('Billing management is not available in demo mode.');
+    return;
+  }
+  try {
+    var res = await supabaseClient.functions.invoke('customer-portal', {
+      body: { office_id: currentOffice.id }
+    });
+    if (res.data && res.data.url) {
+      window.location.href = res.data.url;
+    } else {
+      alert('Could not open billing portal. Please contact hello@dentaccept.com');
+    }
+  } catch (e) {
+    alert('Could not open billing portal. Please contact hello@dentaccept.com');
+  }
+}
+
 function showOutcome(icon, title, text) {
   document.getElementById('outcome-icon').textContent = icon;
   document.getElementById('outcome-title').textContent = title;
