@@ -39,7 +39,7 @@ async function sendWelcomeEmail(email: string, officeName: string, code: string,
   }
 
   const planLabel = plan === 'group' ? 'Group' : plan === 'practice' ? 'Practice' : 'Starter'
-  const appLink = `${APP_URL}/app.html`
+  const appLink = `${APP_URL}/app`
 
   const html = `
 <!DOCTYPE html>
