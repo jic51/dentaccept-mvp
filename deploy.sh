@@ -24,6 +24,7 @@ npx supabase functions deploy ai-explain       --project-ref $PROJECT_REF
 npx supabase functions deploy create-checkout  --project-ref $PROJECT_REF
 npx supabase functions deploy stripe-webhook   --project-ref $PROJECT_REF
 npx supabase functions deploy customer-portal  --project-ref $PROJECT_REF
+npx supabase functions deploy resend-code      --project-ref $PROJECT_REF
 
 echo ""
 echo "=== Done ==="

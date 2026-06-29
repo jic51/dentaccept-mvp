@@ -403,6 +403,10 @@
     0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
     40% { transform: scale(1); opacity: 1; }
   }
+  @keyframes frame-timer-drain {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: 88; }
+  }
 
   /* Close */
   .close-hero {
@@ -533,9 +537,25 @@
     <p id="demo-hint" style="margin-top: 40px; font-size: 12px; color: var(--ink-muted); display: none;">
       Demo code: <strong>1234</strong>
     </p>
-    <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
-      <p id="no-code-text" style="font-size: 13px; color: var(--ink-muted); margin: 0 0 8px;">Don't have a code?</p>
-      <a href="https://dentaccept.com" id="no-code-link" style="font-size: 14px; font-weight: 600; color: var(--accent); text-decoration: none;">Start your free trial →</a>
+    <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);">
+      <!-- Forgot code -->
+      <div style="text-align:center; margin-bottom:16px;">
+        <p id="forgot-code-label" style="font-size:13px;color:var(--ink-muted);margin:0 0 10px;">I don't remember my code</p>
+        <button id="forgot-code-btn" onclick="showForgotCode()" style="width:100%;padding:10px 20px;font-size:14px;font-weight:600;color:var(--accent);background:none;border:1.5px solid var(--accent);border-radius:8px;cursor:pointer;">Get my code →</button>
+      </div>
+      <!-- Forgot code inline form -->
+      <div id="forgot-code-form" style="display:none;background:var(--surface);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <input type="email" id="forgot-email" placeholder="your@email.com" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;box-sizing:border-box;margin-bottom:8px;background:white;">
+        <button id="forgot-submit-btn" onclick="submitForgotCode()" style="width:100%;padding:10px;background:var(--accent);color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Send my code</button>
+        <p id="forgot-feedback" style="display:none;font-size:12px;text-align:center;margin:8px 0 0;color:#666;"></p>
+      </div>
+      <!-- Divider -->
+      <p style="text-align:center;font-size:12px;color:var(--ink-muted);margin:0 0 16px;">— or —</p>
+      <!-- No account -->
+      <div style="text-align:center;">
+        <p id="no-account-label" style="font-size:13px;color:var(--ink-muted);margin:0 0 10px;">I don't have an account</p>
+        <a href="https://dentaccept.com/#pricing" id="create-account-btn" style="display:block;padding:10px 20px;font-size:14px;font-weight:600;color:white;background:var(--accent);border-radius:8px;text-decoration:none;text-align:center;">Create an account →</a>
+      </div>
     </div>
   </div>
 </div>
@@ -573,6 +593,10 @@
     <div class="svg-crossfade">
       <svg class="tooth-svg visible" viewBox="0 0 200 260" id="tooth-svg-a"></svg>
       <svg class="tooth-svg hidden" viewBox="0 0 200 260" id="tooth-svg-b"></svg>
+      <svg id="frame-timer" style="position:absolute;bottom:8px;right:8px;width:36px;height:36px;" viewBox="0 0 36 36">
+        <circle cx="18" cy="18" r="14" fill="rgba(0,0,0,0.08)" stroke="rgba(255,255,255,0.4)" stroke-width="3"/>
+        <circle id="frame-timer-ring" cx="18" cy="18" r="14" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="0" transform="rotate(-90 18 18)" style="opacity:0.7;"/>
+      </svg>
     </div>
     <h2 class="proc-title" id="anim-title"></h2>
     <p class="proc-desc" id="anim-desc"></p>
@@ -1352,6 +1376,37 @@ function goToClose() {
   }
 }
 
+// ==================== FORGOT CODE ====================
+function showForgotCode() {
+  var form = document.getElementById('forgot-code-form');
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+  if (form.style.display === 'block') document.getElementById('forgot-email').focus();
+}
+
+async function submitForgotCode() {
+  var email = document.getElementById('forgot-email').value.trim();
+  var feedback = document.getElementById('forgot-feedback');
+  var btn = document.getElementById('forgot-submit-btn');
+  if (!email) return;
+  btn.disabled = true;
+  btn.textContent = currentLang === 'en' ? 'Sending...' : 'Enviando...';
+  feedback.style.display = 'none';
+  try {
+    await supabaseClient.functions.invoke('resend-code', { body: { email } });
+    feedback.style.display = 'block';
+    feedback.style.color = '#1a472a';
+    feedback.textContent = currentLang === 'en'
+      ? 'If this email has an account, your code is on its way!'
+      : '¡Si este correo tiene una cuenta, el código está en camino!';
+  } catch(e) {
+    feedback.style.display = 'block';
+    feedback.style.color = '#c00';
+    feedback.textContent = currentLang === 'en' ? 'Something went wrong. Try again.' : 'Algo salió mal. Intenta de nuevo.';
+  }
+  btn.disabled = false;
+  btn.textContent = currentLang === 'en' ? 'Send my code' : 'Enviar mi código';
+}
+
 // ==================== OFFICE CODE ====================
 var codeBuffer = ['', '', '', ''];
 
@@ -1531,11 +1586,21 @@ function updateAnimationScreen() {
   renderToothSVG(currentProc.id, stepIdx);
 }
 
+function resetFrameTimer() {
+  var ring = document.getElementById('frame-timer-ring');
+  if (!ring) return;
+  ring.style.animation = 'none';
+  ring.offsetHeight; // force reflow to restart animation
+  ring.style.animation = 'frame-timer-drain 5.5s linear forwards';
+}
+
 function startAnimation() {
   clearInterval(animInterval);
+  resetFrameTimer();
   animInterval = setInterval(function() {
     currentStep++;
     updateAnimationScreen();
+    resetFrameTimer();
   }, 5500);
 }
 
@@ -3548,8 +3613,13 @@ function toggleLang() {
   document.getElementById('code-title').textContent = t('enterCode');
   document.getElementById('code-desc').textContent = t('codeDesc');
   document.getElementById('code-btn').textContent = t('continue');
-  document.getElementById('no-code-text').textContent = currentLang === 'en' ? "Don't have a code?" : '¿No tienes código?';
-  document.getElementById('no-code-link').textContent = currentLang === 'en' ? 'Start your free trial →' : 'Inicia tu prueba gratis →';
+  var l = currentLang;
+  document.getElementById('forgot-code-label').textContent    = l === 'en' ? "I don't remember my code"  : 'No recuerdo mi código';
+  document.getElementById('forgot-code-btn').textContent      = l === 'en' ? 'Get my code →'             : 'Obtener mi código →';
+  document.getElementById('forgot-email').placeholder         = l === 'en' ? 'your@email.com'            : 'tucorreo@email.com';
+  document.getElementById('forgot-submit-btn').textContent    = l === 'en' ? 'Send my code'              : 'Enviar mi código';
+  document.getElementById('no-account-label').textContent     = l === 'en' ? "I don't have an account"   : 'No tengo una cuenta';
+  document.getElementById('create-account-btn').textContent   = l === 'en' ? 'Create an account →'       : 'Crear una cuenta →';
   document.getElementById('search-input').placeholder = t('searchPlaceholder');
 
   renderLibrary();
