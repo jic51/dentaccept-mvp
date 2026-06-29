@@ -424,6 +424,64 @@
     margin-top: 12px;
     display: none;
   }
+  .founding-banner {
+    background: linear-gradient(135deg, #1a472a 0%, #2d6a4f 100%);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .founding-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .founding-banner h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    margin: 0 0 8px;
+    color: white;
+  }
+  .founding-banner p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    margin: 0;
+    line-height: 1.5;
+  }
+  .founding-spots {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 8px;
+  }
+  .founding-spots strong { color: #7effa7; }
+  .founding-cta {
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .founding-cta .btn {
+    background: white;
+    color: #1a472a;
+    font-weight: 700;
+    padding: 14px 28px;
+    white-space: nowrap;
+  }
+  .founding-cta .btn:hover { background: #f0faf3; }
+  .founding-cta p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 8px;
+  }
 
   /* CHECKOUT MODAL */
   .modal-overlay {
@@ -941,6 +999,20 @@
     <h2 class="section-title">Less than what you bill in 8 minutes of work.</h2>
     <p class="section-desc">No contracts. No setup fees. Cancel anytime. Try free for 14 days.</p>
 
+    <!-- Founding Members Banner -->
+    <div class="founding-banner">
+      <div>
+        <div class="founding-badge">⭐ Founding Member Program</div>
+        <h3>Get 2 months free — limited to 15 practices</h3>
+        <p>Be one of the first 15 practices to join DentAccept and help shape the product.<br>In exchange: 2 short feedback surveys and one 15-minute call.</p>
+        <div class="founding-spots">Only <strong id="founding-spots-left">15</strong> spots remaining</div>
+      </div>
+      <div class="founding-cta">
+        <button class="btn" onclick="openCheckout('practice', '$129/mo')">Claim Your Spot →</button>
+        <p>2 months free · No credit card now</p>
+      </div>
+    </div>
+
     <div class="pricing-grid">
       <div class="price-card">
         <div class="price-plan">Starter</div>
@@ -971,12 +1043,12 @@
 <div class="cta-section" id="cta">
   <div class="container">
     <h2>Ready to stop losing treatments?</h2>
-    <p>Join the waitlist. We'll notify you when your trial is ready.</p>
-    <form class="cta-form" onsubmit="return submitWaitlist(event)">
-      <input type="email" id="waitlist-email" placeholder="your@email.com" required>
-      <button type="submit">Join Waitlist</button>
-    </form>
-    <div class="cta-success" id="cta-success">You're on the list. We'll be in touch soon.</div>
+    <p>Start your 14-day free trial today. No credit card required.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button onclick="openCheckout('practice','$129/mo')" class="btn" style="background:#4caf6e;color:white;padding:16px 32px;font-size:16px;font-weight:700;border:none;border-radius:10px;cursor:pointer;">Start Free Trial →</button>
+      <a href="/app" class="btn" style="background:rgba(255,255,255,0.12);color:white;padding:16px 32px;font-size:16px;font-weight:600;border-radius:10px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.25);">See a Demo</a>
+    </div>
+    <p style="margin-top:16px;font-size:13px;color:rgba(255,255,255,0.4);">Cancel anytime · Works on any iPad · Setup in 2 minutes</p>
   </div>
 </div>
 
