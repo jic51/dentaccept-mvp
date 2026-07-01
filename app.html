@@ -1689,7 +1689,7 @@ async function validateCode() {
 
   // Demo code — works without backend
   if (code === '1234') {
-    currentOffice = { id: 'demo-office', name: 'Smile Dental Group' };
+    currentOffice = { id: 'demo-office', name: 'Smile Dental Group', code: '1234', bookingUrl: 'https://zocdoc.com' };
     document.getElementById('office-name').textContent = currentOffice.name;
     document.getElementById('office-name').classList.remove('hidden');
     document.getElementById('code-btn').classList.remove('hidden');
@@ -3989,12 +3989,21 @@ function procMenuStart() {
 async function procMenuShare() {
   var proc = _menuProc;
   closeProcMenu();
-  if (!proc || !currentOffice || !currentOffice.code) {
+  if (!proc || !currentOffice) {
     showToast(currentLang === 'en' ? 'Error generating link' : 'Error al generar el link');
     return;
   }
-  if (!supabaseClient) {
-    showToast(currentLang === 'en' ? 'Not available in demo mode' : 'No disponible en modo demo');
+
+  // Demo mode: generate a preview link without hitting Supabase
+  if (currentOffice.id === 'demo-office') {
+    var demoUrl = 'https://dentaccept.com/app?s=demo-' + proc.id;
+    try { await navigator.clipboard.writeText(demoUrl); } catch(e) {}
+    showToast((currentLang === 'en' ? '📋 Demo link copied! (real links need a live account)' : '📋 ¡Link demo copiado! (links reales requieren cuenta activa)'));
+    return;
+  }
+
+  if (!supabaseClient || !currentOffice.code) {
+    showToast(currentLang === 'en' ? 'Error generating link' : 'Error al generar el link');
     return;
   }
 
