@@ -507,6 +507,192 @@
   }
 
   .hidden { display: none !important; }
+
+  /* ===== SHARE FEATURE ===== */
+
+  /* Procedure card wrapper with 3-dot menu */
+  .proc-card-wrapper {
+    position: relative;
+  }
+  .proc-card-wrapper .proc-card {
+    padding-right: 36px; /* room for ⋮ button */
+  }
+  .proc-menu-btn {
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: var(--ink-muted);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    line-height: 1;
+    z-index: 2;
+  }
+  .proc-menu-btn:active { background: var(--surface); }
+
+  /* Proc dropdown menu */
+  .proc-menu {
+    position: absolute;
+    top: 36px;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    z-index: 100;
+    min-width: 180px;
+    overflow: hidden;
+    display: none;
+  }
+  .proc-menu.open { display: block; }
+  .proc-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+  }
+  .proc-menu-item:hover { background: var(--surface); }
+  .proc-menu-item + .proc-menu-item { border-top: 1px solid var(--border); }
+
+  /* Toast notification */
+  #toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1a1a1a;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 500;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    white-space: nowrap;
+    max-width: 90vw;
+    text-align: center;
+  }
+  #toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* Settings modal */
+  #settings-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 300;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  #settings-modal.open { display: flex; }
+  .settings-sheet {
+    background: var(--page);
+    border-radius: 20px 20px 0 0;
+    padding: 28px 24px 40px;
+    width: 100%;
+    max-width: 540px;
+  }
+  .settings-sheet h3 {
+    font-family: var(--serif);
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+  .settings-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+  }
+  .settings-field input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    background: white;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .settings-field input:focus { outline: none; border-color: var(--accent); }
+  .settings-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .settings-save-btn {
+    flex: 1;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .settings-cancel-btn {
+    background: var(--surface);
+    color: var(--ink);
+    border: none;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  /* Settings gear button in library header */
+  .settings-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: var(--ink-muted);
+    line-height: 1;
+  }
+  .settings-btn:active { background: var(--surface); }
+
+  /* Share mode overrides — hide dentist-facing elements */
+  .share-mode #btn-later { display: none !important; }
+  .share-mode #screen-close .back-btn { display: none !important; }
+  .share-mode #screen-animation .back-btn { display: none !important; }
+  .share-mode #settings-lib-btn { display: none !important; }
+
+  /* Share expired screen */
+  #screen-expired {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 24px;
+    text-align: center;
+    background: var(--page);
+  }
+  #screen-expired.active { display: flex; }
+  #screen-expired .exp-icon { font-size: 56px; margin-bottom: 20px; }
+  #screen-expired h2 { font-family: var(--serif); font-size: 22px; color: var(--ink); margin-bottom: 12px; }
+  #screen-expired p { font-size: 15px; color: var(--ink-muted); line-height: 1.6; max-width: 320px; }
 </style>
 </head>
 <body>
@@ -565,7 +751,8 @@
   <div class="app-header">
     <div class="header-left"></div>
     <h1>Dent<em>Accept</em></h1>
-    <div class="header-right">
+    <div class="header-right" style="display:flex;align-items:center;gap:8px;">
+      <button class="settings-btn" id="settings-lib-btn" onclick="openSettings()" title="Settings">⚙️</button>
       <button class="lang-toggle" onclick="toggleLang()">
         <span class="lang-en active">EN</span> / <span class="lang-es">ES</span>
       </button>
@@ -676,6 +863,37 @@
     <button class="btn-schedule" id="btn-schedule" onclick="schedule()">I'm Ready to Schedule</button>
     <button class="btn-later" id="btn-later" onclick="decline()">I Need More Time</button>
   </div>
+</div>
+
+<!-- SHARE EXPIRED SCREEN -->
+<div id="screen-expired">
+  <div class="exp-icon">⏱️</div>
+  <h2 id="expired-title">This link has expired</h2>
+  <p id="expired-text">Ask your dentist to send you a new link — they expire after 48 hours.</p>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="settings-modal" onclick="closeSettings()">
+  <div class="settings-sheet" onclick="event.stopPropagation()">
+    <h3 id="settings-title">Office Settings</h3>
+    <div class="settings-field">
+      <label id="settings-url-label">Appointment booking link (Zocdoc, Google, etc.)</label>
+      <input type="url" id="settings-booking-url" placeholder="https://zocdoc.com/dr-..." autocomplete="off">
+    </div>
+    <div class="settings-actions">
+      <button class="settings-cancel-btn" onclick="closeSettings()" id="settings-cancel">Cancel</button>
+      <button class="settings-save-btn" onclick="saveSettings()" id="settings-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- PROC MENU (single shared instance, repositioned via JS) -->
+<div id="proc-menu" class="proc-menu">
+  <button class="proc-menu-item" id="proc-menu-start" onclick="procMenuStart()">▶ Start presentation</button>
+  <button class="proc-menu-item" id="proc-menu-share" onclick="procMenuShare()">📋 Share with patient</button>
 </div>
 
 <!-- OUTCOME OVERLAY (replaces alert) -->
@@ -1287,12 +1505,14 @@ const procedures = [
 // ==================== STATE ====================
 let currentLang = 'en';
 let currentProc = null;
-let currentOffice = null;
+let currentOffice = null; // { id, name, code, bookingUrl }
 let animInterval = null;
 let currentStep = 0;
 let sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
 let presentationId = null;
 let activeProcedures = procedures;
+let isShareMode = false;
+let _menuProc = null; // proc currently targeted by the ⋮ menu
 
 // ==================== I18N ====================
 const i18n = {
@@ -1319,7 +1539,20 @@ const i18n = {
     declined: 'No problem. Take your time deciding.',
     expired: 'Your subscription has expired. Please contact your office administrator.',
     invalidCode: 'Invalid code. Please try again.',
-    months: 'months'
+    months: 'months',
+    bookAppointment: 'Book My Appointment →',
+    shareMenuStart: '▶ Start presentation',
+    shareMenuShare: '📋 Share with patient',
+    shareToast: '📋 Link copied! Valid for 48 hours',
+    shareLinkExpired: 'This link has expired',
+    shareLinkExpiredText: 'Ask your dentist to send you a new link — they expire after 48 hours.',
+    shareLinkInvalid: 'Link not found',
+    shareLinkInvalidText: 'This link is invalid. Please ask your dentist for a new one.',
+    settingsTitle: 'Office Settings',
+    settingsUrlLabel: 'Appointment booking link (Zocdoc, Google, etc.)',
+    settingsSave: 'Save',
+    settingsCancel: 'Cancel',
+    settingsSaved: '✓ Saved!'
   },
   es: {
     enterCode: 'Ingrese Código de Consultorio',
@@ -1344,7 +1577,20 @@ const i18n = {
     declined: 'No hay problema. Tómese su tiempo para decidir.',
     expired: 'Su suscripción ha expirado. Contacte al administrador de su consultorio.',
     invalidCode: 'Código inválido. Intente de nuevo.',
-    months: 'meses'
+    months: 'meses',
+    bookAppointment: 'Agendar Mi Cita →',
+    shareMenuStart: '▶ Iniciar presentación',
+    shareMenuShare: '📋 Compartir con paciente',
+    shareToast: '📋 ¡Link copiado! Válido 48 horas',
+    shareLinkExpired: 'Este link ha expirado',
+    shareLinkExpiredText: 'Pide a tu dentista que te envíe un nuevo link — expiran en 48 horas.',
+    shareLinkInvalid: 'Link no encontrado',
+    shareLinkInvalidText: 'Este link no es válido. Pide a tu dentista un link nuevo.',
+    settingsTitle: 'Configuración del Consultorio',
+    settingsUrlLabel: 'Link de citas (Zocdoc, Google, etc.)',
+    settingsSave: 'Guardar',
+    settingsCancel: 'Cancelar',
+    settingsSaved: '✓ ¡Guardado!'
   }
 };
 
@@ -1360,6 +1606,7 @@ function goTo(screen) {
 }
 
 function goToConsequence() {
+  if (isShareMode) { goToClose(); return; }
   goTo('consequence');
   updateConsequenceScreen();
 }
@@ -1465,7 +1712,10 @@ async function validateCode() {
           document.getElementById('code-error').classList.remove('hidden');
           return;
         }
-        currentOffice = { id: office.office_id, name: office.name };
+        currentOffice = { id: office.office_id, name: office.name, code: codeBuffer.join(''), bookingUrl: '' };
+        // Fetch booking URL in background (non-blocking)
+        supabaseClient.rpc('get_office_booking_url', { p_office_id: office.office_id })
+          .then(function(r) { if (r.data) currentOffice.bookingUrl = r.data; });
         document.getElementById('office-name').textContent = office.name;
         document.getElementById('office-name').classList.remove('hidden');
         document.getElementById('code-btn').classList.remove('hidden');
@@ -1528,11 +1778,22 @@ function renderLibrary() {
     if (filter && proc.title[currentLang].toLowerCase().indexOf(filter) === -1 &&
         proc.desc[currentLang].toLowerCase().indexOf(filter) === -1) return;
 
+    var wrapper = document.createElement('div');
+    wrapper.className = 'proc-card-wrapper';
+
     var card = document.createElement('div');
     card.className = 'proc-card';
     card.innerHTML = '<span class="icon">' + proc.icon + '</span><h3>' + proc.title[currentLang] + '</h3><p>' + proc.desc[currentLang] + '</p>';
     card.onclick = function() { openProcedure(proc); };
-    grid.appendChild(card);
+
+    var menuBtn = document.createElement('button');
+    menuBtn.className = 'proc-menu-btn';
+    menuBtn.textContent = '⋮';
+    menuBtn.onclick = function(e) { openProcMenu(e, proc); };
+
+    wrapper.appendChild(card);
+    wrapper.appendChild(menuBtn);
+    grid.appendChild(wrapper);
   });
 }
 
@@ -3524,7 +3785,7 @@ function updateCloseScreen() {
   document.getElementById('close-price').textContent = currentLang === 'es' ? 'Tu dentista te dará el precio exacto' : 'Your dentist will quote the exact price';
   document.getElementById('price-header').textContent = t('totalInvestment');
   document.getElementById('price-note').textContent = currentLang === 'es' ? 'Muchas oficinas ofrecen planes de pago flexibles' : 'Many offices offer flexible payment plans';
-  document.getElementById('btn-schedule').textContent = t('readySchedule');
+  document.getElementById('btn-schedule').textContent = isShareMode ? t('bookAppointment') : t('readySchedule');
   document.getElementById('btn-later').textContent = t('needTime');
 
   document.getElementById('fin-1').textContent = currentLang === 'es' ? 'Sin interés' : 'No interest';
@@ -3564,11 +3825,24 @@ function showOutcome(icon, title, text) {
 
 function closeOutcome() {
   document.getElementById('outcome-overlay').style.display = 'none';
+  if (isShareMode) return; // patient has nowhere to navigate back to
   currentProc = null;
   goTo('library');
 }
 
 async function schedule() {
+  if (isShareMode) {
+    if (currentOffice && currentOffice.bookingUrl) {
+      window.open(currentOffice.bookingUrl, '_blank');
+    }
+    var icon = '✅';
+    var title = currentLang === 'en' ? 'All set!' : '¡Todo listo!';
+    var text = currentLang === 'en'
+      ? 'You\'ve been redirected to schedule your appointment. See you soon!'
+      : '¡Te hemos redirigido para agendar tu cita. ¡Hasta pronto!';
+    showOutcome(icon, title, text);
+    return;
+  }
   if (supabaseClient && currentOffice && currentOffice.id !== 'demo-office') {
     if (presentationId) {
       await supabaseClient.rpc('mark_scheduled', { p_presentation_id: presentationId });
@@ -3621,6 +3895,12 @@ function toggleLang() {
   document.getElementById('no-account-label').textContent     = l === 'en' ? "I don't have an account"   : 'No tengo una cuenta';
   document.getElementById('create-account-btn').textContent   = l === 'en' ? 'Create an account →'       : 'Crear una cuenta →';
   document.getElementById('search-input').placeholder = t('searchPlaceholder');
+  document.getElementById('settings-title').textContent = t('settingsTitle');
+  document.getElementById('settings-url-label').textContent = t('settingsUrlLabel');
+  document.getElementById('settings-save').textContent = t('settingsSave');
+  document.getElementById('settings-cancel').textContent = t('settingsCancel');
+  document.getElementById('proc-menu-start').textContent = t('shareMenuStart');
+  document.getElementById('proc-menu-share').textContent = t('shareMenuShare');
 
   renderLibrary();
   if (currentProc) {
@@ -3630,14 +3910,179 @@ function toggleLang() {
   }
 }
 
+// ==================== SHARE MODE ====================
+async function initShareMode(linkId) {
+  if (!supabaseClient) return;
+  isShareMode = true;
+  document.body.classList.add('share-mode');
+
+  try {
+    var result = await supabaseClient.rpc('get_shared_link_data', { p_id: linkId });
+    var link = result.data;
+
+    if (!link) {
+      document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+      document.getElementById('screen-expired').classList.add('active');
+      document.getElementById('expired-title').textContent = t('shareLinkInvalid');
+      document.getElementById('expired-text').textContent = t('shareLinkInvalidText');
+      return;
+    }
+
+    if (link.is_expired) {
+      document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+      document.getElementById('screen-expired').classList.add('active');
+      document.getElementById('expired-title').textContent = t('shareLinkExpired');
+      document.getElementById('expired-text').textContent = t('shareLinkExpiredText');
+      return;
+    }
+
+    currentOffice = { id: link.office_id, name: link.office_name, code: '', bookingUrl: link.booking_url || '' };
+
+    var proc = procedures.find(function(p) { return p.id === link.procedure_id; });
+    if (!proc) {
+      // Try activeProcedures (may not be loaded yet in share mode — use local fallback)
+      proc = activeProcedures.find(function(p) { return p.id === link.procedure_id; });
+    }
+    if (!proc) {
+      document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+      document.getElementById('screen-expired').classList.add('active');
+      document.getElementById('expired-title').textContent = t('shareLinkInvalid');
+      document.getElementById('expired-text').textContent = t('shareLinkInvalidText');
+      return;
+    }
+
+    openProcedure(proc);
+  } catch(e) {
+    console.error('initShareMode error', e);
+  }
+}
+
+// ==================== PROC MENU ====================
+function openProcMenu(event, proc) {
+  event.stopPropagation();
+  _menuProc = proc;
+
+  var menu = document.getElementById('proc-menu');
+  var btn = event.currentTarget;
+  var rect = btn.getBoundingClientRect();
+  var wrapperRect = btn.closest('.proc-card-wrapper').getBoundingClientRect();
+
+  // Position relative to the wrapper
+  menu.style.position = 'fixed';
+  menu.style.top = (rect.bottom + 4) + 'px';
+  menu.style.right = (window.innerWidth - rect.right - 4) + 'px';
+  menu.style.left = 'auto';
+
+  menu.classList.add('open');
+}
+
+function closeProcMenu() {
+  document.getElementById('proc-menu').classList.remove('open');
+  _menuProc = null;
+}
+
+function procMenuStart() {
+  var proc = _menuProc;
+  closeProcMenu();
+  if (proc) openProcedure(proc);
+}
+
+async function procMenuShare() {
+  var proc = _menuProc;
+  closeProcMenu();
+  if (!proc || !currentOffice || !currentOffice.code) {
+    showToast(currentLang === 'en' ? 'Error generating link' : 'Error al generar el link');
+    return;
+  }
+  if (!supabaseClient) {
+    showToast(currentLang === 'en' ? 'Not available in demo mode' : 'No disponible en modo demo');
+    return;
+  }
+
+  try {
+    var result = await supabaseClient.rpc('create_shared_link', {
+      p_code: currentOffice.code,
+      p_procedure_id: proc.id
+    });
+    if (result.error) throw result.error;
+    var linkId = result.data;
+    var url = 'https://dentaccept.com/app?s=' + linkId;
+    await navigator.clipboard.writeText(url);
+    showToast(t('shareToast'));
+  } catch(e) {
+    console.error('shareProc error', e);
+    showToast(currentLang === 'en' ? 'Error. Try again.' : 'Error. Intenta de nuevo.');
+  }
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(e) {
+  var menu = document.getElementById('proc-menu');
+  if (menu && menu.classList.contains('open') && !menu.contains(e.target)) {
+    closeProcMenu();
+  }
+});
+
+// ==================== TOAST ====================
+var _toastTimer = null;
+function showToast(msg) {
+  var toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
+
+// ==================== SETTINGS ====================
+function openSettings() {
+  document.getElementById('settings-booking-url').value = (currentOffice && currentOffice.bookingUrl) || '';
+  document.getElementById('settings-title').textContent = t('settingsTitle');
+  document.getElementById('settings-url-label').textContent = t('settingsUrlLabel');
+  document.getElementById('settings-save').textContent = t('settingsSave');
+  document.getElementById('settings-cancel').textContent = t('settingsCancel');
+  document.getElementById('settings-modal').classList.add('open');
+}
+
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+
+async function saveSettings() {
+  var url = document.getElementById('settings-booking-url').value.trim();
+  var btn = document.getElementById('settings-save');
+  if (!currentOffice || !currentOffice.code || !supabaseClient) { closeSettings(); return; }
+
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  try {
+    await supabaseClient.rpc('update_booking_url', { p_code: currentOffice.code, p_booking_url: url });
+    currentOffice.bookingUrl = url;
+    closeSettings();
+    showToast(t('settingsSaved'));
+  } catch(e) {
+    console.error('saveSettings error', e);
+    btn.disabled = false;
+    btn.textContent = t('settingsSave');
+  }
+}
+
 // ==================== INIT ====================
 // Show demo hint only when URL has ?demo=true
 if (new URLSearchParams(window.location.search).get('demo') === 'true') {
   document.getElementById('demo-hint').style.display = 'block';
 }
 
-// Focus first code input on load
-document.getElementById('code-1').focus();
+// Detect share link: ?s=<UUID>
+(function() {
+  var shareId = new URLSearchParams(window.location.search).get('s');
+  if (shareId) {
+    initShareMode(shareId);
+    return; // skip code input focus
+  }
+  // Focus first code input on load (normal mode only)
+  document.getElementById('code-1').focus();
+})();
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
